@@ -1,0 +1,2 @@
+include ':app', ':rfid'
+rootProject.name='RFID Reader'
