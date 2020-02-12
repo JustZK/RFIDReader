@@ -31,4 +31,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    api 'com.zk.common:common:1.0.2'
+    api 'io.netty:netty-all:5.0.0.Alpha2'
 }
