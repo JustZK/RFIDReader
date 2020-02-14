@@ -27,7 +27,7 @@ public class UR880SerialOperationFactory {
     }
 
     public boolean init(List<DeviceInformation> deviceInformationList){
-        if (ur880SerialOperationMap == null) return false;
+        if (ur880SerialOperationMap != null) return false;
         ur880SerialOperationMap = Collections.synchronizedMap(new HashMap<>());
         ur880SerialOperationMapTemp = Collections.synchronizedMap(new HashMap<>());
         for (int i = 0; i < deviceInformationList.size(); i++){
