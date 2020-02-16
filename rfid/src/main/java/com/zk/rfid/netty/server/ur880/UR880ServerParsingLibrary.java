@@ -1,17 +1,24 @@
 package com.zk.rfid.netty.server.ur880;
 
 import com.zk.common.utils.LogUtil;
+import com.zk.rfid.bean.DeviceInformation;
+import com.zk.rfid.bean.UR880SendInfo;
+import com.zk.rfid.callback.AccessingListener;
+import com.zk.rfid.callback.DeviceInformationListener;
+import com.zk.rfid.callback.FactorySettingListener;
+import com.zk.rfid.callback.LabelOperationListener;
 import com.zk.rfid.netty.server.NettyServerBootstrap;
 import com.zk.rfid.netty.server.NettyServerHandler;
-import com.zk.rfid.serial.ur880.UR880SerialOperationFactory;
 import com.zk.rfid.ur880.util.GroupPackage;
+import com.zk.rfid.ur880.util.UnlockPackage;
 import com.zk.rfid.ur880.util.Utils;
+import com.zk.rfid.ur880.util.Utils.TYPE;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -23,7 +30,8 @@ public class UR880ServerParsingLibrary {
     private Processor processor = null;
     private NettyServerBootstrap nettyServerBootstrap;
 
-    private UR880ServerParsingLibrary() { }
+    private UR880ServerParsingLibrary() {
+    }
 
     public static UR880ServerParsingLibrary getInstance() {
         if (instance == null) {
@@ -50,25 +58,57 @@ public class UR880ServerParsingLibrary {
         }.start();
     }
 
-//    public boolean send(NettyServerSendInfo nettyServerSendInfo) {
-//        return processor.send(nettyServerSendInfo);
-//    }
+    public boolean send(UR880SendInfo ur880SendInfo) {
+        return processor.send(ur880SendInfo);
+    }
 
-//    public void onAccessingListener(AccessingListener accessingListener) {
-//        processor.onAccessingListener(accessingListener);
-//    }
-//
-//    public void removeAccessingListener() {
-//        processor.removeAccessingListener();
-//    }
+    public void addOnAccessingListener(AccessingListener accessingListener) {
+        processor.addOnAccessingListener(accessingListener);
+    }
 
-//    public void onFactorySettingListener(FactorySettingListener factorySettingListener) {
-//        processor.onFactorySettingListener(factorySettingListener);
-//    }
+    public void removeAccessingListener(AccessingListener accessingListener) {
+        processor.removeAccessingListener(accessingListener);
+    }
 
-//    public void removeFactorySettingListener() {
-//        processor.removeFactorySettingListener();
-//    }
+    public void removeAllAccessingListener() {
+        processor.removeAllAccessingListener();
+    }
+
+    public void addOnDeviceInformationListener(DeviceInformationListener deviceInformationListener) {
+        processor.addOnDeviceInformationListener(deviceInformationListener);
+    }
+
+    public void removeDeviceInformationListener(DeviceInformationListener deviceInformationListener) {
+        processor.removeDeviceInformationListener(deviceInformationListener);
+    }
+
+    public void removeAllDeviceInformationListener() {
+        processor.removeAllDeviceInformationListener();
+    }
+
+    public void addOnFactorySettingListener(FactorySettingListener factorySettingListener) {
+        processor.addOnFactorySettingListener(factorySettingListener);
+    }
+
+    public void removeFactorySettingListener(FactorySettingListener factorySettingListener) {
+        processor.removeFactorySettingListener(factorySettingListener);
+    }
+
+    public void removeAllFactorySettingListener() {
+        processor.removeAllFactorySettingListener();
+    }
+
+    public void addOnLabelOperationListener(LabelOperationListener labelOperationListener) {
+        processor.addOnLabelOperationListener(labelOperationListener);
+    }
+
+    public void removeLabelOperationListener(LabelOperationListener labelOperationListener) {
+        processor.removeLabelOperationListener(labelOperationListener);
+    }
+
+    public void removeAllLabelOperationListener() {
+        processor.removeAllLabelOperationListener();
+    }
 
     public boolean isOnline(int readerIp) {
         return processor.isOnline(readerIp);
@@ -76,56 +116,108 @@ public class UR880ServerParsingLibrary {
 
     private static class Processor extends NettyServerHandler.NettyServerEventProcessor {
         private int number = 0;
-        private byte[] remainBuffer = null;//上次解析剩余的数据
+        private HashMap<Channel, byte[]> remainBufferMap = new HashMap<>();//上次解析剩余的数据
         private HashMap<String, Channel> nettyChannelMap = new HashMap<>();
+        private List<DeviceInformation> mDeviceInformationList = new ArrayList<>();
+        private GroupPackage mGroupPackage = new GroupPackage();
+        private UnlockPackage mUnlockPackage = new UnlockPackage();
 
-        public boolean isOnline(int boxID) {
+        private List<AccessingListener> mAccessingListener =
+                Collections.synchronizedList(new ArrayList<AccessingListener>());
+        private List<DeviceInformationListener> mDeviceInformationListener =
+                Collections.synchronizedList(new ArrayList<DeviceInformationListener>());
+        private List<FactorySettingListener> mFactorySettingListener =
+                Collections.synchronizedList(new ArrayList<FactorySettingListener>());
+        private List<LabelOperationListener> mLabelOperationListener =
+                Collections.synchronizedList(new ArrayList<LabelOperationListener>());
+
+        public void addOnAccessingListener(AccessingListener accessingListener) {
+            mAccessingListener.add(accessingListener);
+        }
+
+        public void removeAccessingListener(AccessingListener accessingListener) {
+            mAccessingListener.remove(accessingListener);
+        }
+
+        public void removeAllAccessingListener() {
+            mAccessingListener.clear();
+        }
+
+        public void addOnDeviceInformationListener(DeviceInformationListener deviceInformationListener) {
+            mDeviceInformationListener.add(deviceInformationListener);
+        }
+
+        public void removeDeviceInformationListener(DeviceInformationListener deviceInformationListener) {
+            mDeviceInformationListener.remove(deviceInformationListener);
+        }
+
+        public void removeAllDeviceInformationListener() {
+            mDeviceInformationListener.clear();
+        }
+
+        public void addOnFactorySettingListener(FactorySettingListener factorySettingListener) {
+            mFactorySettingListener.add(factorySettingListener);
+        }
+
+        public void removeFactorySettingListener(FactorySettingListener factorySettingListener) {
+            mFactorySettingListener.remove(factorySettingListener);
+        }
+
+        public void removeAllFactorySettingListener() {
+            mFactorySettingListener.clear();
+        }
+
+        public void addOnLabelOperationListener(LabelOperationListener labelOperationListener) {
+            mLabelOperationListener.add(labelOperationListener);
+        }
+
+        public void removeLabelOperationListener(LabelOperationListener labelOperationListener) {
+            mLabelOperationListener.remove(labelOperationListener);
+        }
+
+        public void removeAllLabelOperationListener() {
+            mLabelOperationListener.clear();
+        }
+
+        boolean isOnline(int boxID) {
             return nettyChannelMap.containsKey(boxID);
         }
 
-//        public boolean send(NettyServerSendInfo nettyServerSendInfo) {
-//            Channel channel = nettyChannelMap.get(nettyServerSendInfo.getID());
-//            if (channel == null) return false;
-//            switch (nettyServerSendInfo.getCommunicationType()) {
-//                case INVENTORY_H:
+        public boolean send(UR880SendInfo ur880SendInfo) {
+            Channel channel = nettyChannelMap.get(ur880SendInfo.getID());
+            if (channel == null) return false;
+            switch (ur880SendInfo.getCommunicationType()) {
+                case GET_VERSION_INFO_R:
 //                    channel.writeAndFlush(GroupPackage.inventoryH(0, (byte) nettyServerSendInfo.getID(),
 //                            nettyServerSendInfo.getFastId(), nettyServerSendInfo.getInventoryType()));
-//                    break;
-//                case UNLOCKING_H:
-//                    channel.writeAndFlush(GroupPackage.unLockingH(0, (byte) nettyServerSendInfo.getID()));
-//                    break;
-//                case LIGHT_CONTROL_COMMAND_H:
-//                    channel.writeAndFlush(GroupPackage.lightControlCommandH(0, (byte) nettyServerSendInfo.getID(),
-//                            nettyServerSendInfo.getFloor(), nettyServerSendInfo.getRegion(), nettyServerSendInfo.getIndicatorSwitch()));
-//                    break;
-//                case ANTENNA_CONFIGURATION_H:
-//                    channel.writeAndFlush(GroupPackage.antennaConfigurationH(0, (byte) nettyServerSendInfo.getID(),
-//                            nettyServerSendInfo.getAntennaPower(), nettyServerSendInfo.getDwellTime(), nettyServerSendInfo.getCalendarCycle()));
-//                    break;
-//                case ANTENNA_CONFIGURATION_QUERY_H:
-//                    channel.writeAndFlush(GroupPackage.antennaConfigurationQueryH(0, (byte) nettyServerSendInfo.getID()));
-//                    break;
-//                case OBTAINING_ANTENNA_STANDING_WAVE_RATIO_H:
-//                    channel.writeAndFlush(GroupPackage.obtainingAntennaStandingWaveRatioH(0, (byte) nettyServerSendInfo.getID(),
-//                            nettyServerSendInfo.getAntennaNumber(), nettyServerSendInfo.getAntennaPower()));
-//                    break;
-//                case TAG_ALGORITHM_READING_H:
-//                    channel.writeAndFlush(GroupPackage.tagAlgorithmReadingH(0, (byte) nettyServerSendInfo.getID()));
-//                    break;
-//                case TAG_ALGORITHM_SETTINGS_H:
-//                    channel.writeAndFlush(GroupPackage.labelAlgorithmSettingsH(0, (byte) nettyServerSendInfo.getID(),
-//                            nettyServerSendInfo.getSession(), nettyServerSendInfo.getSingleAlgorithm(), nettyServerSendInfo.getQValue(),
-//                            nettyServerSendInfo.getRetries(), nettyServerSendInfo.getFlip(), nettyServerSendInfo.getRepeatUntilThereNoLabel(),
-//                            nettyServerSendInfo.getMinimumQValue(), nettyServerSendInfo.getMaximumQValue(), nettyServerSendInfo.getThreshold()));
-//                    break;
-//            }
-//            return true;
-//        }
+                    break;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onWriteIdle(ChannelHandlerContext ctx) {
+            super.onWriteIdle(ctx);
+            //长时间未写入-心跳
+            ctx.channel().writeAndFlush(mGroupPackage.heartbeatR(0));
+        }
+
+        @Override
+        protected void onReadIdle(ChannelHandlerContext ctx) {
+            super.onReadIdle(ctx);
+            //长时间未读取信息，关闭通道
+            ctx.channel().close();
+        }
+
+        @Override
+        protected void onAllIdle(ChannelHandlerContext ctx) {
+            super.onAllIdle(ctx);
+        }
 
         @Override
         protected void onMessageReceived(ChannelHandlerContext ctx, byte[] buffer) {
             LogUtil.Companion.getInstance().d(TAG, buffer, buffer.length);
-
+            byte[] remainBuffer = remainBufferMap.get(ctx.channel());
             byte[] tempBytes;
             //如果上次解析有剩余，则将其加上
             if (remainBuffer != null && remainBuffer.length != 0) {
@@ -133,13 +225,14 @@ public class UR880ServerParsingLibrary {
             } else {
                 tempBytes = buffer;
             }
-
+            remainBufferMap.put(ctx.channel(), null);
             number = 0;
             remainBuffer = interceptionReceivedData(ctx.channel(), tempBytes);
-            if (remainBuffer != null)
+            if (remainBuffer != null) {
+                remainBufferMap.put(ctx.channel(), remainBuffer);
                 LogUtil.Companion.getInstance().d("上次解析有剩余：", remainBuffer, remainBuffer.length);
-            else
-                LogUtil.Companion.getInstance().d("上次解析没有有剩余：");
+            } else
+                LogUtil.Companion.getInstance().d("上次解析没有有剩余");
         }
 
         @Override
@@ -292,7 +385,7 @@ public class UR880ServerParsingLibrary {
          * @param buffer 一条完整的数据帧
          * @param size   改数据帧的长度（加上针头帧尾）
          */
-        private void checkReceived(Channel channel, byte[] buffer, int size) {
+        public void checkReceived(Channel channel, byte[] buffer, int size) {
             LogUtil.Companion.getInstance().d("netty test Received checkReceived：", buffer, size);
 
             if (buffer[0] == Utils.HEAD_HIGH && buffer[1] == Utils.HEAD_LOW
@@ -330,26 +423,17 @@ public class UR880ServerParsingLibrary {
          */
         private void parser(Channel channel, byte[] buffer, int size) {
             LogUtil.Companion.getInstance().d("netty test Received", buffer, size);
-
-//            if (buffer[6] == TYPE.REGISTERED_R.getType()) { // 2.1.1	注册帧
-//                int id = buffer[7];
-//                nettyChannelMap.put(id, channel);
-//                LogUtil.Companion.getInstance().d("注册-ID：" + id);
-//                channel.writeAndFlush(GroupPackage.registeredH(0, buffer[7], 0));
-//
-//            } else if (buffer[6] == TYPE.HEART_BEAT_R.getType()) { // 2.1.3	保活帧
-//                int id = buffer[7];
-//                LogUtil.Companion.getInstance().d("保活-ID：" + id);
-//                if (!nettyChannelMap.containsKey(id)) {
-//                    LogUtil.Companion.getInstance().d("心跳过程中添加ID：" + id);
-//                    nettyChannelMap.put(id, channel);
-//                }
-//                channel.writeAndFlush(GroupPackage.heartbeatH(0, buffer[7]));
-//
-//            }
+            if (buffer[6] == TYPE.REGISTERED_R.getType()) {
+                DeviceInformation deviceInformation = mUnlockPackage.registeredR(channel, buffer);
+                mDeviceInformationList.add(deviceInformation);
+                nettyChannelMap.put(deviceInformation.getDeviceID(), channel);
+                LogUtil.Companion.getInstance().d("注册-ID：" + deviceInformation.getDeviceID());
+                channel.writeAndFlush(mGroupPackage.registeredH(0));
+            } else if (buffer[6] == TYPE.HEART_BEAT_H.getType()) {
+                LogUtil.Companion.getInstance().d("心跳");
+            } else if (buffer[6] == TYPE.HEART_BEAT_H.getType()) {
+                LogUtil.Companion.getInstance().d("心跳");
+            }
         }
-
-
-
     }
 }

@@ -6,6 +6,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.handler.timeout.IdleStateEvent;
 
 public class NettyServerHandler extends SimpleChannelInboundHandler<Object> {
     private static final String TAG = "NettyServerHandler";
@@ -65,7 +66,23 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<Object> {
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         super.userEventTriggered(ctx, evt);
-        // TODO 长时间未交互需要优化
+        if (nettyServerEventProcessor != null && evt instanceof IdleStateEvent) {
+            IdleStateEvent e = (IdleStateEvent) evt;
+            switch (e.state()) {
+                case WRITER_IDLE:
+                    LogUtil.Companion.getInstance().d(TAG, "WRITER_IDLE", false);
+                    nettyServerEventProcessor.onWriteIdle(ctx);
+                    break;
+                case READER_IDLE:
+                    nettyServerEventProcessor.onReadIdle(ctx);
+                    break;
+                case ALL_IDLE:
+                    nettyServerEventProcessor.onAllIdle(ctx);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     public NettyServerHandler.NettyServerEventProcessor getNettyServerEventProcessor() {
@@ -77,6 +94,12 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<Object> {
     }
 
     public static abstract class NettyServerEventProcessor {
+
+        protected void onWriteIdle (ChannelHandlerContext ctx) {}
+
+        protected void onReadIdle (ChannelHandlerContext ctx) {}
+
+        protected void onAllIdle (ChannelHandlerContext ctx) {}
 
         protected void onChannelActive(ChannelHandlerContext ctx) {
         }

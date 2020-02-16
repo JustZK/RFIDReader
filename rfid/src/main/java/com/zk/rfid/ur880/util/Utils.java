@@ -24,32 +24,18 @@ public class Utils {
 
     // 类型
     public enum TYPE {
-        REGISTERED_R((byte) 0x00),
-        REGISTERED_H((byte) 0x01),
+        REGISTERED_R((byte) 0x01), //注册
+        REGISTERED_H((byte) 0x02), //注册回复
 
-        HEART_BEAT_R((byte) 0x02),
-        HEART_BEAT_H((byte) 0x03),
+        HEART_BEAT_R((byte) 0x03), //心跳
+        HEART_BEAT_H((byte) 0x04),
 
-        INVENTORY_H((byte) 0x05),
-        INVENTORY_R((byte) 0x06),
+        GET_VERSION_INFO_R((byte) 0x05), //获取软硬件版本信息
+        GET_VERSION_INFO_H((byte) 0x06),
 
-        ANTENNA_CONFIGURATION_H((byte) 0x15),
-        ANTENNA_CONFIGURATION_R((byte) 0x16),
-        ANTENNA_CONFIGURATION_QUERY_H((byte) 0x17),
-        ANTENNA_CONFIGURATION_QUERY_R((byte) 0x18),
+        INVENTORY_R((byte) 0x07), //获取软硬件版本信息
+        INVENTORY_H((byte) 0x08),
 
-        OBTAINING_ANTENNA_STANDING_WAVE_RATIO_H((byte) 0x21),
-        OBTAINING_ANTENNA_STANDING_WAVE_RATIO_R((byte) 0x22),
-
-        TAG_ALGORITHM_READING_H((byte) 0xA4),
-        TAG_ALGORITHM_READING_R((byte) 0xA5),
-        TAG_ALGORITHM_SETTINGS_H((byte) 0xA6),
-        TAG_ALGORITHM_SETTINGS_R((byte) 0xA7),
-
-        UNLOCKING_H((byte) 0x35),
-        UNLOCKING_R((byte) 0x36),
-        LOCK_STATUS_H((byte) 0x38),
-        LOCK_STATUS_R((byte) 0x37),
 
         LIGHT_CONTROL_COMMAND_H((byte) 0x39),
         LIGHT_CONTROL_COMMAND_R((byte) 0x3A);
