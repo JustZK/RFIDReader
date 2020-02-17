@@ -1,6 +1,7 @@
 package com.zk.rfid.serial.ur880;
 
 import com.zk.rfid.bean.DeviceInformation;
+import com.zk.rfid.bean.UR880SendInfo;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -11,8 +12,8 @@ public class UR880SerialOperationFactory {
     private volatile static UR880SerialOperationFactory instance;
     public static final String TAG = UR880SerialOperationFactory.class.getName();
 
-    private Map<Object, Object> ur880SerialOperationMap;
-    private Map<Object, Object> ur880SerialOperationMapTemp;
+    private Map<String, UR880SerialOperation> ur880SerialOperationMap;
+    private Map<String, UR880SerialOperation> ur880SerialOperationMapTemp;
 
     private UR880SerialOperationFactory() { }
 
@@ -28,8 +29,8 @@ public class UR880SerialOperationFactory {
 
     public boolean init(List<DeviceInformation> deviceInformationList){
         if (ur880SerialOperationMap != null) return false;
-        ur880SerialOperationMap = Collections.synchronizedMap(new HashMap<>());
-        ur880SerialOperationMapTemp = Collections.synchronizedMap(new HashMap<>());
+        ur880SerialOperationMap = Collections.synchronizedMap(new HashMap<String, UR880SerialOperation>());
+        ur880SerialOperationMapTemp = Collections.synchronizedMap(new HashMap<String, UR880SerialOperation>());
         for (int i = 0; i < deviceInformationList.size(); i++){
             String deviceSerialPath = deviceInformationList.get(i).getDeviceSerialPath();
             String deviceSerialBaudRate = deviceInformationList.get(i).getDeviceSerialBaudRate();
@@ -46,6 +47,10 @@ public class UR880SerialOperationFactory {
 
         }
         return true;
+    }
+
+    public void send(UR880SendInfo ur880SendInfo){
+        ur880SerialOperationMap.get(ur880SendInfo.getID()).send(ur880SendInfo);
     }
 
 }

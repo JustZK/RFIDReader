@@ -33,12 +33,64 @@ public class Utils {
         GET_VERSION_INFO_R((byte) 0x05), //获取软硬件版本信息
         GET_VERSION_INFO_H((byte) 0x06),
 
-        INVENTORY_R((byte) 0x07), //获取软硬件版本信息
+        INVENTORY_R((byte) 0x07), //2.7	Inventory命令帧格式
         INVENTORY_H((byte) 0x08),
 
+        READ_R((byte) 0x09),//2.9	Read命令帧格式
+        RED_H((byte) 0x0A),
 
-        LIGHT_CONTROL_COMMAND_H((byte) 0x39),
-        LIGHT_CONTROL_COMMAND_R((byte) 0x3A);
+        WRITE_R((byte) 0x0B),//2.11	Write命令帧格式
+        WRITE_H((byte) 0x0C),
+
+        CANCEL_R((byte) 0x15),//2.13	Cancel命令帧
+        CANCEL_H((byte) 0x16),
+
+        SET_ANTENNA_CONFIGURATION_R((byte) 0x17),//2.15	天线配置 Antenna Configuration
+        SET_ANTENNA_CONFIGURATION_H((byte) 0x18),
+
+        GET_ANTENNA_CONFIGURATION_R((byte) 0x19),//2.17	天线配置查询命令 Antenna Configuration Query Command
+        GET_ANTENNA_CONFIGURATION_H((byte) 0x1A),
+
+        SET_READER_UHF_PARAMETER_CONFIGURATION_R((byte) 0x1B),//2.19	读写器UHF参数配置 Reader UHF Parameter Configuration
+        SET_READER_UHF_PARAMETER_CONFIGURATION_H((byte) 0x1C),
+
+        GET_READER_UHF_PARAMETER_CONFIGURATION_R((byte) 0x1D),//2.21	读写器UHF参数获取命令 UHF parameter acquisition command
+        GET_READER_UHF_PARAMETER_CONFIGURATION_H((byte) 0x1E),
+
+        SET_READER_SYSTEM_PARAMETER_CONFIGURATION_R((byte) 0x1F),//2.23	读写器系统参数配置 Reader system parameter configuration
+        SET_READER_SYSTEM_PARAMETER_CONFIGURATION_H((byte) 0x20),
+
+        GET_READER_SYSTEM_PARAMETER_CONFIGURATION_R((byte) 0x21),
+        GET_READER_SYSTEM_PARAMETER_CONFIGURATION_H((byte) 0x22),
+
+        GET_ANTENNA_STANDING_WAVE_RADIO_R((byte) 0x23),//2.27	获取天线驻波比 Obtaining the antenna standing wave ratio
+        GET_ANTENNA_STANDING_WAVE_RADIO_H((byte) 0x24),
+
+        SET_GPO_OUTPUT_STATUS_R((byte) 0x35),//2.29	设置GPO输出状态 Set GPO output status
+        SET_GPO_OUTPUT_STATUS_H((byte) 0x36),
+
+        GET_GPI_OUTPUT_STATUS_R((byte) 0x37),//2.31	读取GPI输入命令
+        GET_GPI_OUTPUT_STATUS_H((byte) 0x38),
+
+        INVENTORY_REPORT_DATA_R((byte) 0x39),//2.33	Inventory上报数据 Inventory report data
+
+        REPORTING_OPERATION_COMMAND_R((byte) 0x3A),//2.34	操作命令数据上报 Reporting Operation Command Data
+
+        GPI_PIN_LEVEL_CHANGE_REPORT_R((byte) 0x3B),//2.35	GPI引脚电平变化上报 GPI pin level change report
+
+        READER_ACTIVELY_REPORT_ERROR_R((byte) 0x81),//2.36	读写器主动上报错误码信息 reader actively reports the error code information
+
+        SET_BUZZER_STATUS_SETTING_R((byte) 0xA0),//2.37	蜂鸣器状态设置 Buzzer status setting
+        SET_BUZZER_STATUS_SETTING_H((byte) 0xA1),
+
+        GET_BUZZER_STATUS_SETTING_R((byte) 0xA2),//2.39	读写器蜂鸣器状态获取命令 Reader buzzer status acquisition command
+        GET_BUZZER_STATUS_SETTING_H((byte) 0xA3),
+
+        TIME_SYNCHRONIZATION_R((byte) 0xA4),//2.41	时间同步 Time synchronization
+        TIME_SYNCHRONIZATION_H((byte) 0xA5),
+
+        DEVICE_RESTART_R((byte) 0x39), //2.43	设备重启 Device restart
+        DEVICE_RESTART_H((byte) 0x3A);
 
         byte type;
 

@@ -1,11 +1,11 @@
 package com.zk.rfid.ur880;
 
 import com.zk.rfid.bean.DeviceInformation;
+import com.zk.rfid.bean.UR880SendInfo;
 import com.zk.rfid.netty.server.ur880.UR880ServerParsingLibrary;
 import com.zk.rfid.serial.ur880.UR880SerialOperationFactory;
 
 import java.util.List;
-import java.util.Map;
 
 public class UR880Entrance {
     private volatile static UR880Entrance instance;
@@ -35,13 +35,15 @@ public class UR880Entrance {
         return true;
     }
 
-//    public void disInit(){
-//        mConnectionType = null;
-//        UR880ServerParsingLibrary.getInstance().
-//    }
-
-
     public int getConnectionType() {
         return mConnectionType;
+    }
+
+    public void send(UR880SendInfo ur880SendInfo){
+        if (mConnectionType == 1){
+            UR880ServerParsingLibrary.getInstance().send(ur880SendInfo);
+        } else if (mConnectionType == 2){
+            UR880SerialOperationFactory.getInstance().send(ur880SendInfo);
+        }
     }
 }

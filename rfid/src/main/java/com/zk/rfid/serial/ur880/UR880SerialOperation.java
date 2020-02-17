@@ -1,6 +1,7 @@
 package com.zk.rfid.serial.ur880;
 
 import com.zk.common.utils.LogUtil;
+import com.zk.rfid.bean.UR880SendInfo;
 import com.zk.rfid.serial.SerialHelper;
 import com.zk.rfid.ur880.util.GroupPackage;
 import com.zk.rfid.ur880.util.UnlockPackage;
@@ -33,14 +34,14 @@ public class UR880SerialOperation extends SerialHelper {
     }
 
 
-//    public void send(LightSendInfo lightSendInfo) {
-//        switch (lightSendInfo.getCommunicationType()) {
+    public void send(UR880SendInfo ur880SendInfo) {
+//        switch (ur880SendInfo.getCommunicationType()) {
 //            case 0x07:
-//                addSendTask(LightGroupPackage.openLight(lightSendInfo.getTargetAddress(), lightSendInfo.getSourceAddress(),
-//                        lightSendInfo.getLightNumber()));
+////                addSendTask(LightGroupPackage.openLight(lightSendInfo.getTargetAddress(), lightSendInfo.getSourceAddress(),
+////                        lightSendInfo.getLightNumber()));
 //                break;
 //        }
-//    }
+    }
 
     //打开串口
     public void openComPort() {
