@@ -131,51 +131,51 @@ public class UR880ServerParsingLibrary {
         private List<LabelOperationListener> mLabelOperationListener =
                 Collections.synchronizedList(new ArrayList<LabelOperationListener>());
 
-        public void addOnAccessingListener(AccessingListener accessingListener) {
+        void addOnAccessingListener(AccessingListener accessingListener) {
             mAccessingListener.add(accessingListener);
         }
 
-        public void removeAccessingListener(AccessingListener accessingListener) {
+        void removeAccessingListener(AccessingListener accessingListener) {
             mAccessingListener.remove(accessingListener);
         }
 
-        public void removeAllAccessingListener() {
+        void removeAllAccessingListener() {
             mAccessingListener.clear();
         }
 
-        public void addOnDeviceInformationListener(DeviceInformationListener deviceInformationListener) {
+        void addOnDeviceInformationListener(DeviceInformationListener deviceInformationListener) {
             mDeviceInformationListener.add(deviceInformationListener);
         }
 
-        public void removeDeviceInformationListener(DeviceInformationListener deviceInformationListener) {
+        void removeDeviceInformationListener(DeviceInformationListener deviceInformationListener) {
             mDeviceInformationListener.remove(deviceInformationListener);
         }
 
-        public void removeAllDeviceInformationListener() {
+        void removeAllDeviceInformationListener() {
             mDeviceInformationListener.clear();
         }
 
-        public void addOnFactorySettingListener(FactorySettingListener factorySettingListener) {
+        void addOnFactorySettingListener(FactorySettingListener factorySettingListener) {
             mFactorySettingListener.add(factorySettingListener);
         }
 
-        public void removeFactorySettingListener(FactorySettingListener factorySettingListener) {
+        void removeFactorySettingListener(FactorySettingListener factorySettingListener) {
             mFactorySettingListener.remove(factorySettingListener);
         }
 
-        public void removeAllFactorySettingListener() {
+        void removeAllFactorySettingListener() {
             mFactorySettingListener.clear();
         }
 
-        public void addOnLabelOperationListener(LabelOperationListener labelOperationListener) {
+        void addOnLabelOperationListener(LabelOperationListener labelOperationListener) {
             mLabelOperationListener.add(labelOperationListener);
         }
 
-        public void removeLabelOperationListener(LabelOperationListener labelOperationListener) {
+        void removeLabelOperationListener(LabelOperationListener labelOperationListener) {
             mLabelOperationListener.remove(labelOperationListener);
         }
 
-        public void removeAllLabelOperationListener() {
+        void removeAllLabelOperationListener() {
             mLabelOperationListener.clear();
         }
 
@@ -183,7 +183,7 @@ public class UR880ServerParsingLibrary {
             return nettyChannelMap.containsKey(boxID);
         }
 
-        public boolean send(UR880SendInfo ur880SendInfo) {
+        boolean send(UR880SendInfo ur880SendInfo) {
             Channel channel = nettyChannelMap.get(ur880SendInfo.getID());
             if (channel == null) return false;
             switch (ur880SendInfo.getCommunicationType()) {
@@ -429,6 +429,11 @@ public class UR880ServerParsingLibrary {
                 nettyChannelMap.put(deviceInformation.getDeviceID(), channel);
                 LogUtil.Companion.getInstance().d("注册-ID：" + deviceInformation.getDeviceID());
                 channel.writeAndFlush(mGroupPackage.registeredH(0));
+                for (DeviceInformationListener deviceInformationListener : mDeviceInformationListener){
+                    deviceInformationListener.registered(deviceInformation.getDeviceID(),
+                            deviceInformation.getDeviceVersionNumber(),
+                            deviceInformation.getDeviceRemoteAddress());
+                }
             } else if (buffer[6] == TYPE.HEART_BEAT_H.getType()) {
                 LogUtil.Companion.getInstance().d("心跳");
             } else if (buffer[6] == TYPE.HEART_BEAT_H.getType()) {

@@ -1,5 +1,7 @@
 package com.zk.rfid.bean;
 
+import androidx.annotation.Nullable;
+
 public class DeviceInformation {
     private String mDeviceID;
     private String mDeviceVersionNumber;
@@ -10,6 +12,17 @@ public class DeviceInformation {
     private String mSoftwareVersionNumber; //软件版本号
     private String mFirmwareVersionNumber; //固件版本号
 
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (this == obj)
+            return true;
+        if (obj != null && obj.getClass() == DeviceInformation.class) {
+            DeviceInformation r = (DeviceInformation) obj;
+            return this.mDeviceID.equals(r.mDeviceID);
+        }
+        return false;
+
+    }
 
     public String getDeviceID() {
         return mDeviceID;

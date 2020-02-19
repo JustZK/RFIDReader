@@ -57,10 +57,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 mConnectionType = i;
                                 if (mConnectionType == 0) {
+                                    mActivityMainBinding.mainConnectionTypeTv.setText(R.string.connection_type_1);
                                     mActivityMainBinding.mainSerialPathLl.setVisibility(View.GONE);
                                     mActivityMainBinding.mainSerialBaudRateLl.setVisibility(View.GONE);
                                     mActivityMainBinding.mainServerPortLl.setVisibility(View.VISIBLE);
                                 } else if (mConnectionType == 1) {
+                                    mActivityMainBinding.mainConnectionTypeTv.setText(R.string.connection_type_2);
                                     mActivityMainBinding.mainSerialPathLl.setVisibility(View.VISIBLE);
                                     mActivityMainBinding.mainSerialBaudRateLl.setVisibility(View.VISIBLE);
                                     mActivityMainBinding.mainServerPortLl.setVisibility(View.GONE);

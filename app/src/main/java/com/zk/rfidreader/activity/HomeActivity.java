@@ -37,7 +37,7 @@ public class HomeActivity extends AppCompatActivity {
         titles.add(getString(R.string.label_settings_tab_txt));
 
         List<Fragment> fragments = new ArrayList<>();
-        fragments.add(new DeviceInformationFragment());
+        fragments.add(DeviceInformationFragment.newInstance());
         fragments.add(new LabelInventoryFragment());
         fragments.add(new LabelOperationFragment());
         fragments.add(new LabelSettingsFragment());

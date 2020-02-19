@@ -1,14 +1,23 @@
 package com.zk.rfid.serial.ur880;
 
 import com.zk.common.utils.LogUtil;
+import com.zk.rfid.bean.DeviceInformation;
 import com.zk.rfid.bean.UR880SendInfo;
+import com.zk.rfid.callback.AccessingListener;
+import com.zk.rfid.callback.DeviceInformationListener;
+import com.zk.rfid.callback.FactorySettingListener;
+import com.zk.rfid.callback.LabelOperationListener;
 import com.zk.rfid.serial.SerialHelper;
 import com.zk.rfid.ur880.util.GroupPackage;
 import com.zk.rfid.ur880.util.UnlockPackage;
 import com.zk.rfid.ur880.util.Utils;
+import com.zk.rfid.ur880.util.Utils.TYPE;
 
 import java.io.IOException;
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class UR880SerialOperation extends SerialHelper {
     public static final String TAG = UR880SerialOperation.class.getName();
@@ -18,6 +27,14 @@ public class UR880SerialOperation extends SerialHelper {
     private byte[] remainBuffer = null;//上次解析剩余的数据
     private GroupPackage mGroupPackage = new GroupPackage();
     private UnlockPackage mUnlockPackage = new UnlockPackage();
+    private List<AccessingListener> mAccessingListener =
+            Collections.synchronizedList(new ArrayList<AccessingListener>());
+    private List<DeviceInformationListener> mDeviceInformationListener =
+            Collections.synchronizedList(new ArrayList<DeviceInformationListener>());
+    private List<FactorySettingListener> mFactorySettingListener =
+            Collections.synchronizedList(new ArrayList<FactorySettingListener>());
+    private List<LabelOperationListener> mLabelOperationListener =
+            Collections.synchronizedList(new ArrayList<LabelOperationListener>());
 
     UR880SerialOperation(String idTemp, String deviceSerialPath, String deviceSerialBaudRate){
         this.mIDTemp = idTemp;
@@ -34,7 +51,56 @@ public class UR880SerialOperation extends SerialHelper {
     }
 
 
-    public void send(UR880SendInfo ur880SendInfo) {
+    void addOnAccessingListener(AccessingListener accessingListener) {
+        mAccessingListener.add(accessingListener);
+    }
+
+    void removeAccessingListener(AccessingListener accessingListener) {
+        mAccessingListener.remove(accessingListener);
+    }
+
+    void removeAllAccessingListener() {
+        mAccessingListener.clear();
+    }
+
+    void addOnDeviceInformationListener(DeviceInformationListener deviceInformationListener) {
+        mDeviceInformationListener.add(deviceInformationListener);
+    }
+
+    void removeDeviceInformationListener(DeviceInformationListener deviceInformationListener) {
+        mDeviceInformationListener.remove(deviceInformationListener);
+    }
+
+    void removeAllDeviceInformationListener() {
+        mDeviceInformationListener.clear();
+    }
+
+    void addOnFactorySettingListener(FactorySettingListener factorySettingListener) {
+        mFactorySettingListener.add(factorySettingListener);
+    }
+
+    void removeFactorySettingListener(FactorySettingListener factorySettingListener) {
+        mFactorySettingListener.remove(factorySettingListener);
+    }
+
+    void removeAllFactorySettingListener() {
+        mFactorySettingListener.clear();
+    }
+
+    void addOnLabelOperationListener(LabelOperationListener labelOperationListener) {
+        mLabelOperationListener.add(labelOperationListener);
+    }
+
+    void removeLabelOperationListener(LabelOperationListener labelOperationListener) {
+        mLabelOperationListener.remove(labelOperationListener);
+    }
+
+    void removeAllLabelOperationListener() {
+        mLabelOperationListener.clear();
+    }
+
+
+    void send(UR880SendInfo ur880SendInfo) {
 //        switch (ur880SendInfo.getCommunicationType()) {
 //            case 0x07:
 ////                addSendTask(LightGroupPackage.openLight(lightSendInfo.getTargetAddress(), lightSendInfo.getSourceAddress(),
@@ -44,7 +110,7 @@ public class UR880SerialOperation extends SerialHelper {
     }
 
     //打开串口
-    public void openComPort() {
+    void openComPort() {
         try {
             open();
         } catch (SecurityException e) {
@@ -164,7 +230,7 @@ public class UR880SerialOperation extends SerialHelper {
      * @param buffer 一条完整的数据帧
      * @param size   改数据帧的长度（加上针头帧尾）
      */
-    public void checkReceived(byte[] buffer, int size) {
+    private void checkReceived(byte[] buffer, int size) {
         LogUtil.Companion.getInstance().d("serial test Received checkReceived：", buffer, size);
 
         if (buffer[0] == Utils.HEAD_HIGH && buffer[1] == Utils.HEAD_LOW
@@ -202,12 +268,22 @@ public class UR880SerialOperation extends SerialHelper {
      */
     private void parser(byte[] buffer, int size) {
         LogUtil.Companion.getInstance().d("serial test Received", buffer, size);
-//        if (buffer[6] == TYPE.REGISTERED_R.getType()) { // 2.1.1	注册帧
-//            int id = buffer[7];
-//            nettyChannelMap.put(id, channel);
-//            LogUtil.getInstance().d("注册-ID：" + id);
-//            channel.writeAndFlush(GroupPackage.registeredH(0, buffer[7], 0));
-//
-//        }
+        if (buffer[6] == TYPE.REGISTERED_R.getType()) {
+            DeviceInformation deviceInformation = mUnlockPackage.registeredR(null, buffer);
+            mID = deviceInformation.getDeviceID();
+            LogUtil.Companion.getInstance().d("注册-ID：" + deviceInformation.getDeviceID());
+            if (mRegisteredListener != null){
+                mRegisteredListener.registered(deviceInformation.getDeviceID(), mIDTemp);
+            }
+            for (DeviceInformationListener deviceInformationListener : mDeviceInformationListener){
+                deviceInformationListener.registered(deviceInformation.getDeviceID(),
+                        deviceInformation.getDeviceVersionNumber(),
+                        deviceInformation.getDeviceRemoteAddress());
+            }
+        } else if (buffer[6] == TYPE.HEART_BEAT_H.getType()) {
+            LogUtil.Companion.getInstance().d("心跳");
+        } else if (buffer[6] == TYPE.HEART_BEAT_H.getType()) {
+            LogUtil.Companion.getInstance().d("心跳");
+        }
     }
 }
