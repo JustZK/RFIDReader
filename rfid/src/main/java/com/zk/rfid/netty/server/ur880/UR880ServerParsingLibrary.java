@@ -199,7 +199,7 @@ public class UR880ServerParsingLibrary {
         protected void onWriteIdle(ChannelHandlerContext ctx) {
             super.onWriteIdle(ctx);
             //长时间未写入-心跳
-            ctx.channel().writeAndFlush(mGroupPackage.heartbeatR(0));
+
         }
 
         @Override
@@ -436,8 +436,7 @@ public class UR880ServerParsingLibrary {
                 }
             } else if (buffer[6] == TYPE.HEART_BEAT_H.getType()) {
                 LogUtil.Companion.getInstance().d("心跳");
-            } else if (buffer[6] == TYPE.HEART_BEAT_H.getType()) {
-                LogUtil.Companion.getInstance().d("心跳");
+                channel.writeAndFlush(mGroupPackage.heartbeatR(0));
             }
         }
     }
