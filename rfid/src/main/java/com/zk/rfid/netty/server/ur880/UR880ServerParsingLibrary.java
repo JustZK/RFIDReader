@@ -188,8 +188,7 @@ public class UR880ServerParsingLibrary {
             if (channel == null) return false;
             switch (ur880SendInfo.getCommunicationType()) {
                 case GET_VERSION_INFO_R:
-//                    channel.writeAndFlush(GroupPackage.inventoryH(0, (byte) nettyServerSendInfo.getID(),
-//                            nettyServerSendInfo.getFastId(), nettyServerSendInfo.getInventoryType()));
+                    channel.writeAndFlush(mGroupPackage.getVersionInfoR(0));
                     break;
             }
             return true;
@@ -437,6 +436,9 @@ public class UR880ServerParsingLibrary {
             } else if (buffer[6] == TYPE.HEART_BEAT_H.getType()) {
                 LogUtil.Companion.getInstance().d("心跳");
                 channel.writeAndFlush(mGroupPackage.heartbeatR(0));
+            } else if (buffer[6] == TYPE.GET_VERSION_INFO_H.getType()) {
+                LogUtil.Companion.getInstance().d("获取版本号");
+                mUnlockPackage.getVersionInfoH(mDeviceInformationListener, buffer);
             }
         }
     }

@@ -116,7 +116,7 @@ public class UR880SendInfo {
 
         //2.13	Cancel命令帧
         public Builder cancel(String ID) {
-            mUR880SendInfo.setCommunicationType(TYPE.GET_VERSION_INFO_R);
+            mUR880SendInfo.setCommunicationType(TYPE.CANCEL_R);
             mUR880SendInfo.setID(ID);
             return this;
         }

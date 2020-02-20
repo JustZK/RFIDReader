@@ -38,9 +38,25 @@
                     android:layout_margin="@dimen/sub_small_spacing"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:text="FastID：" />
+
+                <Spinner
+                    android:id="@+id/label_inventory_fast_id_sp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:entries="@array/fast_id_array" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/sub_small_spacing"
+                    android:layout_weight="1"
+                    android:gravity="center"
                     android:text="天线号：" />
 
                 <Spinner
+                    android:id="@+id/label_inventory_antenna_number_sp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -55,6 +71,7 @@
                     android:text="盘点模式：" />
 
                 <Spinner
+                    android:id="@+id/label_inventory_inventory_mode_sp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -70,38 +87,45 @@
                 android:orientation="horizontal">
 
                 <Button
+                    android:id="@+id/label_inventory_start_btn"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/sub_small_spacing"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:onClick="@{onClickListener}"
                     android:text="开 始" />
 
                 <Button
+                    android:id="@+id/label_inventory_stop_btn"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/sub_small_spacing"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="停 止" />
+                    android:onClick="@{onClickListener}"
+                    android:text="停 止"
+                    android:visibility="gone" />
 
                 <Button
+                    android:id="@+id/label_inventory_clear_btn"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/sub_small_spacing"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:onClick="@{onClickListener}"
                     android:text="清 理" />
 
             </LinearLayout>
 
-
         </LinearLayout>
 
         <TextView
-            android:layout_marginLeft="@dimen/sub_big_spacing"
+            android:id="@+id/label_inventory_number_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/sub_big_spacing"
             android:gravity="center|left"
             android:text="当前盘到的标签数量：0" />
 
@@ -111,7 +135,6 @@
             android:layout_height="0dp"
             android:layout_margin="@dimen/sub_big_spacing"
             android:layout_weight="2" />
-
 
     </LinearLayout>
 </layout>

@@ -5,6 +5,11 @@
         <item>Serial（串口）</item>
     </string-array>
 
+    <string-array name="fast_id_array">
+        <item>启用</item>
+        <item>不启用</item>
+    </string-array>
+
     <string-array name="antenna_number_array">
         <item>1</item>
         <item>2</item>

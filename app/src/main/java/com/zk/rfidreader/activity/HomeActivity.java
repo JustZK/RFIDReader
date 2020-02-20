@@ -20,6 +20,7 @@ import java.util.List;
 public class HomeActivity extends AppCompatActivity {
     private ActivityHomeBinding mActivityHomeBinding;
     private FragmentAdapter mFragmentAdapter;
+    private String mDeviceID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,4 +48,11 @@ public class HomeActivity extends AppCompatActivity {
         mActivityHomeBinding.honeTabs.setupWithViewPager(mActivityHomeBinding.honeViewPager);
     }
 
+    public String getDeviceID() {
+        return mDeviceID;
+    }
+
+    public void setDeviceID(String deviceID) {
+        mDeviceID = deviceID;
+    }
 }
