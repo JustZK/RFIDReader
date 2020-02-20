@@ -27,7 +27,7 @@ public class GroupPackage {
 
     public byte[] heartbeatR(int frameNumber) {
         byte[] data;
-        data = new byte[9];
+        data = new byte[10];
         Utils.initMessage(data, frameNumber);
 
         data[6] = TYPE.HEART_BEAT_R.type;
