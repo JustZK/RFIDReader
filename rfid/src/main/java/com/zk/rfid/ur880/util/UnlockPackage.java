@@ -11,13 +11,17 @@ public class UnlockPackage {
         byte[] deviceIdByte = new byte[4];
         System.arraycopy(buffer, 7, deviceIdByte, 0, 4);
         String deviceId = String.valueOf(Utils.byteArrayToInt(deviceIdByte, 4));
-        char[] deviceVersionChar = new char[4];
-        for (int i = 11; i < 17; i++) {
-            deviceVersionChar[i - 11] = (char) buffer[i];
-        }
-        StringBuilder deviceVersionStr = new StringBuilder();
-        deviceVersionStr.append(deviceVersionChar);
-        String deviceVersion = deviceVersionStr.toString();
+        String deviceVersion = "V";
+        deviceVersion = deviceVersion + (buffer[11] & 0xff) + ".";
+        deviceVersion = deviceVersion + (buffer[12] & 0xff) + ".";
+        deviceVersion = deviceVersion + (buffer[13] & 0xff) + "-20";
+        String y = "" + (buffer[14] & 0xff);
+        if (y.length() == 1) y = "0" + y;
+        String m = "" + (buffer[15] & 0xff);
+        if (m.length() == 1) m = "0" + m;
+        String d = "" + (buffer[16] & 0xff);
+        if (d.length() == 1) d = "0" + d;
+        deviceVersion = deviceVersion + y  + m + d;
 
         DeviceInformation deviceInformation = new DeviceInformation();
         deviceInformation.setDeviceID(deviceId);

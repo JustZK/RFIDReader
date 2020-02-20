@@ -58,7 +58,7 @@ public class DeviceAdapter extends BaseAdapter {
 
         viewHolder.adapter_device_id_tv.setText(deviceInformation.getDeviceID());
         if (!TextUtils.isEmpty(deviceInformation.getSoftwareVersionNumber())) {
-            viewHolder.adapter_device_software_version_tv.setText(deviceInformation.getSoftwareVersionNumber());
+            viewHolder.adapter_device_software_version_tv.setText(deviceInformation.getDeviceVersionNumber());
         } else {
             viewHolder.adapter_device_software_version_tv.setText("点击获取");
         }
