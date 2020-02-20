@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initView() {
-        mConnectionType = 0;
+        mConnectionType = UR880Entrance.CONNECTION_TCP_IP;
         mActivityMainBinding.mainSerialPathLl.setVisibility(View.GONE);
         mActivityMainBinding.mainSerialBaudRateLl.setVisibility(View.GONE);
     }
@@ -55,13 +55,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .setSingleChoiceItems(R.array.connection_type_array, mConnectionType, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                mConnectionType = i;
-                                if (mConnectionType == 0) {
+                                mConnectionType = i + 1;
+                                if (mConnectionType == UR880Entrance.CONNECTION_TCP_IP) {
                                     mActivityMainBinding.mainConnectionTypeTv.setText(R.string.connection_type_1);
                                     mActivityMainBinding.mainSerialPathLl.setVisibility(View.GONE);
                                     mActivityMainBinding.mainSerialBaudRateLl.setVisibility(View.GONE);
                                     mActivityMainBinding.mainServerPortLl.setVisibility(View.VISIBLE);
-                                } else if (mConnectionType == 1) {
+                                } else if (mConnectionType == UR880Entrance.CONNECTION_SERIAL) {
                                     mActivityMainBinding.mainConnectionTypeTv.setText(R.string.connection_type_2);
                                     mActivityMainBinding.mainSerialPathLl.setVisibility(View.VISIBLE);
                                     mActivityMainBinding.mainSerialBaudRateLl.setVisibility(View.VISIBLE);
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .show();
                 break;
             case R.id.main_sure_btn:
-                if (mConnectionType == 0){
+                if (mConnectionType == UR880Entrance.CONNECTION_TCP_IP){
                     String serverPort = mActivityMainBinding.mainServerPortEt.getText().toString().trim();
                     if (!TextUtils.isEmpty(serverPort)){
                         UR880Entrance.getInstance().init(mConnectionType, Integer.parseInt(serverPort), null);
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     } else {
                         Toast.makeText(this, R.string.fill_complete, Toast.LENGTH_SHORT).show();
                     }
-                } else if (mConnectionType == 1){
+                } else if (mConnectionType == UR880Entrance.CONNECTION_SERIAL){
                     String serialBaudRate = mActivityMainBinding.mainSerialBaudRateEt.getText().toString().trim();
                     if (!TextUtils.isEmpty(serialBaudRate) && mDeviceInformationList!= null && mDeviceInformationList.size() > 0){
                         for (DeviceInformation deviceInformation : mDeviceInformationList){

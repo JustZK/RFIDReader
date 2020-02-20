@@ -13,8 +13,11 @@ import java.util.List;
 
 public class UR880Entrance {
     private volatile static UR880Entrance instance;
-    public static final String TAG = UR880Entrance.class.getName();
+    private static final String TAG = UR880Entrance.class.getName();
     private Integer mConnectionType;
+
+    public static final int CONNECTION_TCP_IP = 1;
+    public static final int CONNECTION_SERIAL = 2;
 
     private UR880Entrance() { }
     public static UR880Entrance getInstance() {
@@ -30,10 +33,10 @@ public class UR880Entrance {
     public boolean init(Integer connectionType, Integer serverPort, List<DeviceInformation> deviceInformationList){
         if (mConnectionType != null) return false;
         this.mConnectionType = connectionType;
-        if (connectionType == 1){
+        if (connectionType == CONNECTION_TCP_IP){
             UR880ServerParsingLibrary.getInstance().init(serverPort);
             UR880ServerParsingLibrary.getInstance().connect();
-        } else if (connectionType == 2){
+        } else if (connectionType == CONNECTION_SERIAL){
             UR880SerialOperationFactory.getInstance().init(deviceInformationList);
         }
         return true;
@@ -44,105 +47,105 @@ public class UR880Entrance {
     }
 
     public void send(UR880SendInfo ur880SendInfo){
-        if (mConnectionType == 1){
+        if (mConnectionType == CONNECTION_TCP_IP){
             UR880ServerParsingLibrary.getInstance().send(ur880SendInfo);
-        } else if (mConnectionType == 2){
+        } else if (mConnectionType == CONNECTION_SERIAL){
             UR880SerialOperationFactory.getInstance().send(ur880SendInfo);
         }
     }
 
     public void addOnAccessingListener(AccessingListener accessingListener) {
-        if (mConnectionType == 1){
+        if (mConnectionType == CONNECTION_TCP_IP){
             UR880ServerParsingLibrary.getInstance().addOnAccessingListener(accessingListener);
-        } else if (mConnectionType == 2){
+        } else if (mConnectionType == CONNECTION_SERIAL){
             UR880SerialOperationFactory.getInstance().addOnAccessingListener(accessingListener);
         }
     }
 
     public void removeAccessingListener(AccessingListener accessingListener) {
-        if (mConnectionType == 1){
+        if (mConnectionType == CONNECTION_TCP_IP){
             UR880ServerParsingLibrary.getInstance().removeAccessingListener(accessingListener);
-        } else if (mConnectionType == 2){
+        } else if (mConnectionType == CONNECTION_SERIAL){
             UR880SerialOperationFactory.getInstance().removeAccessingListener(accessingListener);
         }
     }
 
     public void removeAllAccessingListener() {
-        if (mConnectionType == 1){
+        if (mConnectionType == CONNECTION_TCP_IP){
             UR880ServerParsingLibrary.getInstance().removeAllAccessingListener();
-        } else if (mConnectionType == 2){
+        } else if (mConnectionType == CONNECTION_SERIAL){
             UR880SerialOperationFactory.getInstance().removeAllAccessingListener();
         }
     }
 
     public void addOnDeviceInformationListener(DeviceInformationListener deviceInformationListener) {
-        if (mConnectionType == 1){
+        if (mConnectionType == CONNECTION_TCP_IP){
             UR880ServerParsingLibrary.getInstance().addOnDeviceInformationListener(deviceInformationListener);
-        } else if (mConnectionType == 2){
+        } else if (mConnectionType == CONNECTION_SERIAL){
             UR880SerialOperationFactory.getInstance().addOnDeviceInformationListener(deviceInformationListener);
         }
     }
 
     public void removeDeviceInformationListener(DeviceInformationListener deviceInformationListener) {
-        if (mConnectionType == 1){
+        if (mConnectionType == CONNECTION_TCP_IP){
             UR880ServerParsingLibrary.getInstance().removeDeviceInformationListener(deviceInformationListener);
-        } else if (mConnectionType == 2){
+        } else if (mConnectionType == CONNECTION_SERIAL){
             UR880SerialOperationFactory.getInstance().removeDeviceInformationListener(deviceInformationListener);
         }
     }
 
     public void removeAllDeviceInformationListener() {
-        if (mConnectionType == 1){
+        if (mConnectionType == CONNECTION_TCP_IP){
             UR880ServerParsingLibrary.getInstance().removeAllDeviceInformationListener();
-        } else if (mConnectionType == 2){
+        } else if (mConnectionType == CONNECTION_SERIAL){
             UR880SerialOperationFactory.getInstance().removeAllDeviceInformationListener();
         }
     }
 
     public void addOnFactorySettingListener(FactorySettingListener factorySettingListener) {
-        if (mConnectionType == 1){
+        if (mConnectionType == CONNECTION_TCP_IP){
             UR880ServerParsingLibrary.getInstance().addOnFactorySettingListener(factorySettingListener);
-        } else if (mConnectionType == 2){
+        } else if (mConnectionType == CONNECTION_SERIAL){
             UR880SerialOperationFactory.getInstance().addOnFactorySettingListener(factorySettingListener);
         }
     }
 
     public void removeFactorySettingListener(FactorySettingListener factorySettingListener) {
-        if (mConnectionType == 1){
+        if (mConnectionType == CONNECTION_TCP_IP){
             UR880ServerParsingLibrary.getInstance().removeFactorySettingListener(factorySettingListener);
-        } else if (mConnectionType == 2){
+        } else if (mConnectionType == CONNECTION_SERIAL){
             UR880SerialOperationFactory.getInstance().removeFactorySettingListener(factorySettingListener);
         }
     }
 
     public void removeAllFactorySettingListener() {
-        if (mConnectionType == 1){
+        if (mConnectionType == CONNECTION_TCP_IP){
             UR880ServerParsingLibrary.getInstance().removeAllFactorySettingListener();
-        } else if (mConnectionType == 2){
+        } else if (mConnectionType == CONNECTION_SERIAL){
             UR880SerialOperationFactory.getInstance().removeAllFactorySettingListener();
         }
     }
 
     public void addOnLabelOperationListener(LabelOperationListener labelOperationListener) {
-        if (mConnectionType == 1){
+        if (mConnectionType == CONNECTION_TCP_IP){
             UR880ServerParsingLibrary.getInstance().addOnLabelOperationListener(labelOperationListener);
-        } else if (mConnectionType == 2){
+        } else if (mConnectionType == CONNECTION_SERIAL){
             UR880SerialOperationFactory.getInstance().addOnLabelOperationListener(labelOperationListener);
         }
     }
 
     public void removeLabelOperationListener(LabelOperationListener labelOperationListener) {
-        if (mConnectionType == 1){
+        if (mConnectionType == CONNECTION_TCP_IP){
             UR880ServerParsingLibrary.getInstance().removeLabelOperationListener(labelOperationListener);
-        } else if (mConnectionType == 2){
+        } else if (mConnectionType == CONNECTION_SERIAL){
             UR880SerialOperationFactory.getInstance().removeLabelOperationListener(labelOperationListener);
         }
     }
 
     public void removeAllLabelOperationListener() {
-        if (mConnectionType == 1){
+        if (mConnectionType == CONNECTION_TCP_IP){
             UR880ServerParsingLibrary.getInstance().removeAllLabelOperationListener();
-        } else if (mConnectionType == 2){
+        } else if (mConnectionType == CONNECTION_SERIAL){
             UR880SerialOperationFactory.getInstance().removeAllLabelOperationListener();
         }
     }

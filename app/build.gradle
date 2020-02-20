@@ -11,10 +11,10 @@ android {
         versionName "1.0.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-//        ndk {
-//            moduleName "facesdk"
-//            abiFilters "armeabi"
-//        }
+        ndk {
+            moduleName "facesdk"
+            abiFilters "armeabi"
+        }
     }
 
     sourceSets.main {
