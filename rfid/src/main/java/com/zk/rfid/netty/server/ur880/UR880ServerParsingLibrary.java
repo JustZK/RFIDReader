@@ -3,7 +3,7 @@ package com.zk.rfid.netty.server.ur880;
 import com.zk.common.utils.LogUtil;
 import com.zk.rfid.bean.DeviceInformation;
 import com.zk.rfid.bean.UR880SendInfo;
-import com.zk.rfid.callback.AccessingListener;
+import com.zk.rfid.callback.InventoryListener;
 import com.zk.rfid.callback.DeviceInformationListener;
 import com.zk.rfid.callback.FactorySettingListener;
 import com.zk.rfid.callback.LabelOperationListener;
@@ -62,12 +62,12 @@ public class UR880ServerParsingLibrary {
         return processor.send(ur880SendInfo);
     }
 
-    public void addOnAccessingListener(AccessingListener accessingListener) {
-        processor.addOnAccessingListener(accessingListener);
+    public void addOnAccessingListener(InventoryListener inventoryListener) {
+        processor.addOnAccessingListener(inventoryListener);
     }
 
-    public void removeAccessingListener(AccessingListener accessingListener) {
-        processor.removeAccessingListener(accessingListener);
+    public void removeAccessingListener(InventoryListener inventoryListener) {
+        processor.removeAccessingListener(inventoryListener);
     }
 
     public void removeAllAccessingListener() {
@@ -122,8 +122,8 @@ public class UR880ServerParsingLibrary {
         private GroupPackage mGroupPackage = new GroupPackage();
         private UnlockPackage mUnlockPackage = new UnlockPackage();
 
-        private List<AccessingListener> mAccessingListener =
-                Collections.synchronizedList(new ArrayList<AccessingListener>());
+        private List<InventoryListener> mInventoryListener =
+                Collections.synchronizedList(new ArrayList<InventoryListener>());
         private List<DeviceInformationListener> mDeviceInformationListener =
                 Collections.synchronizedList(new ArrayList<DeviceInformationListener>());
         private List<FactorySettingListener> mFactorySettingListener =
@@ -131,16 +131,16 @@ public class UR880ServerParsingLibrary {
         private List<LabelOperationListener> mLabelOperationListener =
                 Collections.synchronizedList(new ArrayList<LabelOperationListener>());
 
-        void addOnAccessingListener(AccessingListener accessingListener) {
-            mAccessingListener.add(accessingListener);
+        void addOnAccessingListener(InventoryListener inventoryListener) {
+            mInventoryListener.add(inventoryListener);
         }
 
-        void removeAccessingListener(AccessingListener accessingListener) {
-            mAccessingListener.remove(accessingListener);
+        void removeAccessingListener(InventoryListener inventoryListener) {
+            mInventoryListener.remove(inventoryListener);
         }
 
         void removeAllAccessingListener() {
-            mAccessingListener.clear();
+            mInventoryListener.clear();
         }
 
         void addOnDeviceInformationListener(DeviceInformationListener deviceInformationListener) {
@@ -189,6 +189,14 @@ public class UR880ServerParsingLibrary {
             switch (ur880SendInfo.getCommunicationType()) {
                 case GET_VERSION_INFO_R:
                     channel.writeAndFlush(mGroupPackage.getVersionInfoR(0));
+                    break;
+                case INVENTORY_R:
+                    channel.writeAndFlush(mGroupPackage.inventoryR(0,
+                            ur880SendInfo.getFastId(), ur880SendInfo.getAntennaNumber(),
+                            ur880SendInfo.getInventoryType()));
+                    break;
+                case CANCEL_R:
+                    channel.writeAndFlush(mGroupPackage.cancelR(0));
                     break;
             }
             return true;
@@ -439,6 +447,15 @@ public class UR880ServerParsingLibrary {
             } else if (buffer[6] == TYPE.GET_VERSION_INFO_H.getType()) {
                 LogUtil.Companion.getInstance().d("获取版本号");
                 mUnlockPackage.getVersionInfoH(mDeviceInformationListener, buffer);
+            } else if (buffer[6] == TYPE.INVENTORY_H.getType()) {
+                LogUtil.Companion.getInstance().d("Inventory命令帧格式");
+                mUnlockPackage.getInventoryH(mInventoryListener, buffer);
+            } else if (buffer[6] == TYPE.CANCEL_H.getType()) {
+                LogUtil.Companion.getInstance().d("cancel");
+                mUnlockPackage.getCancelH(mInventoryListener, buffer);
+            } else if (buffer[6] == TYPE.INVENTORY_REPORT_DATA_R.getType()) {
+                LogUtil.Companion.getInstance().d("Inventory上报数据");
+                mUnlockPackage.getInventoryReportDataH(mInventoryListener, buffer);
             }
         }
     }

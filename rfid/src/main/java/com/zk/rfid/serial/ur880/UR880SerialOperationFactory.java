@@ -2,7 +2,7 @@ package com.zk.rfid.serial.ur880;
 
 import com.zk.rfid.bean.DeviceInformation;
 import com.zk.rfid.bean.UR880SendInfo;
-import com.zk.rfid.callback.AccessingListener;
+import com.zk.rfid.callback.InventoryListener;
 import com.zk.rfid.callback.DeviceInformationListener;
 import com.zk.rfid.callback.FactorySettingListener;
 import com.zk.rfid.callback.LabelOperationListener;
@@ -58,15 +58,15 @@ public class UR880SerialOperationFactory {
         ur880SerialOperationMap.get(ur880SendInfo.getID()).send(ur880SendInfo);
     }
 
-    public void addOnAccessingListener(AccessingListener accessingListener) {
+    public void addOnAccessingListener(InventoryListener inventoryListener) {
         for (UR880SerialOperation ur880SerialOperation : ur880SerialOperationMap.values()) {
-            ur880SerialOperation.addOnAccessingListener(accessingListener);
+            ur880SerialOperation.addOnAccessingListener(inventoryListener);
         }
     }
 
-    public void removeAccessingListener(AccessingListener accessingListener) {
+    public void removeAccessingListener(InventoryListener inventoryListener) {
         for (UR880SerialOperation ur880SerialOperation : ur880SerialOperationMap.values()) {
-            ur880SerialOperation.removeAccessingListener(accessingListener);
+            ur880SerialOperation.removeAccessingListener(inventoryListener);
         }
     }
 

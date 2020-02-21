@@ -1,89 +1,89 @@
 package com.zk.rfid.bean;
 
+import androidx.annotation.Nullable;
+
 public class LabelInfo {
-    private int BoxID; // 天线所在柜体号
-    private int floor; // 天线所在层
-    private int antennaNumber; // 天线号
-    private int areaNumber; // 区域号
-    private int countingTimes; // 盘点次数
-    private int RSSI; // RSSI
-    private String EPC; // EPC
-    private String TID; // TID
+    private String mDeviceID; // 读写器ID
+    private int mAntennaNumber; // 天线号
+    private int mFastID; // FastID标志
+    private int mRSSI; // RSSI
+    private String mOperatingTime; // 操作时间
+    private int mEPCLength; // EPC长度
+    private String mEPC; // EPC
+    private String mTID; // TID
 
-    public LabelInfo(){}
-
-    public LabelInfo(int BoxID, int floor, int antennaNumber, int areaNumber, int countingTimes, int RSSI, String EPC, String TID){
-        this.BoxID = BoxID;
-        this.floor = floor;
-        this.antennaNumber = antennaNumber;
-        this.areaNumber = areaNumber;
-        this.countingTimes = countingTimes;
-        this.RSSI = RSSI;
-        this.EPC = EPC;
-        this.TID = TID;
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (this == obj)
+            return true;
+        if (obj != null && obj.getClass() == LabelInfo.class) {
+            LabelInfo r = (LabelInfo) obj;
+            return this.mEPC.equals(r.mEPC);
+        }
+        return false;
     }
 
-    public int getBoxID() {
-        return BoxID;
+    public String getDeviceID() {
+        return mDeviceID;
     }
 
-    public void setBoxID(int boxID) {
-        BoxID = boxID;
-    }
-
-    public int getFloor() {
-        return floor;
-    }
-
-    public void setFloor(int floor) {
-        this.floor = floor;
+    public void setDeviceID(String deviceID) {
+        mDeviceID = deviceID;
     }
 
     public int getAntennaNumber() {
-        return antennaNumber;
+        return mAntennaNumber;
     }
 
     public void setAntennaNumber(int antennaNumber) {
-        this.antennaNumber = antennaNumber;
+        mAntennaNumber = antennaNumber;
     }
 
-    public int getAreaNumber() {
-        return areaNumber;
+    public int getFastID() {
+        return mFastID;
     }
 
-    public void setAreaNumber(int areaNumber) {
-        this.areaNumber = areaNumber;
-    }
-
-    public int getCountingTimes() {
-        return countingTimes;
-    }
-
-    public void setCountingTimes(int countingTimes) {
-        this.countingTimes = countingTimes;
+    public void setFastID(int fastID) {
+        mFastID = fastID;
     }
 
     public int getRSSI() {
-        return RSSI;
+        return mRSSI;
     }
 
     public void setRSSI(int RSSI) {
-        this.RSSI = RSSI;
+        mRSSI = RSSI;
+    }
+
+    public String getOperatingTime() {
+        return mOperatingTime;
+    }
+
+    public void setOperatingTime(String operatingTime) {
+        mOperatingTime = operatingTime;
+    }
+
+    public int getEPCLength() {
+        return mEPCLength;
+    }
+
+    public void setEPCLength(int EPCLength) {
+        mEPCLength = EPCLength;
     }
 
     public String getEPC() {
-        return EPC;
+        return mEPC;
     }
 
     public void setEPC(String EPC) {
-        this.EPC = EPC;
+        mEPC = EPC;
     }
 
     public String getTID() {
-        return TID;
+        return mTID;
     }
 
     public void setTID(String TID) {
-        this.TID = TID;
+        mTID = TID;
     }
 }

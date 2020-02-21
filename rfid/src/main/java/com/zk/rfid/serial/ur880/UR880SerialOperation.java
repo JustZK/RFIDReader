@@ -3,7 +3,7 @@ package com.zk.rfid.serial.ur880;
 import com.zk.common.utils.LogUtil;
 import com.zk.rfid.bean.DeviceInformation;
 import com.zk.rfid.bean.UR880SendInfo;
-import com.zk.rfid.callback.AccessingListener;
+import com.zk.rfid.callback.InventoryListener;
 import com.zk.rfid.callback.DeviceInformationListener;
 import com.zk.rfid.callback.FactorySettingListener;
 import com.zk.rfid.callback.LabelOperationListener;
@@ -27,8 +27,8 @@ public class UR880SerialOperation extends SerialHelper {
     private byte[] remainBuffer = null;//上次解析剩余的数据
     private GroupPackage mGroupPackage = new GroupPackage();
     private UnlockPackage mUnlockPackage = new UnlockPackage();
-    private List<AccessingListener> mAccessingListener =
-            Collections.synchronizedList(new ArrayList<AccessingListener>());
+    private List<InventoryListener> mInventoryListener =
+            Collections.synchronizedList(new ArrayList<InventoryListener>());
     private List<DeviceInformationListener> mDeviceInformationListener =
             Collections.synchronizedList(new ArrayList<DeviceInformationListener>());
     private List<FactorySettingListener> mFactorySettingListener =
@@ -51,16 +51,16 @@ public class UR880SerialOperation extends SerialHelper {
     }
 
 
-    void addOnAccessingListener(AccessingListener accessingListener) {
-        mAccessingListener.add(accessingListener);
+    void addOnAccessingListener(InventoryListener inventoryListener) {
+        mInventoryListener.add(inventoryListener);
     }
 
-    void removeAccessingListener(AccessingListener accessingListener) {
-        mAccessingListener.remove(accessingListener);
+    void removeAccessingListener(InventoryListener inventoryListener) {
+        mInventoryListener.remove(inventoryListener);
     }
 
     void removeAllAccessingListener() {
-        mAccessingListener.clear();
+        mInventoryListener.clear();
     }
 
     void addOnDeviceInformationListener(DeviceInformationListener deviceInformationListener) {

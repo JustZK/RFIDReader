@@ -39,7 +39,7 @@ public class HomeActivity extends AppCompatActivity {
 
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(DeviceInformationFragment.newInstance());
-        fragments.add(new LabelInventoryFragment());
+        fragments.add(LabelInventoryFragment.newInstance());
         fragments.add(new LabelOperationFragment());
         fragments.add(new LabelSettingsFragment());
 

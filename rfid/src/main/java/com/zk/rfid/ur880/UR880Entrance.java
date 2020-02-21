@@ -2,7 +2,7 @@ package com.zk.rfid.ur880;
 
 import com.zk.rfid.bean.DeviceInformation;
 import com.zk.rfid.bean.UR880SendInfo;
-import com.zk.rfid.callback.AccessingListener;
+import com.zk.rfid.callback.InventoryListener;
 import com.zk.rfid.callback.DeviceInformationListener;
 import com.zk.rfid.callback.FactorySettingListener;
 import com.zk.rfid.callback.LabelOperationListener;
@@ -54,23 +54,23 @@ public class UR880Entrance {
         }
     }
 
-    public void addOnAccessingListener(AccessingListener accessingListener) {
+    public void addOnInventoryListener(InventoryListener inventoryListener) {
         if (mConnectionType == CONNECTION_TCP_IP){
-            UR880ServerParsingLibrary.getInstance().addOnAccessingListener(accessingListener);
+            UR880ServerParsingLibrary.getInstance().addOnAccessingListener(inventoryListener);
         } else if (mConnectionType == CONNECTION_SERIAL){
-            UR880SerialOperationFactory.getInstance().addOnAccessingListener(accessingListener);
+            UR880SerialOperationFactory.getInstance().addOnAccessingListener(inventoryListener);
         }
     }
 
-    public void removeAccessingListener(AccessingListener accessingListener) {
+    public void removeInventoryListener(InventoryListener inventoryListener) {
         if (mConnectionType == CONNECTION_TCP_IP){
-            UR880ServerParsingLibrary.getInstance().removeAccessingListener(accessingListener);
+            UR880ServerParsingLibrary.getInstance().removeAccessingListener(inventoryListener);
         } else if (mConnectionType == CONNECTION_SERIAL){
-            UR880SerialOperationFactory.getInstance().removeAccessingListener(accessingListener);
+            UR880SerialOperationFactory.getInstance().removeAccessingListener(inventoryListener);
         }
     }
 
-    public void removeAllAccessingListener() {
+    public void removeAllInventoryListener() {
         if (mConnectionType == CONNECTION_TCP_IP){
             UR880ServerParsingLibrary.getInstance().removeAllAccessingListener();
         } else if (mConnectionType == CONNECTION_SERIAL){

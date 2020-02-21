@@ -7,18 +7,73 @@ import android.os.Bundle;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
+import com.zk.rfid.bean.DeviceInformation;
+import com.zk.rfid.bean.LabelInfo;
+import com.zk.rfid.bean.UR880SendInfo;
+import com.zk.rfid.callback.InventoryListener;
 import com.zk.rfid.ur880.UR880Entrance;
 import com.zk.rfidreader.R;
+import com.zk.rfidreader.activity.HomeActivity;
 import com.zk.rfidreader.adapter.DeviceAdapter;
+import com.zk.rfidreader.adapter.LabelAdapter;
 import com.zk.rfidreader.databinding.FragmentLabelInventoryBinding;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
+
 public class LabelInventoryFragment extends Fragment implements View.OnClickListener{
+    private final int START = 0x01;
+    private final int END = 0x02;
+    private final int CANCEL = 0x03;
+    private final int VALUE = 0x04;
+
     private FragmentLabelInventoryBinding mBinding;
+    private List<LabelInfo> mLabelInfoList = new ArrayList<>();
+    private LabelAdapter mLabelAdapter;
+
+    private LabelInventoryFragmentHandler mHandler;
+    private void handleMessage(Message msg) {
+        switch (msg.what) {
+            case START:
+                Toast.makeText(getContext(), "开始盘点！", Toast.LENGTH_SHORT).show();
+                break;
+            case END:
+                Toast.makeText(getContext(), "盘点结束！", Toast.LENGTH_SHORT).show();
+                break;
+            case CANCEL:
+                Toast.makeText(getContext(), "停止盘点！", Toast.LENGTH_SHORT).show();
+                break;
+            case VALUE:
+                LabelInfo labelInfo = (LabelInfo) msg.obj;
+                boolean isExit = false;
+                for (LabelInfo labelInfo1 : mLabelInfoList){
+                    if (labelInfo1.equals(labelInfo)){
+                        isExit = true;
+                        labelInfo1.setRSSI(labelInfo.getRSSI());
+                        labelInfo1.setFastID(labelInfo.getFastID());
+                        labelInfo1.setAntennaNumber(labelInfo.getAntennaNumber());
+                        labelInfo1.setDeviceID(labelInfo.getDeviceID());
+                        labelInfo1.setOperatingTime(labelInfo.getOperatingTime());
+                        labelInfo1.setTID(labelInfo.getTID());
+                    }
+                }
+                if (!isExit){
+                    mLabelInfoList.add(labelInfo);
+                }
+                mLabelAdapter.notifyDataSetChanged();
+                mBinding.labelInventoryNumberTv.setText("当前盘到的标签数量：" + mLabelInfoList.size());
+                break;
+        }
+    }
 
     public static LabelInventoryFragment newInstance() {
         LabelInventoryFragment fragment = new LabelInventoryFragment();
@@ -52,10 +107,38 @@ public class LabelInventoryFragment extends Fragment implements View.OnClickList
 
             }
         });
+        mLabelAdapter = new LabelAdapter(getContext(), mLabelInfoList);
+        mBinding.labelInventoryLv.setAdapter(mLabelAdapter);
+        mHandler = new LabelInventoryFragmentHandler(this);
+        UR880Entrance.getInstance().addOnInventoryListener(mInventoryListener);
 
         return mBinding.getRoot();
     }
 
+    private InventoryListener mInventoryListener = new InventoryListener() {
+        @Override
+        public void startInventory(int resultCode) {
+            mHandler.sendEmptyMessage(START);
+        }
+
+        @Override
+        public void endInventory(int resultCode) {
+            mHandler.sendEmptyMessage(END);
+        }
+
+        @Override
+        public void inventoryValue(LabelInfo labelInfo) {
+            Message message = Message.obtain();
+            message.what = VALUE;
+            message.obj = labelInfo;
+            mHandler.sendMessage(message);
+        }
+
+        @Override
+        public void cancel(int result, int code) {
+            mHandler.sendEmptyMessage(CANCEL);
+        }
+    };
 
     @Override
     public void onAttach(Context context) {
@@ -71,14 +154,38 @@ public class LabelInventoryFragment extends Fragment implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.label_inventory_start_btn:
-
+                mLabelInfoList.clear();
+                mBinding.labelInventoryNumberTv.setText("当前盘到的标签数量：" + mLabelInfoList.size());
+                String ID = ((HomeActivity) getActivity()).getDeviceID();
+                int fastId = mBinding.labelInventoryFastIdSp.getSelectedItemPosition();
+                int antennaNumber = mBinding.labelInventoryAntennaNumberSp.getSelectedItemPosition();
+                int inventoryType = mBinding.labelInventoryInventoryModeSp.getSelectedItemPosition();
+                UR880Entrance.getInstance().send(new UR880SendInfo.Builder().inventory(ID, fastId, antennaNumber, inventoryType).build());
                 break;
             case R.id.label_inventory_stop_btn:
-
+                UR880Entrance.getInstance().send(new UR880SendInfo.Builder().cancel(((HomeActivity) getActivity()).getDeviceID()).build());
                 break;
             case R.id.label_inventory_clear_btn:
-
+                mLabelInfoList.clear();
+                mBinding.labelInventoryNumberTv.setText("当前盘到的标签数量：" + mLabelInfoList.size());
+                mLabelAdapter.notifyDataSetChanged();
                 break;
+        }
+    }
+
+    private static class LabelInventoryFragmentHandler extends Handler {
+        private final WeakReference<LabelInventoryFragment> labelInventoryFragmentWeakReference;
+
+        LabelInventoryFragmentHandler(LabelInventoryFragment labelInventoryFragment) {
+            super();
+            labelInventoryFragmentWeakReference = new WeakReference<>(labelInventoryFragment);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            if (labelInventoryFragmentWeakReference.get() != null) {
+                labelInventoryFragmentWeakReference.get().handleMessage(msg);
+            }
         }
     }
 }
