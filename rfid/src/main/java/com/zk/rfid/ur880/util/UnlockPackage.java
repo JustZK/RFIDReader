@@ -6,6 +6,7 @@ import com.zk.rfid.bean.LabelInfo;
 import com.zk.rfid.callback.DeviceInformationListener;
 import com.zk.rfid.callback.InventoryListener;
 
+import java.util.Calendar;
 import java.util.List;
 
 import io.netty.channel.Channel;
@@ -71,6 +72,17 @@ public class UnlockPackage {
         labelInfo.setFastID(buffer[18]);
         int rssiInt = buffer[19] * 256 + buffer[20];
         labelInfo.setRSSI((rssiInt - 65536) / 10);
+        long time = 0;
+        time += (buffer[23] < 0 ? 256 + buffer[23] : buffer[23]) * 256 * 256 * 256;
+        time += (buffer[24] < 0 ? 256 + buffer[24] : buffer[24]) * 256 * 256;
+        time += (buffer[25] < 0 ? 256 + buffer[25] : buffer[25]) * 256;
+        time += buffer[26] < 0 ? 256 + buffer[26] : buffer[26];
+        time *= 1000;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(time);
+        String timeStr = calendar.get(Calendar.HOUR_OF_DAY) +":" + calendar.get(Calendar.MINUTE)
+                + ":" +calendar.get(Calendar.SECOND);
+        labelInfo.setOperatingTime(timeStr);
         String epcTempStr;
         StringBuilder epcStr = new StringBuilder();
         int epcLength = buffer[29] * 256 + buffer[30];
