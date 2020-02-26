@@ -22,4 +22,21 @@
         <item>连续盘点</item>
     </string-array>
 
+    <string-array name="storage_area_array">
+        <item>Reserved Memory</item>
+        <item>EPC Memory</item>
+        <item>TID Memory</item>
+        <item>User Memory</item>
+    </string-array>
+
+    <string-array name="data_format_array">
+        <item>HEX（16进制）</item>
+        <item>字节</item>
+    </string-array>
+
+    <string-array name="level_array">
+        <item>高</item>
+        <item>低</item>
+    </string-array>
+
 </resources>
