@@ -446,7 +446,7 @@ public class UR880ServerParsingLibrary {
                 channel.writeAndFlush(mGroupPackage.heartbeatR(0));
             } else if (buffer[6] == TYPE.GET_VERSION_INFO_H.getType()) {
                 LogUtil.Companion.getInstance().d("获取版本号");
-                mUnlockPackage.getVersionInfoH(mDeviceInformationListener, buffer);
+//                mUnlockPackage.getVersionInfoH(mDeviceInformationListener, buffer);
             } else if (buffer[6] == TYPE.INVENTORY_H.getType()) {
                 LogUtil.Companion.getInstance().d("Inventory命令帧格式");
                 mUnlockPackage.getInventoryH(mInventoryListener, buffer);

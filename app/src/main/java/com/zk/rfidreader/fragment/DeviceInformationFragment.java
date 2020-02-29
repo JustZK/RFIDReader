@@ -119,13 +119,13 @@ public class DeviceInformationFragment extends Fragment implements View.OnClickL
         mDeviceInformation = mDeviceInformationList.get(position);
         ((HomeActivity) getActivity()).setDeviceID(mDeviceInformation.getDeviceID());
         deviceShow(mDeviceInformation);
-        if (mGetVersionProgressDialog == null) {
-            mGetVersionProgressDialog = new ProgressDialog(getContext());
-            mGetVersionProgressDialog.setMessage("正在获取读写器详细信息...");
-        }
-        mGetVersionProgressDialog.show();
-        UR880Entrance.getInstance().send(
-                new UR880SendInfo.Builder().getVersionInformation(mDeviceInformation.getDeviceID()).build());
+//        if (mGetVersionProgressDialog == null) {
+//            mGetVersionProgressDialog = new ProgressDialog(getContext());
+//            mGetVersionProgressDialog.setMessage("正在获取读写器详细信息...");
+//        }
+//        mGetVersionProgressDialog.show();
+//        UR880Entrance.getInstance().send(
+//                new UR880SendInfo.Builder().getVersionInformation(mDeviceInformation.getDeviceID()).build());
     }
 
     private DeviceInformationListener mDeviceInformationListener = new DeviceInformationListener() {
