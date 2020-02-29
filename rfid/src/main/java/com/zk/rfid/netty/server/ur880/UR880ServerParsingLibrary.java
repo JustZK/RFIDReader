@@ -206,6 +206,7 @@ public class UR880ServerParsingLibrary {
         protected void onWriteIdle(ChannelHandlerContext ctx) {
             super.onWriteIdle(ctx);
             //长时间未写入-心跳
+            LogUtil.Companion.getInstance().d("长时间未写入");
 
         }
 
@@ -213,7 +214,8 @@ public class UR880ServerParsingLibrary {
         protected void onReadIdle(ChannelHandlerContext ctx) {
             super.onReadIdle(ctx);
             //长时间未读取信息，关闭通道
-            ctx.channel().close();
+            LogUtil.Companion.getInstance().d("长时间未读取信息");
+//            ctx.channel().close();
         }
 
         @Override
