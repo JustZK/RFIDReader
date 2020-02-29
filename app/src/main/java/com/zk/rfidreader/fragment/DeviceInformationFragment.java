@@ -183,45 +183,45 @@ public class DeviceInformationFragment extends Fragment implements View.OnClickL
 
     private void deviceShow(DeviceInformation deviceInformation) {
         if (!TextUtils.isEmpty(deviceInformation.getDeviceID())) {
-            mBinding.deviceInfoIdTv.setEnabled(true);
+            mBinding.deviceInfoIdTv.setVisibility(View.VISIBLE);
             mBinding.deviceInfoIdTv.setText(deviceInformation.getDeviceID());
         } else {
-            mBinding.deviceInfoIdTv.setEnabled(false);
+            mBinding.deviceInfoIdTv.setVisibility(View.GONE);
         }
 
         if (!TextUtils.isEmpty(deviceInformation.getDeviceVersionNumber())) {
-            mBinding.deviceInfoVersionTv.setEnabled(true);
+            mBinding.deviceInfoVersionTv.setVisibility(View.VISIBLE);
             mBinding.deviceInfoVersionTv.setText(deviceInformation.getDeviceVersionNumber());
         } else {
-            mBinding.deviceInfoVersionTv.setEnabled(false);
+            mBinding.deviceInfoVersionTv.setVisibility(View.GONE);
         }
 
         if (!TextUtils.isEmpty(deviceInformation.getDeviceRemoteAddress())) {
-            mBinding.deviceInfoRemoteAddressTv.setEnabled(true);
+            mBinding.deviceInfoRemoteAddressTv.setVisibility(View.VISIBLE);
             mBinding.deviceInfoRemoteAddressTv.setText(deviceInformation.getDeviceRemoteAddress());
         } else {
-            mBinding.deviceInfoRemoteAddressTv.setEnabled(false);
+            mBinding.deviceInfoRemoteAddressTv.setVisibility(View.GONE);
         }
 
         if (!TextUtils.isEmpty(deviceInformation.getHardwareVersionNumber())) {
-            mBinding.deviceInfoHardwareTv.setEnabled(true);
+            mBinding.deviceInfoHardwareTv.setVisibility(View.VISIBLE);
             mBinding.deviceInfoHardwareTv.setText(deviceInformation.getHardwareVersionNumber());
         } else {
-            mBinding.deviceInfoHardwareTv.setEnabled(false);
+            mBinding.deviceInfoHardwareTv.setVisibility(View.GONE);
         }
 
         if (!TextUtils.isEmpty(deviceInformation.getSoftwareVersionNumber())) {
-            mBinding.deviceInfoSoftwareTv.setEnabled(true);
+            mBinding.deviceInfoSoftwareTv.setVisibility(View.VISIBLE);
             mBinding.deviceInfoSoftwareTv.setText(deviceInformation.getSoftwareVersionNumber());
         } else {
-            mBinding.deviceInfoSoftwareTv.setEnabled(false);
+            mBinding.deviceInfoSoftwareTv.setVisibility(View.GONE);
         }
 
         if (!TextUtils.isEmpty(deviceInformation.getFirmwareVersionNumber())) {
-            mBinding.deviceInfoFirmwareTv.setEnabled(true);
+            mBinding.deviceInfoFirmwareTv.setVisibility(View.VISIBLE);
             mBinding.deviceInfoFirmwareTv.setText(deviceInformation.getFirmwareVersionNumber());
         } else {
-            mBinding.deviceInfoFirmwareTv.setEnabled(false);
+            mBinding.deviceInfoFirmwareTv.setVisibility(View.GONE);
         }
 
     }
