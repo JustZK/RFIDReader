@@ -11,10 +11,10 @@
     </string-array>
 
     <string-array name="antenna_number_array">
+        <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
-        <item>4</item>
     </string-array>
 
     <string-array name="inventory_mode_array">
