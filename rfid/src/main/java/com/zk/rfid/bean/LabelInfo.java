@@ -11,6 +11,7 @@ public class LabelInfo {
     private int mEPCLength; // EPC长度
     private String mEPC; // EPC
     private String mTID; // TID
+    private int mInventoryNumber; //盘到的次数，需要自己计数，演示使用
 
     @Override
     public boolean equals(@Nullable Object obj) {
@@ -85,5 +86,13 @@ public class LabelInfo {
 
     public void setTID(String TID) {
         mTID = TID;
+    }
+
+    public int getInventoryNumber() {
+        return mInventoryNumber;
+    }
+
+    public void setInventoryNumber(int inventoryNumber) {
+        mInventoryNumber = inventoryNumber;
     }
 }

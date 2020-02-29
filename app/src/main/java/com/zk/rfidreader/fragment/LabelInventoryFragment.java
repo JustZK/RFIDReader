@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
+import com.zk.common.utils.LogUtil;
 import com.zk.rfid.bean.DeviceInformation;
 import com.zk.rfid.bean.LabelInfo;
 import com.zk.rfid.bean.UR880SendInfo;
@@ -64,9 +65,11 @@ public class LabelInventoryFragment extends Fragment implements View.OnClickList
                         labelInfo1.setDeviceID(labelInfo.getDeviceID());
                         labelInfo1.setOperatingTime(labelInfo.getOperatingTime());
                         labelInfo1.setTID(labelInfo.getTID());
+                        labelInfo1.setInventoryNumber(labelInfo1.getInventoryNumber() + 1);
                     }
                 }
                 if (!isExit){
+                    labelInfo.setInventoryNumber(1);
                     mLabelInfoList.add(labelInfo);
                 }
                 mLabelAdapter.notifyDataSetChanged();
@@ -187,5 +190,16 @@ public class LabelInventoryFragment extends Fragment implements View.OnClickList
                 labelInventoryFragmentWeakReference.get().handleMessage(msg);
             }
         }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        if (isVisibleToUser){
+            LogUtil.Companion.getInstance().d("isVisibleToUser");
+            mBinding.labelDeviceIdTv.setText("设备编号：" + ((HomeActivity) getActivity()).getDeviceID());
+        } else {
+            LogUtil.Companion.getInstance().d("!!!isVisibleToUser");
+        }
+        super.setUserVisibleHint(isVisibleToUser);
     }
 }

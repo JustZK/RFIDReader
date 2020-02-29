@@ -40,8 +40,8 @@ public class HomeActivity extends AppCompatActivity {
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(DeviceInformationFragment.newInstance());
         fragments.add(LabelInventoryFragment.newInstance());
-        fragments.add(new LabelOperationFragment());
-        fragments.add(new LabelSettingsFragment());
+        fragments.add(LabelOperationFragment.newInstance());
+        fragments.add(LabelSettingsFragment.newInstance());
 
         mFragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), fragments, titles);
         mActivityHomeBinding.honeViewPager.setAdapter(mFragmentAdapter);

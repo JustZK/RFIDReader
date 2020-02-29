@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         LogUtil.Companion.getInstance().setLogSwitch(true);
         LogUtil.Companion.getInstance().init(this);
+        LogUtil.Companion.getInstance().d("Main onCreate");
         initView();
     }
 

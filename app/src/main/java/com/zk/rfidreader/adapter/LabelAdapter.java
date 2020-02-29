@@ -49,55 +49,48 @@ public class LabelAdapter extends BaseAdapter {
         if (view == null) {
             view = inflater.inflate(R.layout.adapter_label_item, null);
             viewHolder = new ViewHolder(
-                    (TextView) view.findViewById(R.id.adapter_label_device_id_tv),
                     (TextView) view.findViewById(R.id.adapter_label_antenna_number_tv),
-                    (TextView) view.findViewById(R.id.adapter_label_fast_id_tv),
                     (TextView) view.findViewById(R.id.adapter_label_rssi_tv),
                     (TextView) view.findViewById(R.id.adapter_label_time_tv),
                     (TextView) view.findViewById(R.id.adapter_label_epc_length_tv),
                     (TextView) view.findViewById(R.id.adapter_label_epc_tv),
-                    (TextView) view.findViewById(R.id.adapter_label_tid_tv));
+                    (TextView) view.findViewById(R.id.adapter_label_tid_tv),
+                    (TextView) view.findViewById(R.id.adapter_label_inventory_number_tv));
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        viewHolder.adapter_label_device_id_tv.setText(TextUtils.isEmpty(labelInfo.getDeviceID()) ? "---" : labelInfo.getDeviceID());
         viewHolder.adapter_label_antenna_number_tv.setText(String.valueOf(labelInfo.getAntennaNumber()));
-        viewHolder.adapter_label_fast_id_tv.setText(String.valueOf(labelInfo.getFastID()));
         viewHolder.adapter_label_rssi_tv.setText(String.valueOf(labelInfo.getRSSI()));
         viewHolder.adapter_label_time_tv.setText(TextUtils.isEmpty(labelInfo.getOperatingTime()) ? "---" : labelInfo.getOperatingTime());
         viewHolder.adapter_label_epc_length_tv.setText(String.valueOf(labelInfo.getEPCLength()));
         viewHolder.adapter_label_epc_tv.setText(TextUtils.isEmpty(labelInfo.getEPC()) ? "---" : labelInfo.getEPC());
         viewHolder.adapter_label_tid_tv.setText(TextUtils.isEmpty(labelInfo.getTID()) ? "---" : labelInfo.getTID());
+        viewHolder.adapter_label_inventory_number_tv.setText(String.valueOf(labelInfo.getInventoryNumber()));
         return view;
     }
 
     private class ViewHolder {
-        protected TextView adapter_label_device_id_tv;
-        protected TextView adapter_label_antenna_number_tv;
+        TextView adapter_label_antenna_number_tv;
+        TextView adapter_label_rssi_tv;
 
-        protected TextView adapter_label_fast_id_tv;
-        protected TextView adapter_label_rssi_tv;
+        TextView adapter_label_time_tv;
+        TextView adapter_label_epc_length_tv;
 
-        protected TextView adapter_label_time_tv;
-        protected TextView adapter_label_epc_length_tv;
+        TextView adapter_label_epc_tv;
+        TextView adapter_label_tid_tv;
 
-        protected TextView adapter_label_epc_tv;
-        protected TextView adapter_label_tid_tv;
+        TextView adapter_label_inventory_number_tv;
 
-        public ViewHolder(TextView adapter_label_device_id_tv,
-                          TextView adapter_label_antenna_number_tv,
-                          TextView adapter_label_fast_id_tv,
+        ViewHolder(TextView adapter_label_antenna_number_tv,
                           TextView adapter_label_rssi_tv,
                           TextView adapter_label_time_tv,
                           TextView adapter_label_epc_length_tv,
                           TextView adapter_label_epc_tv,
-                          TextView adapter_label_tid_tv) {
-            this.adapter_label_device_id_tv = adapter_label_device_id_tv;
+                          TextView adapter_label_tid_tv,
+                          TextView adapter_label_inventory_number_tv) {
             this.adapter_label_antenna_number_tv = adapter_label_antenna_number_tv;
-
-            this.adapter_label_fast_id_tv = adapter_label_fast_id_tv;
             this.adapter_label_rssi_tv = adapter_label_rssi_tv;
 
             this.adapter_label_time_tv = adapter_label_time_tv;
@@ -105,6 +98,8 @@ public class LabelAdapter extends BaseAdapter {
 
             this.adapter_label_epc_tv = adapter_label_epc_tv;
             this.adapter_label_tid_tv = adapter_label_tid_tv;
+
+            this.adapter_label_inventory_number_tv = adapter_label_inventory_number_tv;
 
         }
     }
