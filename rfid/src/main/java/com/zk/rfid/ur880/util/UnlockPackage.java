@@ -70,8 +70,9 @@ public class UnlockPackage {
         labelInfo.setDeviceID(deviceId);
         labelInfo.setAntennaNumber(buffer[16]);
         labelInfo.setFastID(buffer[18]);
-        int rssiInt = buffer[19] * 256 + buffer[20];
-        labelInfo.setRSSI((rssiInt - 65536) / 10);
+//        int rssiInt = buffer[19] * 256 + buffer[20];
+        labelInfo.setRSSI(buffer[19] * 256 + buffer[20]);
+
         long time = 0;
         time += (buffer[23] < 0 ? 256 + buffer[23] : buffer[23]) * 256 * 256 * 256;
         time += (buffer[24] < 0 ? 256 + buffer[24] : buffer[24]) * 256 * 256;
@@ -86,6 +87,7 @@ public class UnlockPackage {
         String epcTempStr;
         StringBuilder epcStr = new StringBuilder();
         int epcLength = buffer[29] * 256 + buffer[30];
+        labelInfo.setEPCLength(epcLength);
         for (int i = 31; i < (31 + epcLength); i++) {
             epcTempStr = Integer.toHexString(buffer[i] & 0xff);
             if (epcTempStr.length() < 2)
