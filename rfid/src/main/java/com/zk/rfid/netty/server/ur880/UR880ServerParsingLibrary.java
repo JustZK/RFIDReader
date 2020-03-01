@@ -49,6 +49,12 @@ public class UR880ServerParsingLibrary {
 
     }
 
+    public void disConnect() {
+        if (nettyServerBootstrap != null){
+            nettyServerBootstrap.disconnect();
+        }
+    }
+
     public void connect() {
         new Thread() {
             @Override
@@ -438,7 +444,7 @@ public class UR880ServerParsingLibrary {
                 nettyChannelMap.put(deviceInformation.getDeviceID(), channel);
                 LogUtil.Companion.getInstance().d("注册-ID：" + deviceInformation.getDeviceID());
                 channel.writeAndFlush(mGroupPackage.registeredH(0));
-                for (DeviceInformationListener deviceInformationListener : mDeviceInformationListener){
+                for (DeviceInformationListener deviceInformationListener : mDeviceInformationListener) {
                     deviceInformationListener.registered(deviceInformation.getDeviceID(),
                             deviceInformation.getDeviceVersionNumber(),
                             deviceInformation.getDeviceRemoteAddress());
@@ -458,6 +464,33 @@ public class UR880ServerParsingLibrary {
             } else if (buffer[6] == TYPE.INVENTORY_REPORT_DATA_R.getType()) {
                 LogUtil.Companion.getInstance().d("Inventory上报数据");
                 mUnlockPackage.getInventoryReportDataH(mInventoryListener, buffer);
+            } else if (buffer[6] == TYPE.SET_ANTENNA_CONFIGURATION_H.getType()) {
+                LogUtil.Companion.getInstance().d("天线配置");
+                mUnlockPackage.setAntennaConfigurationH(mFactorySettingListener, buffer);
+            } else if (buffer[6] == TYPE.GET_ANTENNA_CONFIGURATION_H.getType()) {
+                LogUtil.Companion.getInstance().d("天线配置插叙");
+                mUnlockPackage.getAntennaConfigurationH(mFactorySettingListener, buffer);
+            } else if (buffer[6] == TYPE.GET_ANTENNA_STANDING_WAVE_RADIO_H.getType()) {
+                LogUtil.Companion.getInstance().d("驻波比");
+                mUnlockPackage.getAntennaStandingWaveRatioH(mFactorySettingListener, buffer);
+            } else if (buffer[6] == TYPE.SET_GPO_OUTPUT_STATUS_H.getType()) {
+                LogUtil.Companion.getInstance().d("设置GPO输出状态");
+                mUnlockPackage.setGPOOutputStatusH(mFactorySettingListener, buffer);
+            } else if (buffer[6] == TYPE.GET_GPI_OUTPUT_STATUS_H.getType()) {
+                LogUtil.Companion.getInstance().d("读取GPI输入命令");
+                mUnlockPackage.getGPIOutputStatusH(mFactorySettingListener, buffer);
+            } else if (buffer[6] == TYPE.SET_BUZZER_STATUS_SETTING_H.getType()) {
+                LogUtil.Companion.getInstance().d("蜂鸣器状态设置");
+                mUnlockPackage.setBuzzerStatusH(mFactorySettingListener, buffer);
+            } else if (buffer[6] == TYPE.GET_BUZZER_STATUS_SETTING_H.getType()) {
+                LogUtil.Companion.getInstance().d("读写器蜂鸣器状态获取命令");
+                mUnlockPackage.getBuzzerStatusH(mFactorySettingListener, buffer);
+            } else if (buffer[6] == TYPE.TIME_SYNCHRONIZATION_H.getType()) {
+                LogUtil.Companion.getInstance().d("时间同步");
+                mUnlockPackage.timeSynchronizationH(mFactorySettingListener, buffer);
+            } else if (buffer[6] == TYPE.DEVICE_RESTART_H.getType()) {
+                LogUtil.Companion.getInstance().d("设备重启");
+                mUnlockPackage.deviceRestartH(mFactorySettingListener, buffer);
             }
         }
     }

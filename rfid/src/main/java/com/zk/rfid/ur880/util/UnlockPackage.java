@@ -4,6 +4,7 @@ import com.zk.common.utils.LogUtil;
 import com.zk.rfid.bean.DeviceInformation;
 import com.zk.rfid.bean.LabelInfo;
 import com.zk.rfid.callback.DeviceInformationListener;
+import com.zk.rfid.callback.FactorySettingListener;
 import com.zk.rfid.callback.InventoryListener;
 
 import java.util.Calendar;
@@ -45,8 +46,8 @@ public class UnlockPackage {
         }
     }
 
-    public void getInventoryH(List<InventoryListener> mInventoryListeners, byte[] buffer) {
-        for (InventoryListener inventoryListener : mInventoryListeners) {
+    public void getInventoryH(List<InventoryListener> inventoryListeners, byte[] buffer) {
+        for (InventoryListener inventoryListener : inventoryListeners) {
             if (buffer[10] == 0x00) {
                 inventoryListener.startInventory(buffer[14]);
             } else if (buffer[10] == 0x01) {
@@ -55,13 +56,13 @@ public class UnlockPackage {
         }
     }
 
-    public void getCancelH(List<InventoryListener> mInventoryListeners, byte[] buffer) {
-        for (InventoryListener inventoryListener : mInventoryListeners) {
+    public void getCancelH(List<InventoryListener> inventoryListeners, byte[] buffer) {
+        for (InventoryListener inventoryListener : inventoryListeners) {
             inventoryListener.cancel(buffer[10], buffer[14]);
         }
     }
 
-    public void getInventoryReportDataH(List<InventoryListener> mInventoryListeners, byte[] buffer) {
+    public void getInventoryReportDataH(List<InventoryListener> inventoryListeners, byte[] buffer) {
         LabelInfo labelInfo = new LabelInfo();
 
         byte[] deviceIdByte = new byte[4];
@@ -110,8 +111,103 @@ public class UnlockPackage {
             LogUtil.Companion.getInstance().d("TID == null");
             labelInfo.setTID(null);
         }
-        for (InventoryListener inventoryListener : mInventoryListeners) {
+        for (InventoryListener inventoryListener : inventoryListeners) {
             inventoryListener.inventoryValue(labelInfo);
+        }
+    }
+
+    public void setAntennaConfigurationH(List<FactorySettingListener> factorySettingListeners, byte[] buffer) {
+        boolean result = buffer[10] == 0x00;
+        int errorNumber = buffer[14];
+        for (FactorySettingListener factorySettingListener : factorySettingListeners) {
+            factorySettingListener.setAntennaConfigurationResult(result, errorNumber);
+        }
+    }
+
+    public void getAntennaConfigurationH(List<FactorySettingListener> factorySettingListeners, byte[] buffer) {
+        boolean result = buffer[10] == 0x00;
+        int errorNumber = buffer[14];
+        int antennaEnableZero = buffer[15];
+        int antennaEnableOne = buffer[16];
+        int antennaEnableTwo = buffer[17];
+        int antennaEnableThree = buffer[18];
+        int antennaPowerZero = buffer[19];
+        int antennaPowerOne = buffer[20];
+        int antennaPowerTwo = buffer[21];
+        int antennaPowerThree = buffer[22];
+        int dwellTimeZero = buffer[23];
+        int dwellTimeOne = buffer[24];
+        int dwellTimeTwo = buffer[25];
+        int dwellTimeThree = buffer[26];
+        int calendarCycleZero = buffer[27];
+        int calendarCycleOne = buffer[28];
+        int calendarCycleTwo = buffer[29];
+        int calendarCycleThree = buffer[30];
+        for (FactorySettingListener factorySettingListener : factorySettingListeners) {
+            factorySettingListener.getAntennaConfigurationResult(result, errorNumber,
+                    antennaEnableZero, antennaEnableOne, antennaEnableTwo, antennaEnableThree,
+                    antennaPowerZero, antennaPowerOne, antennaPowerTwo, antennaPowerThree,
+                    dwellTimeZero, dwellTimeOne, dwellTimeTwo, dwellTimeThree,
+                    calendarCycleZero, calendarCycleOne, calendarCycleTwo, calendarCycleThree);
+        }
+    }
+
+    public void getAntennaStandingWaveRatioH(List<FactorySettingListener> factorySettingListeners, byte[] buffer) {
+        float antennaZero = buffer[10] + buffer[9] * 256 + buffer[8] * 256 * 256 + buffer[7] *256 * 256;
+        float antennaOne = buffer[14] + buffer[13] * 256 + buffer[12] * 256 * 256 + buffer[11] *256 * 256;
+        float antennaTwo = buffer[18] + buffer[17] * 256 + buffer[16] * 256 * 256 + buffer[15] *256 * 256;
+        float antennaThree = buffer[22] + buffer[21] * 256 + buffer[20] * 256 * 256 + buffer[19] *256 * 256;
+        for (FactorySettingListener factorySettingListener : factorySettingListeners) {
+            factorySettingListener.getAntennaStandingWaveRatioResult(antennaZero, antennaOne, antennaTwo, antennaThree);
+        }
+    }
+
+    public void setGPOOutputStatusH(List<FactorySettingListener> factorySettingListeners, byte[] buffer) {
+        boolean result = buffer[10] == 0x00;
+        int errorNumber = buffer[14];
+        for (FactorySettingListener factorySettingListener : factorySettingListeners) {
+            factorySettingListener.setGPOOutputStatusResult(result, errorNumber);
+        }
+    }
+
+    public void getGPIOutputStatusH(List<FactorySettingListener> factorySettingListeners, byte[] buffer) {
+        boolean result = buffer[10] == 0x00;
+        int errorNumber = buffer[14];
+        int portZeroStatus = buffer[15];
+        int portOneStatus = buffer[16];
+        int portTwoStatus = buffer[17];
+        int portThreeStatus = buffer[18];
+        for (FactorySettingListener factorySettingListener : factorySettingListeners) {
+            factorySettingListener.getGPIOutputStatusResult(result, errorNumber,
+                    portZeroStatus, portOneStatus, portTwoStatus, portThreeStatus);
+        }
+    }
+
+    public void setBuzzerStatusH(List<FactorySettingListener> factorySettingListeners, byte[] buffer) {
+        int errorNumber = buffer[10];
+        for (FactorySettingListener factorySettingListener : factorySettingListeners) {
+            factorySettingListener.setBuzzerStatusResult(errorNumber);
+        }
+    }
+
+    public void getBuzzerStatusH(List<FactorySettingListener> factorySettingListeners, byte[] buffer) {
+        int buzzerStatus = buffer[7];
+        for (FactorySettingListener factorySettingListener : factorySettingListeners) {
+            factorySettingListener.getBuzzerStatusResult(buzzerStatus);
+        }
+    }
+
+    public void timeSynchronizationH(List<FactorySettingListener> factorySettingListeners, byte[] buffer) {
+        int errorNumber = buffer[10];
+        for (FactorySettingListener factorySettingListener : factorySettingListeners) {
+            factorySettingListener.timeSynchronizationResult(errorNumber);
+        }
+    }
+
+    public void deviceRestartH(List<FactorySettingListener> factorySettingListeners, byte[] buffer) {
+        int errorNumber = buffer[10];
+        for (FactorySettingListener factorySettingListener : factorySettingListeners) {
+            factorySettingListener.deviceRestartResult(errorNumber);
         }
     }
 }

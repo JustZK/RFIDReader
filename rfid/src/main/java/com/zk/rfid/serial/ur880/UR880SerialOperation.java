@@ -125,7 +125,7 @@ public class UR880SerialOperation extends SerialHelper {
     }
 
     //关闭串口
-    public void closeComPort() {
+    void closeComPort() {
         isConnect = false;
         stopSend();
         close();

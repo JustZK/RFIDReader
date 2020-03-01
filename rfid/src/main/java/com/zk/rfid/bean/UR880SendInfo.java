@@ -257,7 +257,7 @@ public class UR880SendInfo {
         }
 
         //2.31	读取GPI输入命令
-        public Builder getGPOOutputStatus(String ID) {
+        public Builder getGPIOutputStatus(String ID) {
             mUR880SendInfo.setCommunicationType(TYPE.GET_GPI_OUTPUT_STATUS_R);
             mUR880SendInfo.setID(ID);
             return this;

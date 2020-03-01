@@ -105,6 +105,7 @@
                         android:gravity="center">
 
                         <Switch
+                            android:id="@+id/label_settings_antenna_enable_zero_sw"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
@@ -113,6 +114,7 @@
                     </LinearLayout>
 
                     <EditText
+                        android:id="@+id/label_settings_antenna_power_zero_et"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -120,6 +122,7 @@
                         android:inputType="number" />
 
                     <EditText
+                        android:id="@+id/label_settings_dwell_time_zero_et"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -127,6 +130,7 @@
                         android:inputType="number" />
 
                     <EditText
+                        android:id="@+id/label_settings_calendar_cycle_zero_et"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -157,6 +161,7 @@
                         android:gravity="center">
 
                         <Switch
+                            android:id="@+id/label_settings_antenna_enable_one_sw"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
@@ -165,6 +170,7 @@
                     </LinearLayout>
 
                     <EditText
+                        android:id="@+id/label_settings_antenna_power_one_et"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -172,6 +178,7 @@
                         android:inputType="number" />
 
                     <EditText
+                        android:id="@+id/label_settings_dwell_time_one_et"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -179,6 +186,7 @@
                         android:inputType="number" />
 
                     <EditText
+                        android:id="@+id/label_settings_calendar_cycle_one_et"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -209,6 +217,7 @@
                         android:gravity="center">
 
                         <Switch
+                            android:id="@+id/label_settings_antenna_enable_two_sw"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
@@ -217,6 +226,7 @@
                     </LinearLayout>
 
                     <EditText
+                        android:id="@+id/label_settings_antenna_power_two_et"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -224,6 +234,7 @@
                         android:inputType="number" />
 
                     <EditText
+                        android:id="@+id/label_settings_dwell_time_two_et"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -231,6 +242,7 @@
                         android:inputType="number" />
 
                     <EditText
+                        android:id="@+id/label_settings_calendar_cycle_two_et"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -261,6 +273,7 @@
                         android:gravity="center">
 
                         <Switch
+                            android:id="@+id/label_settings_antenna_enable_three_sw"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
@@ -269,6 +282,7 @@
                     </LinearLayout>
 
                     <EditText
+                        android:id="@+id/label_settings_antenna_power_three_et"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -276,6 +290,7 @@
                         android:inputType="number" />
 
                     <EditText
+                        android:id="@+id/label_settings_dwell_time_three_et"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -283,6 +298,7 @@
                         android:inputType="number" />
 
                     <EditText
+                        android:id="@+id/label_settings_calendar_cycle_three_et"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -299,19 +315,23 @@
                     android:orientation="horizontal">
 
                     <Button
+                        android:id="@+id/label_settings_set_antenna_btn"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginRight="@dimen/appbar_padding"
                         android:layout_weight="1"
                         android:gravity="center"
+                        android:onClick="@{onClickListener}"
                         android:text="获 取 天 线" />
 
                     <Button
+                        android:id="@+id/label_settings_get_antenna_btn"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/appbar_padding"
                         android:layout_weight="1"
                         android:gravity="center"
+                        android:onClick="@{onClickListener}"
                         android:text="设 置 天 线" />
 
                 </LinearLayout>
@@ -363,6 +383,7 @@
                         android:text="天线1" />
 
                     <EditText
+                        android:id="@+id/label_settings_standing_wave_zero_et"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -387,6 +408,7 @@
                         android:text="天线2" />
 
                     <EditText
+                        android:id="@+id/label_settings_standing_wave_one_et"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -411,6 +433,7 @@
                         android:text="天线3" />
 
                     <EditText
+                        android:id="@+id/label_settings_standing_wave_two_et"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -435,6 +458,7 @@
                         android:text="天线4" />
 
                     <EditText
+                        android:id="@+id/label_settings_standing_wave_three_et"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -445,11 +469,13 @@
                 </LinearLayout>
 
                 <Button
+                    android:id="@+id/label_settings_get_standing_wave_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/appbar_padding"
                     android:gravity="center"
+                    android:onClick="@{onClickListener}"
                     android:text="获 取 驻 波 比" />
 
             </LinearLayout>
@@ -539,11 +565,13 @@
                     </LinearLayout>
 
                     <Button
+                        android:id="@+id/label_settings_get_gpi_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_margin="@dimen/appbar_padding"
                         android:gravity="center"
+                        android:onClick="@{onClickListener}"
                         android:text="获取GPI" />
 
                 </LinearLayout>
@@ -626,11 +654,13 @@
                     </LinearLayout>
 
                     <Button
+                        android:id="@+id/label_settings_set_gpo_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_margin="@dimen/appbar_padding"
                         android:gravity="center"
+                        android:onClick="@{onClickListener}"
                         android:text="设置GPO" />
 
                 </LinearLayout>
@@ -681,19 +711,23 @@
                         android:orientation="horizontal">
 
                         <Button
+                            android:id="@+id/label_settings_set_buzzer_btn"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_marginRight="@dimen/appbar_padding"
                             android:layout_weight="1"
                             android:gravity="center"
+                            android:onClick="@{onClickListener}"
                             android:text="设置蜂鸣器" />
 
                         <Button
+                            android:id="@+id/label_settings_get_buzzer_btn"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="@dimen/appbar_padding"
                             android:layout_weight="1"
                             android:gravity="center"
+                            android:onClick="@{onClickListener}"
                             android:text="获取蜂鸣器" />
 
                     </LinearLayout>
@@ -710,10 +744,20 @@
                     android:orientation="vertical">
 
                     <Button
+                        android:id="@+id/label_settings_time_synchronization_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
+                        android:onClick="@{onClickListener}"
                         android:text="同步时间" />
+
+                    <Button
+                        android:id="@+id/label_settings_device_restart_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:onClick="@{onClickListener}"
+                        android:text="重启" />
 
                 </LinearLayout>
 

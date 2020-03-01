@@ -33,9 +33,9 @@ import java.util.List;
 
 public class DeviceInformationFragment extends Fragment implements View.OnClickListener,
         AdapterView.OnItemClickListener {
-    private final int REGISTER = 0x01;
-    private final int HEART = 0x02;
-    private final int VERSION = 0x03;
+    private final static int REGISTER = 0x01;
+    private final static int HEART = 0x02;
+    private final static int VERSION = 0x03;
 
     private FragmentDeviceInformationBinding mBinding;
     private DeviceAdapter mDeviceAdapter;

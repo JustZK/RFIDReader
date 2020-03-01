@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.zk.rfid.ur880.UR880Entrance;
 import com.zk.rfidreader.R;
 import com.zk.rfidreader.adapter.FragmentAdapter;
 import com.zk.rfidreader.databinding.ActivityHomeBinding;
@@ -54,5 +55,11 @@ public class HomeActivity extends AppCompatActivity {
 
     public void setDeviceID(String deviceID) {
         mDeviceID = deviceID;
+    }
+
+    @Override
+    protected void onDestroy() {
+        UR880Entrance.getInstance().disConnect();
+        super.onDestroy();
     }
 }
