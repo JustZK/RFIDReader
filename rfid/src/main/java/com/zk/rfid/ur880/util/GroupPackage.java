@@ -105,7 +105,7 @@ public class GroupPackage {
                              int dwellTimeZero, int dwellTimeOne, int dwellTimeTwo, int dwellTimeThree,
                              int calendarCycleZero, int calendarCycleOne, int calendarCycleTwo, int calendarCycleThree) {
         byte[] data;
-        data = new byte[45];
+        data = new byte[46];
         Utils.initMessage(data, frameNumber);
 
         data[6] = TYPE.SET_ANTENNA_CONFIGURATION_R.type;
