@@ -204,6 +204,28 @@ public class UR880ServerParsingLibrary {
                 case CANCEL_R:
                     channel.writeAndFlush(mGroupPackage.cancelR(0));
                     break;
+                case SET_ANTENNA_CONFIGURATION_R:
+                    channel.writeAndFlush(mGroupPackage.setAntennaConfigurationR(0,
+                            ur880SendInfo.getAntennaEnableZero(),
+                            ur880SendInfo.getAntennaEnableOne(),
+                            ur880SendInfo.getAntennaEnableTwo(),
+                            ur880SendInfo.getAntennaEnableThree(),
+                            ur880SendInfo.getAntennaPowerZero(),
+                            ur880SendInfo.getAntennaPowerOne(),
+                            ur880SendInfo.getAntennaPowerTwo(),
+                            ur880SendInfo.getAntennaPowerThree(),
+                            ur880SendInfo.getDwellTimeZero(),
+                            ur880SendInfo.getDwellTimeOne(),
+                            ur880SendInfo.getDwellTimeTwo(),
+                            ur880SendInfo.getDwellTimeThree(),
+                            ur880SendInfo.getCalendarCycleZero(),
+                            ur880SendInfo.getCalendarCycleOne(),
+                            ur880SendInfo.getCalendarCycleTwo(),
+                            ur880SendInfo.getCalendarCycleThree()));
+                    break;
+                case GET_ANTENNA_CONFIGURATION_R:
+                    channel.writeAndFlush(mGroupPackage.getAntennaConfigurationR(0));
+                    break;
             }
             return true;
         }
