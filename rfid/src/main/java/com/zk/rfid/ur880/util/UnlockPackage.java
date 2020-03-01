@@ -127,22 +127,51 @@ public class UnlockPackage {
     public void getAntennaConfigurationH(List<FactorySettingListener> factorySettingListeners, byte[] buffer) {
         boolean result = buffer[10] == 0x00;
         int errorNumber = buffer[14];
+
         int antennaEnableZero = buffer[15];
         int antennaEnableOne = buffer[16];
         int antennaEnableTwo = buffer[17];
         int antennaEnableThree = buffer[18];
-        int antennaPowerZero = buffer[19];
-        int antennaPowerOne = buffer[20];
-        int antennaPowerTwo = buffer[21];
-        int antennaPowerThree = buffer[22];
-        int dwellTimeZero = buffer[23];
-        int dwellTimeOne = buffer[24];
-        int dwellTimeTwo = buffer[25];
-        int dwellTimeThree = buffer[26];
-        int calendarCycleZero = buffer[27];
-        int calendarCycleOne = buffer[28];
-        int calendarCycleTwo = buffer[29];
-        int calendarCycleThree = buffer[30];
+
+        byte[] antennaPowerZeroByte = new byte[4];
+        System.arraycopy(buffer, 19, antennaPowerZeroByte, 0, 4);
+        int antennaPowerZero = Utils.byteArrayToInt(antennaPowerZeroByte, 4);
+        byte[] antennaPowerOneByte = new byte[4];
+        System.arraycopy(buffer, 23, antennaPowerOneByte, 0, 4);
+        int antennaPowerOne = Utils.byteArrayToInt(antennaPowerOneByte, 4);
+        byte[] antennaPowerTwoByte = new byte[4];
+        System.arraycopy(buffer, 27, antennaPowerTwoByte, 0, 4);
+        int antennaPowerTwo = Utils.byteArrayToInt(antennaPowerTwoByte, 4);
+        byte[] antennaPowerThreeTwoByte = new byte[4];
+        System.arraycopy(buffer, 31, antennaPowerThreeTwoByte, 0, 4);
+        int antennaPowerThree = Utils.byteArrayToInt(antennaPowerThreeTwoByte, 4);
+
+        byte[] dwellTimeZeroByte = new byte[4];
+        System.arraycopy(buffer, 35, dwellTimeZeroByte, 0, 4);
+        int dwellTimeZero = Utils.byteArrayToInt(dwellTimeZeroByte, 4);
+        byte[] dwellTimeOneByte = new byte[4];
+        System.arraycopy(buffer, 39, dwellTimeOneByte, 0, 4);
+        int dwellTimeOne = Utils.byteArrayToInt(dwellTimeOneByte, 4);
+        byte[] dwellTimeTwoByte = new byte[4];
+        System.arraycopy(buffer, 43, dwellTimeTwoByte, 0, 4);
+        int dwellTimeTwo = Utils.byteArrayToInt(dwellTimeTwoByte, 4);
+        byte[] dwellTimeThreeByte = new byte[4];
+        System.arraycopy(buffer, 47, dwellTimeThreeByte, 0, 4);
+        int dwellTimeThree = Utils.byteArrayToInt(dwellTimeThreeByte, 4);
+
+        byte[] calendarCycleZeroByte = new byte[4];
+        System.arraycopy(buffer, 51, calendarCycleZeroByte, 0, 4);
+        int calendarCycleZero = Utils.byteArrayToInt(calendarCycleZeroByte, 4);
+        byte[] calendarCycleOneByte = new byte[4];
+        System.arraycopy(buffer, 55, calendarCycleOneByte, 0, 4);
+        int calendarCycleOne = Utils.byteArrayToInt(calendarCycleOneByte, 4);
+        byte[] calendarCycleTwoByte = new byte[4];
+        System.arraycopy(buffer, 59, calendarCycleTwoByte, 0, 4);
+        int calendarCycleTwo = Utils.byteArrayToInt(calendarCycleTwoByte, 4);
+        byte[] calendarCycleThreeByte = new byte[4];
+        System.arraycopy(buffer, 63, calendarCycleThreeByte, 0, 4);
+        int calendarCycleThree = Utils.byteArrayToInt(calendarCycleThreeByte, 4);
+
         for (FactorySettingListener factorySettingListener : factorySettingListeners) {
             factorySettingListener.getAntennaConfigurationResult(result, errorNumber,
                     antennaEnableZero, antennaEnableOne, antennaEnableTwo, antennaEnableThree,
