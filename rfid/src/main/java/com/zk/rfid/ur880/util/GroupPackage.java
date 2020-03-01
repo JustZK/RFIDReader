@@ -105,7 +105,7 @@ public class GroupPackage {
                              int dwellTimeZero, int dwellTimeOne, int dwellTimeTwo, int dwellTimeThree,
                              int calendarCycleZero, int calendarCycleOne, int calendarCycleTwo, int calendarCycleThree) {
         byte[] data;
-        data = new byte[46];
+        data = new byte[62];
         Utils.initMessage(data, frameNumber);
 
         data[6] = TYPE.SET_ANTENNA_CONFIGURATION_R.type;
@@ -158,27 +158,27 @@ public class GroupPackage {
         data[42] = dwellTimeThreeByte[3];
 
         byte[] calendarCycleZeroByte = Utils.intToByteArray(calendarCycleZero);
-        data[27] = calendarCycleZeroByte[0];
-        data[28] = calendarCycleZeroByte[1];
-        data[29] = calendarCycleZeroByte[2];
-        data[30] = calendarCycleZeroByte[3];
+        data[43] = calendarCycleZeroByte[0];
+        data[44] = calendarCycleZeroByte[1];
+        data[45] = calendarCycleZeroByte[2];
+        data[46] = calendarCycleZeroByte[3];
         byte[] calendarCycleOneByte = Utils.intToByteArray(calendarCycleOne);
-        data[31] = calendarCycleOneByte[0];
-        data[32] = calendarCycleOneByte[1];
-        data[33] = calendarCycleOneByte[2];
-        data[34] = calendarCycleOneByte[3];
+        data[47] = calendarCycleOneByte[0];
+        data[48] = calendarCycleOneByte[1];
+        data[49] = calendarCycleOneByte[2];
+        data[50] = calendarCycleOneByte[3];
         byte[] calendarCycleTwoByte = Utils.intToByteArray(calendarCycleTwo);
-        data[35] = calendarCycleTwoByte[0];
-        data[36] = calendarCycleTwoByte[1];
-        data[37] = calendarCycleTwoByte[2];
-        data[38] = calendarCycleTwoByte[3];
+        data[51] = calendarCycleTwoByte[0];
+        data[52] = calendarCycleTwoByte[1];
+        data[53] = calendarCycleTwoByte[2];
+        data[54] = calendarCycleTwoByte[3];
         byte[] calendarCycleThreeByte = Utils.intToByteArray(calendarCycleThree);
-        data[39] = calendarCycleThreeByte[0];
-        data[40] = calendarCycleThreeByte[1];
-        data[41] = calendarCycleThreeByte[2];
-        data[42] = calendarCycleThreeByte[3];
+        data[55] = calendarCycleThreeByte[0];
+        data[56] = calendarCycleThreeByte[1];
+        data[57] = calendarCycleThreeByte[2];
+        data[58] = calendarCycleThreeByte[3];
 
-        data[43] = Utils.calcCheckBit(data);
+        data[59] = Utils.calcCheckBit(data);
 
         LogUtil.Companion.getInstance().d("Send 2.15 天线配置 转译前 heartbeatH：", data, data.length);
         int T = Utils.ifTranslation(data);
