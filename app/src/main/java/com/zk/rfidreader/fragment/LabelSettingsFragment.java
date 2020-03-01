@@ -281,7 +281,9 @@ public class LabelSettingsFragment extends Fragment implements View.OnClickListe
     public void setUserVisibleHint(boolean isVisibleToUser) {
         if (isVisibleToUser) {
             LogUtil.Companion.getInstance().d("isVisibleToUser");
-            mBinding.labelSettingIdTv.setText("设备编号：" + ((HomeActivity) getActivity()).getDeviceID());
+            if (mBinding != null) {
+                mBinding.labelSettingIdTv.setText("设备编号：" + ((HomeActivity) getActivity()).getDeviceID());
+            }
         } else {
             LogUtil.Companion.getInstance().d("!!!isVisibleToUser");
         }

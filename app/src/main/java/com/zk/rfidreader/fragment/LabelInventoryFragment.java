@@ -196,7 +196,9 @@ public class LabelInventoryFragment extends Fragment implements View.OnClickList
     public void setUserVisibleHint(boolean isVisibleToUser) {
         if (isVisibleToUser){
             LogUtil.Companion.getInstance().d("isVisibleToUser");
-            mBinding.labelDeviceIdTv.setText("设备编号：" + ((HomeActivity) getActivity()).getDeviceID());
+            if (mBinding != null) {
+                mBinding.labelDeviceIdTv.setText("设备编号：" + ((HomeActivity) getActivity()).getDeviceID());
+            }
         } else {
             LogUtil.Companion.getInstance().d("!!!isVisibleToUser");
         }
