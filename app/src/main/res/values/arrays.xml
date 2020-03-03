@@ -39,4 +39,9 @@
         <item>低</item>
     </string-array>
 
+    <string-array name="pin_number_array">
+        <item>NO 1</item>
+        <item>NO 2</item>
+    </string-array>
+
 </resources>

@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.main_connection_type_tv:
                 new AlertDialog.Builder(MainActivity.this)
                         .setTitle(getString(R.string.connection_type))
-                        .setSingleChoiceItems(R.array.connection_type_array, mConnectionType, new DialogInterface.OnClickListener() {
+                        .setSingleChoiceItems(R.array.connection_type_array, (mConnectionType - 1), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 mConnectionType = i + 1;

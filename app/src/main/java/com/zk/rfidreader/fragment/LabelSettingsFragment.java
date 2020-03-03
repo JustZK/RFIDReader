@@ -237,19 +237,10 @@ public class LabelSettingsFragment extends Fragment implements View.OnClickListe
                                 getAntennaConfiguration(((HomeActivity) getActivity()).
                                         getDeviceID()).build());
                 break;
-            case R.id.label_settings_get_standing_wave_btn:
-
-                break;
             case R.id.label_settings_get_gpi_btn:
 
                 break;
             case R.id.label_settings_set_gpo_btn:
-
-                break;
-            case R.id.label_settings_set_buzzer_btn:
-
-                break;
-            case R.id.label_settings_get_buzzer_btn:
 
                 break;
             case R.id.label_settings_time_synchronization_btn:
@@ -368,7 +359,7 @@ public class LabelSettingsFragment extends Fragment implements View.OnClickListe
         public void getBuzzerStatusResult(int buzzerStatus) {
             Message msg = Message.obtain();
             msg.what = GET_BUZZER_STATUS_SETTING;
-
+            msg.obj = buzzerStatus;
             mHandler.sendMessage(msg);
         }
 
