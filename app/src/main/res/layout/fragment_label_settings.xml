@@ -381,15 +381,40 @@
                         android:gravity="center"
                         android:orientation="horizontal">
 
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="NO1" />
+
                         <Spinner
+                            android:id="@+id/label_settings_gpi_one_level_sp"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:enabled="false"
-                            android:entries="@array/pin_number_array"
+                            android:entries="@array/level_array"
                             android:gravity="center" />
 
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/appbar_padding_top"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="NO2" />
+
                         <Spinner
+                            android:id="@+id/label_settings_gpi_two_level_sp"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -450,6 +475,7 @@
                         android:orientation="horizontal">
 
                         <Spinner
+                            android:id="@+id/label_settings_gpo_pin_sp"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -458,6 +484,7 @@
                             android:gravity="center" />
 
                         <Spinner
+                            android:id="@+id/label_settings_gpo_level_sp"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"

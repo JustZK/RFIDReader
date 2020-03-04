@@ -95,7 +95,7 @@ public class LabelOperationFragment extends Fragment implements View.OnClickList
     public void setUserVisibleHint(boolean isVisibleToUser) {
         if (isVisibleToUser){
             LogUtil.Companion.getInstance().d("isVisibleToUser");
-            if (mBinding != null) {
+            if (mBinding != null && getActivity() != null && ((HomeActivity) getActivity()).getDeviceID() != null) {
                 mBinding.labelOperationIdTv.setText("设备编号：" + ((HomeActivity) getActivity()).getDeviceID());
             }
         } else {

@@ -64,10 +64,16 @@ public class LabelSettingsFragment extends Fragment implements View.OnClickListe
                 mBinding.labelSettingsCalendarCycleThreeEt.setText(String.valueOf(bundleGetAntenna.getInt("calendarCycleThree")));
                 break;
             case GET_ANTENNA_STANDING_WAVE_RADIO:
+                //delete
                 break;
             case GET_GPI_OUTPUT_STATUS:
+                Toast.makeText(getContext(), msg.obj.toString(), Toast.LENGTH_SHORT).show();
+                Bundle bundleGetGPI = msg.getData();
+                mBinding.labelSettingsGpiOneLevelSp.setSelection(bundleGetGPI.getInt("portZeroStatus"));
+                mBinding.labelSettingsGpiTwoLevelSp.setSelection(bundleGetGPI.getInt("portOneStatus"));
                 break;
             case GET_BUZZER_STATUS_SETTING:
+                //delete
                 break;
             case SET_BUZZER_STATUS_SETTING:
             case SET_GPO_OUTPUT_STATUS:
@@ -238,16 +244,29 @@ public class LabelSettingsFragment extends Fragment implements View.OnClickListe
                                         getDeviceID()).build());
                 break;
             case R.id.label_settings_get_gpi_btn:
-
+                UR880Entrance.getInstance().send(
+                        new UR880SendInfo.Builder().
+                                getGPIOutputStatus(((HomeActivity) getActivity()).
+                                        getDeviceID()).build());
                 break;
             case R.id.label_settings_set_gpo_btn:
-
+                UR880Entrance.getInstance().send(
+                        new UR880SendInfo.Builder().
+                                setGPOOutputStatus(((HomeActivity) getActivity()).
+                                        getDeviceID(), mBinding.labelSettingsGpoPinSp.getSelectedItemPosition(),
+                                        mBinding.labelSettingsGpoLevelSp.getSelectedItemPosition()).build());
                 break;
             case R.id.label_settings_time_synchronization_btn:
-
+                UR880Entrance.getInstance().send(
+                        new UR880SendInfo.Builder().
+                                timeSynchronization(((HomeActivity) getActivity()).
+                                        getDeviceID()).build());
                 break;
             case R.id.label_settings_device_restart_btn:
-
+                UR880Entrance.getInstance().send(
+                        new UR880SendInfo.Builder().
+                                deviceRestart(((HomeActivity) getActivity()).
+                                        getDeviceID()).build());
                 break;
         }
     }
@@ -272,7 +291,7 @@ public class LabelSettingsFragment extends Fragment implements View.OnClickListe
     public void setUserVisibleHint(boolean isVisibleToUser) {
         if (isVisibleToUser) {
             LogUtil.Companion.getInstance().d("isVisibleToUser");
-            if (mBinding != null) {
+            if (mBinding != null && getActivity() != null && ((HomeActivity) getActivity()).getDeviceID() != null) {
                 mBinding.labelSettingIdTv.setText("设备编号：" + ((HomeActivity) getActivity()).getDeviceID());
             }
         } else {
@@ -343,7 +362,13 @@ public class LabelSettingsFragment extends Fragment implements View.OnClickListe
         public void getGPIOutputStatusResult(boolean result, int errorNumber, int portZeroStatus, int portOneStatus, int portTwoStatus, int portThreeStatus) {
             Message msg = Message.obtain();
             msg.what = GET_GPI_OUTPUT_STATUS;
-
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("result", result);
+            bundle.putInt("errorNumber", errorNumber);
+            bundle.putInt("portZeroStatus", portZeroStatus);
+            bundle.putInt("portOneStatus", portOneStatus);
+            msg.setData(bundle);
+            msg.obj = "获取GPI结果：" + result + "  resultCode：" + errorNumber;
             mHandler.sendMessage(msg);
         }
 
