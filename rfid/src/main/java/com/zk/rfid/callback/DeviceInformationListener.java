@@ -6,4 +6,6 @@ public interface DeviceInformationListener {
     void heartbeat(String deviceID);
 
     void versionInformation(String hardwareVersionNumber, String softwareVersionNumber, String firmwareVersionNumber);
+
+    void removed(String deviceID);
 }

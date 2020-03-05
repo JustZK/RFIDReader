@@ -36,6 +36,7 @@ public class DeviceInformationFragment extends Fragment implements View.OnClickL
     private final static int REGISTER = 0x01;
     private final static int HEART = 0x02;
     private final static int VERSION = 0x03;
+    private final static int REMOVED = 0x04;
 
     private View mView;
     private FragmentDeviceInformationBinding mBinding;
@@ -66,6 +67,16 @@ public class DeviceInformationFragment extends Fragment implements View.OnClickL
                 mDeviceInformation.setSoftwareVersionNumber(bundle.getString("softwareVersionNumber"));
                 mDeviceInformation.setFirmwareVersionNumber(bundle.getString("firmwareVersionNumber"));
                 deviceShow(mDeviceInformation);
+                break;
+            case REMOVED:
+                String deviceID = msg.obj.toString();
+                for (DeviceInformation deviceInformation1 : mDeviceInformationList){
+                    if (deviceInformation1.getDeviceID().equals(deviceID)){
+                        mDeviceInformationList.remove(deviceInformation1);
+                        break;
+                    }
+                }
+                mDeviceAdapter.notifyDataSetChanged();
                 break;
         }
     }
@@ -171,6 +182,14 @@ public class DeviceInformationFragment extends Fragment implements View.OnClickL
             bundle.putString("firmwareVersionNumber", firmwareVersionNumber);
             message.setData(bundle);
             message.what = VERSION;
+            mHandler.sendMessage(message);
+        }
+
+        @Override
+        public void removed(String deviceID) {
+            Message message = Message.obtain();
+            message.what = REMOVED;
+            message.obj = deviceID;
             mHandler.sendMessage(message);
         }
     };

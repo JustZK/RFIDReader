@@ -43,11 +43,13 @@ public class UR880Entrance {
     }
 
     public void disConnect(){
-        if (mConnectionType != null) return;
+        if (mConnectionType == null) return;
         if (mConnectionType == CONNECTION_TCP_IP){
             UR880ServerParsingLibrary.getInstance().disConnect();
+            mConnectionType = null;
         } else if (mConnectionType == CONNECTION_SERIAL){
             UR880SerialOperationFactory.getInstance().disConnect();
+            mConnectionType = null;
         }
     }
 

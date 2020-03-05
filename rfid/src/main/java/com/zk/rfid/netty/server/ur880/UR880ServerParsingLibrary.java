@@ -51,7 +51,12 @@ public class UR880ServerParsingLibrary {
 
     public void disConnect() {
         if (nettyServerBootstrap != null){
+            LogUtil.Companion.getInstance().d("disConnect()");
             nettyServerBootstrap.disconnect();
+            nettyServerBootstrap.close();
+            processor.closeAll();
+            nettyServerBootstrap = null;
+            processor = null;
         }
     }
 
@@ -127,6 +132,14 @@ public class UR880ServerParsingLibrary {
         private List<DeviceInformation> mDeviceInformationList = new ArrayList<>();
         private GroupPackage mGroupPackage = new GroupPackage();
         private UnlockPackage mUnlockPackage = new UnlockPackage();
+
+        private void closeAll(){
+            for (Map.Entry<String, Channel> entry : nettyChannelMap.entrySet()) {
+                entry.getValue().disconnect();
+                entry.getValue().close();
+                entry.getValue().closeFuture();
+            }
+        }
 
         private List<InventoryListener> mInventoryListener =
                 Collections.synchronizedList(new ArrayList<InventoryListener>());
@@ -300,9 +313,9 @@ public class UR880ServerParsingLibrary {
                 for (Map.Entry<String, Channel> entry : nettyChannelMap.entrySet()) {
                     if (channel.equals(entry.getValue())) {
                         LogUtil.Companion.getInstance().d("nettyChannelMap.remove(entry.getKey()) :" + entry.getKey());
-//                        if (accessingListener != null){
-//                            accessingListener.error(entry.getKey(), 1);
-//                        }
+                        for (DeviceInformationListener deviceInformationListener : mDeviceInformationListener){
+                            deviceInformationListener.removed(entry.getKey());
+                        }
                         nettyChannelMap.remove(entry.getKey());
                         break;
                     }
@@ -341,15 +354,14 @@ public class UR880ServerParsingLibrary {
                 for (Map.Entry<String, Channel> entry : nettyChannelMap.entrySet()) {
                     if (channel.equals(entry.getValue())) {
                         LogUtil.Companion.getInstance().d("nettyChannelMap.remove(entry.getKey()) :" + entry.getKey());
-//                        if (accessingListener != null){
-//                            accessingListener.error(entry.getKey(), 1);
-//                        }
+                        for (DeviceInformationListener deviceInformationListener : mDeviceInformationListener){
+                            deviceInformationListener.removed(entry.getKey());
+                        }
                         nettyChannelMap.remove(entry.getKey());
                         break;
                     }
                 }
             }
-
         }
 
 
@@ -487,6 +499,16 @@ public class UR880ServerParsingLibrary {
             } else if (buffer[6] == TYPE.HEART_BEAT_H.getType()) {
                 LogUtil.Companion.getInstance().d("心跳");
                 channel.writeAndFlush(mGroupPackage.heartbeatR(0));
+                if (nettyChannelMap.containsValue(channel)) {
+                    for (Map.Entry<String, Channel> entry : nettyChannelMap.entrySet()) {
+                        if (channel.equals(entry.getValue())) {
+                            for (DeviceInformationListener deviceInformationListener : mDeviceInformationListener){
+                                deviceInformationListener.heartbeat(entry.getKey());
+                            }
+                            break;
+                        }
+                    }
+                }
             } else if (buffer[6] == TYPE.GET_VERSION_INFO_H.getType()) {
                 LogUtil.Companion.getInstance().d("获取版本号");
 //                mUnlockPackage.getVersionInfoH(mDeviceInformationListener, buffer);
