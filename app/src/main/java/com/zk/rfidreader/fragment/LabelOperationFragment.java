@@ -25,6 +25,8 @@ import java.lang.ref.WeakReference;
 public class LabelOperationFragment extends Fragment implements View.OnClickListener{
     private FragmentLabelOperationBinding mBinding;
 
+    private View mView;
+
     private LabelOperationFragmentHandler mHandler;
     private void handleMessage(Message msg) {
         switch (msg.what) {
@@ -47,14 +49,19 @@ public class LabelOperationFragment extends Fragment implements View.OnClickList
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater,
-                R.layout.fragment_label_operation, container, false);
-        mBinding.setOnClickListener(this);
-        mHandler = new LabelOperationFragmentHandler(this);
-
-
-
-        return mBinding.getRoot();
+        if (mView == null) {
+            mBinding = DataBindingUtil.inflate(inflater,
+                    R.layout.fragment_label_operation, container, false);
+            mBinding.setOnClickListener(this);
+            mHandler = new LabelOperationFragmentHandler(this);
+            mView = mBinding.getRoot();
+        } else {
+            ViewGroup parent = (ViewGroup) mView.getParent();
+            if (null != parent) {
+                parent.removeView(mView);
+            }
+        }
+        return mView;
     }
 
     @Override

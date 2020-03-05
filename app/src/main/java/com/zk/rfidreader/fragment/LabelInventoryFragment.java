@@ -31,17 +31,19 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LabelInventoryFragment extends Fragment implements View.OnClickListener{
+public class LabelInventoryFragment extends Fragment implements View.OnClickListener {
     private final int START = 0x01;
     private final int END = 0x02;
     private final int CANCEL = 0x03;
     private final int VALUE = 0x04;
 
+    private View mView;
     private FragmentLabelInventoryBinding mBinding;
     private List<LabelInfo> mLabelInfoList = new ArrayList<>();
     private LabelAdapter mLabelAdapter;
 
     private LabelInventoryFragmentHandler mHandler;
+
     private void handleMessage(Message msg) {
         switch (msg.what) {
             case START:
@@ -56,8 +58,8 @@ public class LabelInventoryFragment extends Fragment implements View.OnClickList
             case VALUE:
                 LabelInfo labelInfo = (LabelInfo) msg.obj;
                 boolean isExit = false;
-                for (LabelInfo labelInfo1 : mLabelInfoList){
-                    if (labelInfo1.equals(labelInfo)){
+                for (LabelInfo labelInfo1 : mLabelInfoList) {
+                    if (labelInfo1.equals(labelInfo)) {
                         isExit = true;
                         labelInfo1.setRSSI(labelInfo.getRSSI());
                         labelInfo1.setFastID(labelInfo.getFastID());
@@ -68,7 +70,7 @@ public class LabelInventoryFragment extends Fragment implements View.OnClickList
                         labelInfo1.setInventoryNumber(labelInfo1.getInventoryNumber() + 1);
                     }
                 }
-                if (!isExit){
+                if (!isExit) {
                     labelInfo.setInventoryNumber(1);
                     mLabelInfoList.add(labelInfo);
                 }
@@ -92,30 +94,38 @@ public class LabelInventoryFragment extends Fragment implements View.OnClickList
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater,
-                R.layout.fragment_label_inventory, container, false);
-        mBinding.setOnClickListener(this);
-        mBinding.labelInventoryInventoryModeSp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0){
-                    mBinding.labelInventoryStopBtn.setVisibility(View.GONE);
-                } else {
-                    mBinding.labelInventoryStopBtn.setVisibility(View.VISIBLE);
+        if (mView == null) {
+            mBinding = DataBindingUtil.inflate(inflater,
+                    R.layout.fragment_label_inventory, container, false);
+            mBinding.setOnClickListener(this);
+            mBinding.labelInventoryInventoryModeSp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (position == 0) {
+                        mBinding.labelInventoryStopBtn.setVisibility(View.GONE);
+                    } else {
+                        mBinding.labelInventoryStopBtn.setVisibility(View.VISIBLE);
+                    }
                 }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+            mLabelAdapter = new LabelAdapter(getContext(), mLabelInfoList);
+            mBinding.labelInventoryLv.setAdapter(mLabelAdapter);
+            mHandler = new LabelInventoryFragmentHandler(this);
+            UR880Entrance.getInstance().addOnInventoryListener(mInventoryListener);
+
+            mView = mBinding.getRoot();
+        } else {
+            ViewGroup parent = (ViewGroup) mView.getParent();
+            if (null != parent) {
+                parent.removeView(mView);
             }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        mLabelAdapter = new LabelAdapter(getContext(), mLabelInfoList);
-        mBinding.labelInventoryLv.setAdapter(mLabelAdapter);
-        mHandler = new LabelInventoryFragmentHandler(this);
-        UR880Entrance.getInstance().addOnInventoryListener(mInventoryListener);
-
-        return mBinding.getRoot();
+        }
+        return mView;
     }
 
     private InventoryListener mInventoryListener = new InventoryListener() {
@@ -155,7 +165,7 @@ public class LabelInventoryFragment extends Fragment implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.label_inventory_start_btn:
                 mLabelInfoList.clear();
                 mBinding.labelInventoryNumberTv.setText("当前盘到的标签数量：" + mLabelInfoList.size());
@@ -194,7 +204,7 @@ public class LabelInventoryFragment extends Fragment implements View.OnClickList
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-        if (isVisibleToUser){
+        if (isVisibleToUser) {
             LogUtil.Companion.getInstance().d("isVisibleToUser");
             if (mBinding != null && getActivity() != null && ((HomeActivity) getActivity()).getDeviceID() != null) {
                 mBinding.labelDeviceIdTv.setText("设备编号：" + ((HomeActivity) getActivity()).getDeviceID());

@@ -37,6 +37,7 @@ public class DeviceInformationFragment extends Fragment implements View.OnClickL
     private final static int HEART = 0x02;
     private final static int VERSION = 0x03;
 
+    private View mView;
     private FragmentDeviceInformationBinding mBinding;
     private DeviceAdapter mDeviceAdapter;
     private List<DeviceInformation> mDeviceInformationList = new ArrayList<>();
@@ -82,19 +83,28 @@ public class DeviceInformationFragment extends Fragment implements View.OnClickL
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if (mView == null) {
 
-        mBinding = DataBindingUtil.inflate(inflater,
-                R.layout.fragment_device_information, container, false);
-        mBinding.setOnClickListener(this);
-        mBinding.deviceInfoLv.setOnItemClickListener(this);
-        mDeviceAdapter = new DeviceAdapter(getActivity(), mDeviceInformationList);
-        mBinding.deviceInfoLv.setAdapter(mDeviceAdapter);
+            mBinding = DataBindingUtil.inflate(inflater,
+                    R.layout.fragment_device_information, container, false);
+            mBinding.setOnClickListener(this);
+            mBinding.deviceInfoLv.setOnItemClickListener(this);
+            mDeviceAdapter = new DeviceAdapter(getActivity(), mDeviceInformationList);
+            mBinding.deviceInfoLv.setAdapter(mDeviceAdapter);
 
 
-        UR880Entrance.getInstance().addOnDeviceInformationListener(mDeviceInformationListener);
+            UR880Entrance.getInstance().addOnDeviceInformationListener(mDeviceInformationListener);
 
-        mHandler = new DeviceInformationFragmentHandler(this);
-        return mBinding.getRoot();
+            mHandler = new DeviceInformationFragmentHandler(this);
+
+            mView = mBinding.getRoot();
+        } else {
+            ViewGroup parent = (ViewGroup) mView.getParent();
+            if (null != parent) {
+                parent.removeView(mView);
+            }
+        }
+        return mView;
     }
 
 

@@ -314,7 +314,7 @@ public class GroupPackage {
 
         data[6] = TYPE.TIME_SYNCHRONIZATION_R.type;
         Calendar calendar = Calendar.getInstance();
-        data[7] = (byte) calendar.get(Calendar.YEAR);
+        data[7] = (byte) (calendar.get(Calendar.YEAR) % 2000);
         data[8] = (byte) (calendar.get(Calendar.MONTH) + 1);
         data[9] = (byte) calendar.get(Calendar.DAY_OF_MONTH);
         data[10] = (byte) calendar.get(Calendar.HOUR_OF_DAY);

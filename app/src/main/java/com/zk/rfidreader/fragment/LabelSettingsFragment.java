@@ -37,6 +37,7 @@ public class LabelSettingsFragment extends Fragment implements View.OnClickListe
     private final static int TIME_SYNCHRONIZATION = 0x08;
     private final static int DEVICE_RESTART = 0x09;
 
+    private View mView;
     private FragmentLabelSettingsBinding mBinding;
 
     private LabelSettingsFragmentHandler mHandler;
@@ -100,15 +101,21 @@ public class LabelSettingsFragment extends Fragment implements View.OnClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater,
-                R.layout.fragment_label_settings, container, false);
-        mBinding.setOnClickListener(this);
-        mHandler = new LabelSettingsFragmentHandler(this);
+        if (mView == null) {
+            mBinding = DataBindingUtil.inflate(inflater,
+                    R.layout.fragment_label_settings, container, false);
+            mBinding.setOnClickListener(this);
+            mHandler = new LabelSettingsFragmentHandler(this);
 
-        UR880Entrance.getInstance().addOnFactorySettingListener(mFactorySettingListener);
-
-
-        return mBinding.getRoot();
+            UR880Entrance.getInstance().addOnFactorySettingListener(mFactorySettingListener);
+            mView = mBinding.getRoot();
+        } else {
+            ViewGroup parent = (ViewGroup) mView.getParent();
+            if (null != parent) {
+                parent.removeView(mView);
+            }
+        }
+        return mView;
     }
 
     @Override

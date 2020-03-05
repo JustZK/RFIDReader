@@ -226,6 +226,19 @@ public class UR880ServerParsingLibrary {
                 case GET_ANTENNA_CONFIGURATION_R:
                     channel.writeAndFlush(mGroupPackage.getAntennaConfigurationR(0));
                     break;
+                case SET_GPO_OUTPUT_STATUS_R:
+                    channel.writeAndFlush(mGroupPackage.setGPOOutputStatusR(0,
+                            ur880SendInfo.getPortNumber(), ur880SendInfo.getElectricityLevel()));
+                    break;
+                case GET_GPI_OUTPUT_STATUS_R:
+                    channel.writeAndFlush(mGroupPackage.getGPIOutputStatusR(0));
+                    break;
+                case TIME_SYNCHRONIZATION_R:
+                    channel.writeAndFlush(mGroupPackage.timeSynchronizationR(0));
+                    break;
+                case DEVICE_RESTART_R:
+                    channel.writeAndFlush(mGroupPackage.deviceRestartR(0));
+                    break;
             }
             return true;
         }
@@ -490,7 +503,7 @@ public class UR880ServerParsingLibrary {
                 LogUtil.Companion.getInstance().d("天线配置");
                 mUnlockPackage.setAntennaConfigurationH(mFactorySettingListener, buffer);
             } else if (buffer[6] == TYPE.GET_ANTENNA_CONFIGURATION_H.getType()) {
-                LogUtil.Companion.getInstance().d("天线配置插叙");
+                LogUtil.Companion.getInstance().d("天线配置查询");
                 mUnlockPackage.getAntennaConfigurationH(mFactorySettingListener, buffer);
             } else if (buffer[6] == TYPE.GET_ANTENNA_STANDING_WAVE_RADIO_H.getType()) {
                 LogUtil.Companion.getInstance().d("驻波比");

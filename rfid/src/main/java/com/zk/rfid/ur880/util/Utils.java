@@ -89,8 +89,8 @@ public class Utils {
         TIME_SYNCHRONIZATION_R((byte) 0xA4),//2.41	时间同步 Time synchronization
         TIME_SYNCHRONIZATION_H((byte) 0xA5),
 
-        DEVICE_RESTART_R((byte) 0x39), //2.43	设备重启 Device restart
-        DEVICE_RESTART_H((byte) 0x3A);
+        DEVICE_RESTART_R((byte) 0xA6), //2.43	设备重启 Device restart
+        DEVICE_RESTART_H((byte) 0xA7);
 
         byte type;
 

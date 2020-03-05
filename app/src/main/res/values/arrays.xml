@@ -35,8 +35,8 @@
     </string-array>
 
     <string-array name="level_array">
-        <item>高</item>
         <item>低</item>
+        <item>高</item>
     </string-array>
 
     <string-array name="pin_number_array">

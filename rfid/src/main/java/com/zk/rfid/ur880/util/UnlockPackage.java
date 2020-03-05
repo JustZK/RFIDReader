@@ -117,7 +117,7 @@ public class UnlockPackage {
     }
 
     public void setAntennaConfigurationH(List<FactorySettingListener> factorySettingListeners, byte[] buffer) {
-        boolean result = buffer[10] == 0x00;
+        boolean result = buffer[10] == 0x01;
         int errorNumber = buffer[14];
         for (FactorySettingListener factorySettingListener : factorySettingListeners) {
             factorySettingListener.setAntennaConfigurationResult(result, errorNumber);
@@ -125,7 +125,7 @@ public class UnlockPackage {
     }
 
     public void getAntennaConfigurationH(List<FactorySettingListener> factorySettingListeners, byte[] buffer) {
-        boolean result = buffer[10] == 0x00;
+        boolean result = buffer[10] == 0x01;
         int errorNumber = buffer[14];
 
         int antennaEnableZero = buffer[15];
@@ -192,7 +192,7 @@ public class UnlockPackage {
     }
 
     public void setGPOOutputStatusH(List<FactorySettingListener> factorySettingListeners, byte[] buffer) {
-        boolean result = buffer[10] == 0x00;
+        boolean result = buffer[10] == 0x01;
         int errorNumber = buffer[14];
         for (FactorySettingListener factorySettingListener : factorySettingListeners) {
             factorySettingListener.setGPOOutputStatusResult(result, errorNumber);
@@ -200,7 +200,7 @@ public class UnlockPackage {
     }
 
     public void getGPIOutputStatusH(List<FactorySettingListener> factorySettingListeners, byte[] buffer) {
-        boolean result = buffer[10] == 0x00;
+        boolean result = buffer[10] == 0x01;
         int errorNumber = buffer[14];
         int portZeroStatus = buffer[15];
         int portOneStatus = buffer[16];
