@@ -35,7 +35,6 @@ public class UR880Entrance {
         this.mConnectionType = connectionType;
         if (connectionType == CONNECTION_TCP_IP){
             UR880ServerParsingLibrary.getInstance().init(serverPort);
-            UR880ServerParsingLibrary.getInstance().connect();
         } else if (connectionType == CONNECTION_SERIAL){
             UR880SerialOperationFactory.getInstance().init(deviceInformationList);
         }
