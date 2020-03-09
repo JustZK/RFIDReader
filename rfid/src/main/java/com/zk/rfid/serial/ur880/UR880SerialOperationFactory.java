@@ -55,7 +55,7 @@ public class UR880SerialOperationFactory {
     }
 
     public void connect(){
-        for (UR880SerialOperation ur880SerialOperation : ur880SerialOperationMap.values()) {
+        for (UR880SerialOperation ur880SerialOperation : ur880SerialOperationMapTemp.values()) {
             ur880SerialOperation.send(new UR880SendInfo.Builder().register().build());
         }
     }
@@ -71,73 +71,73 @@ public class UR880SerialOperationFactory {
     }
 
     public void addOnAccessingListener(InventoryListener inventoryListener) {
-        for (UR880SerialOperation ur880SerialOperation : ur880SerialOperationMap.values()) {
+        for (UR880SerialOperation ur880SerialOperation : ur880SerialOperationMapTemp.values()) {
             ur880SerialOperation.addOnAccessingListener(inventoryListener);
         }
     }
 
     public void removeAccessingListener(InventoryListener inventoryListener) {
-        for (UR880SerialOperation ur880SerialOperation : ur880SerialOperationMap.values()) {
+        for (UR880SerialOperation ur880SerialOperation : ur880SerialOperationMapTemp.values()) {
             ur880SerialOperation.removeAccessingListener(inventoryListener);
         }
     }
 
     public void removeAllAccessingListener() {
-        for (UR880SerialOperation ur880SerialOperation : ur880SerialOperationMap.values()) {
+        for (UR880SerialOperation ur880SerialOperation : ur880SerialOperationMapTemp.values()) {
             ur880SerialOperation.removeAllAccessingListener();
         }
     }
 
     public void addOnDeviceInformationListener(DeviceInformationListener deviceInformationListener) {
-        for (UR880SerialOperation ur880SerialOperation : ur880SerialOperationMap.values()) {
+        for (UR880SerialOperation ur880SerialOperation : ur880SerialOperationMapTemp.values()) {
             ur880SerialOperation.addOnDeviceInformationListener(deviceInformationListener);
         }
     }
 
     public void removeDeviceInformationListener(DeviceInformationListener deviceInformationListener) {
-        for (UR880SerialOperation ur880SerialOperation : ur880SerialOperationMap.values()) {
+        for (UR880SerialOperation ur880SerialOperation : ur880SerialOperationMapTemp.values()) {
             ur880SerialOperation.removeDeviceInformationListener(deviceInformationListener);
         }
     }
 
     public void removeAllDeviceInformationListener() {
-        for (UR880SerialOperation ur880SerialOperation : ur880SerialOperationMap.values()) {
+        for (UR880SerialOperation ur880SerialOperation : ur880SerialOperationMapTemp.values()) {
             ur880SerialOperation.removeAllDeviceInformationListener();
         }
     }
 
     public void addOnFactorySettingListener(FactorySettingListener factorySettingListener) {
-        for (UR880SerialOperation ur880SerialOperation : ur880SerialOperationMap.values()) {
+        for (UR880SerialOperation ur880SerialOperation : ur880SerialOperationMapTemp.values()) {
             ur880SerialOperation.addOnFactorySettingListener(factorySettingListener);
         }
     }
 
     public void removeFactorySettingListener(FactorySettingListener factorySettingListener) {
-        for (UR880SerialOperation ur880SerialOperation : ur880SerialOperationMap.values()) {
+        for (UR880SerialOperation ur880SerialOperation : ur880SerialOperationMapTemp.values()) {
             ur880SerialOperation.removeFactorySettingListener(factorySettingListener);
         }
     }
 
     public void removeAllFactorySettingListener() {
-        for (UR880SerialOperation ur880SerialOperation : ur880SerialOperationMap.values()) {
+        for (UR880SerialOperation ur880SerialOperation : ur880SerialOperationMapTemp.values()) {
             ur880SerialOperation.removeAllFactorySettingListener();
         }
     }
 
     public void addOnLabelOperationListener(LabelOperationListener labelOperationListener) {
-        for (UR880SerialOperation ur880SerialOperation : ur880SerialOperationMap.values()) {
+        for (UR880SerialOperation ur880SerialOperation : ur880SerialOperationMapTemp.values()) {
             ur880SerialOperation.addOnLabelOperationListener(labelOperationListener);
         }
     }
 
     public void removeLabelOperationListener(LabelOperationListener labelOperationListener) {
-        for (UR880SerialOperation ur880SerialOperation : ur880SerialOperationMap.values()) {
+        for (UR880SerialOperation ur880SerialOperation : ur880SerialOperationMapTemp.values()) {
             ur880SerialOperation.removeLabelOperationListener(labelOperationListener);
         }
     }
 
     public void removeAllLabelOperationListener() {
-        for (UR880SerialOperation ur880SerialOperation : ur880SerialOperationMap.values()) {
+        for (UR880SerialOperation ur880SerialOperation : ur880SerialOperationMapTemp.values()) {
             ur880SerialOperation.removeAllLabelOperationListener();
         }
     }

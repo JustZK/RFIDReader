@@ -321,7 +321,9 @@ public class UR880SerialOperation extends SerialHelper {
             if (mRegisteredListener != null){
                 mRegisteredListener.registered(deviceInformation.getDeviceID(), mIDTemp);
             }
+            LogUtil.Companion.getInstance().d("注册回调开始");
             for (DeviceInformationListener deviceInformationListener : mDeviceInformationListener){
+                LogUtil.Companion.getInstance().d("注册回调-----------");
                 deviceInformationListener.registered(deviceInformation.getDeviceID(),
                         deviceInformation.getDeviceVersionNumber(),
                         deviceInformation.getDeviceRemoteAddress());
