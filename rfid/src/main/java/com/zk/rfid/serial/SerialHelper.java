@@ -118,7 +118,9 @@ public abstract class SerialHelper {
                     byte[] buffer=new byte[4096];
                     int size = mInputStream.read(buffer);
                     if (size > 0){
-                        onDataReceived(sPort, buffer, size);
+                        byte[] readBuffer = new byte[size];
+                        System.arraycopy(buffer, 0, readBuffer, 0, size);
+                        onDataReceived(sPort, readBuffer, size);
                     }
                 } catch (Throwable e)
                 {
