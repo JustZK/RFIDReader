@@ -66,6 +66,11 @@ public class UR880SendInfo {
             mUR880SendInfo = new UR880SendInfo();
         }
 
+        public Builder register() {
+            mUR880SendInfo.setCommunicationType(TYPE.REGISTERED_R);
+            return this;
+        }
+
         // 2.5	Host请求读写器软硬件版本信息
         public Builder getVersionInformation(String ID) {
             mUR880SendInfo.setCommunicationType(TYPE.GET_VERSION_INFO_R);

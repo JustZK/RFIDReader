@@ -54,6 +54,12 @@ public class UR880SerialOperationFactory {
         return true;
     }
 
+    public void connect(){
+        for (UR880SerialOperation ur880SerialOperation : ur880SerialOperationMap.values()) {
+            ur880SerialOperation.send(new UR880SendInfo.Builder().register().build());
+        }
+    }
+
     public void disConnect(){
         for (UR880SerialOperation ur880SerialOperation : ur880SerialOperationMap.values()) {
             ur880SerialOperation.closeComPort();

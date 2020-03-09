@@ -29,6 +29,8 @@ public class HomeActivity extends AppCompatActivity {
         mActivityHomeBinding = DataBindingUtil.setContentView(this, R.layout.activity_home);
 
         initView();
+
+        UR880Entrance.getInstance().connect();
     }
 
     private void initView(){

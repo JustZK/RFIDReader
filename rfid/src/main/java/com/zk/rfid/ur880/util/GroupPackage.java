@@ -7,6 +7,22 @@ import java.util.Calendar;
 
 public class GroupPackage {
 
+    public byte[] registeredR(int frameNumber) {
+        byte[] data;
+        data = new byte[10];
+        Utils.initMessage(data, frameNumber);
+
+        data[6] = TYPE.REGISTERED_R.type;
+        data[7] = Utils.calcCheckBit(data);
+
+        LogUtil.Companion.getInstance().d("Send 注册 转译前 registeredH：", data, data.length);
+        int T = Utils.ifTranslation(data);
+        if (T > 0)
+            return (Utils.translationForPack(data, data.length, T));
+        else
+            return data;
+    }
+
     public byte[] registeredH(int frameNumber) {
         byte[] data;
         data = new byte[14];

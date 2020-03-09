@@ -101,12 +101,58 @@ public class UR880SerialOperation extends SerialHelper {
 
 
     void send(UR880SendInfo ur880SendInfo) {
-//        switch (ur880SendInfo.getCommunicationType()) {
-//            case 0x07:
-////                addSendTask(LightGroupPackage.openLight(lightSendInfo.getTargetAddress(), lightSendInfo.getSourceAddress(),
-////                        lightSendInfo.getLightNumber()));
-//                break;
-//        }
+
+        switch (ur880SendInfo.getCommunicationType()) {
+            case REGISTERED_R:
+                addSendTask(mGroupPackage.registeredR(0));
+                break;
+            case GET_VERSION_INFO_R:
+                addSendTask(mGroupPackage.getVersionInfoR(0));
+                break;
+            case INVENTORY_R:
+                addSendTask(mGroupPackage.inventoryR(0,
+                        ur880SendInfo.getFastId(), ur880SendInfo.getAntennaNumber(),
+                        ur880SendInfo.getInventoryType()));
+                break;
+            case CANCEL_R:
+                addSendTask(mGroupPackage.cancelR(0));
+                break;
+            case SET_ANTENNA_CONFIGURATION_R:
+                addSendTask(mGroupPackage.setAntennaConfigurationR(0,
+                        ur880SendInfo.getAntennaEnableZero(),
+                        ur880SendInfo.getAntennaEnableOne(),
+                        ur880SendInfo.getAntennaEnableTwo(),
+                        ur880SendInfo.getAntennaEnableThree(),
+                        ur880SendInfo.getAntennaPowerZero(),
+                        ur880SendInfo.getAntennaPowerOne(),
+                        ur880SendInfo.getAntennaPowerTwo(),
+                        ur880SendInfo.getAntennaPowerThree(),
+                        ur880SendInfo.getDwellTimeZero(),
+                        ur880SendInfo.getDwellTimeOne(),
+                        ur880SendInfo.getDwellTimeTwo(),
+                        ur880SendInfo.getDwellTimeThree(),
+                        ur880SendInfo.getCalendarCycleZero(),
+                        ur880SendInfo.getCalendarCycleOne(),
+                        ur880SendInfo.getCalendarCycleTwo(),
+                        ur880SendInfo.getCalendarCycleThree()));
+                break;
+            case GET_ANTENNA_CONFIGURATION_R:
+                addSendTask(mGroupPackage.getAntennaConfigurationR(0));
+                break;
+            case SET_GPO_OUTPUT_STATUS_R:
+                addSendTask(mGroupPackage.setGPOOutputStatusR(0,
+                        ur880SendInfo.getPortNumber(), ur880SendInfo.getElectricityLevel()));
+                break;
+            case GET_GPI_OUTPUT_STATUS_R:
+                addSendTask(mGroupPackage.getGPIOutputStatusR(0));
+                break;
+            case TIME_SYNCHRONIZATION_R:
+                addSendTask(mGroupPackage.timeSynchronizationR(0));
+                break;
+            case DEVICE_RESTART_R:
+                addSendTask(mGroupPackage.deviceRestartR(0));
+                break;
+        }
     }
 
     //打开串口
@@ -268,7 +314,7 @@ public class UR880SerialOperation extends SerialHelper {
      */
     private void parser(byte[] buffer, int size) {
         LogUtil.Companion.getInstance().d("serial test Received", buffer, size);
-        if (buffer[6] == TYPE.REGISTERED_R.getType()) {
+        if (buffer[6] == TYPE.REGISTERED_H.getType()) {
             DeviceInformation deviceInformation = mUnlockPackage.registeredR(null, buffer);
             mID = deviceInformation.getDeviceID();
             LogUtil.Companion.getInstance().d("注册-ID：" + deviceInformation.getDeviceID());
@@ -282,8 +328,45 @@ public class UR880SerialOperation extends SerialHelper {
             }
         } else if (buffer[6] == TYPE.HEART_BEAT_H.getType()) {
             LogUtil.Companion.getInstance().d("心跳");
-        } else if (buffer[6] == TYPE.HEART_BEAT_H.getType()) {
-            LogUtil.Companion.getInstance().d("心跳");
+        } else if (buffer[6] == TYPE.GET_VERSION_INFO_H.getType()) {
+            LogUtil.Companion.getInstance().d("获取版本号");
+//                mUnlockPackage.getVersionInfoH(mDeviceInformationListener, buffer);
+        } else if (buffer[6] == TYPE.INVENTORY_H.getType()) {
+            LogUtil.Companion.getInstance().d("Inventory命令帧格式");
+            mUnlockPackage.getInventoryH(mInventoryListener, buffer);
+        } else if (buffer[6] == TYPE.CANCEL_H.getType()) {
+            LogUtil.Companion.getInstance().d("cancel");
+            mUnlockPackage.getCancelH(mInventoryListener, buffer);
+        } else if (buffer[6] == TYPE.INVENTORY_REPORT_DATA_R.getType()) {
+            LogUtil.Companion.getInstance().d("Inventory上报数据");
+            mUnlockPackage.getInventoryReportDataH(mInventoryListener, buffer);
+        } else if (buffer[6] == TYPE.SET_ANTENNA_CONFIGURATION_H.getType()) {
+            LogUtil.Companion.getInstance().d("天线配置");
+            mUnlockPackage.setAntennaConfigurationH(mFactorySettingListener, buffer);
+        } else if (buffer[6] == TYPE.GET_ANTENNA_CONFIGURATION_H.getType()) {
+            LogUtil.Companion.getInstance().d("天线配置查询");
+            mUnlockPackage.getAntennaConfigurationH(mFactorySettingListener, buffer);
+        } else if (buffer[6] == TYPE.GET_ANTENNA_STANDING_WAVE_RADIO_H.getType()) {
+            LogUtil.Companion.getInstance().d("驻波比");
+            mUnlockPackage.getAntennaStandingWaveRatioH(mFactorySettingListener, buffer);
+        } else if (buffer[6] == TYPE.SET_GPO_OUTPUT_STATUS_H.getType()) {
+            LogUtil.Companion.getInstance().d("设置GPO输出状态");
+            mUnlockPackage.setGPOOutputStatusH(mFactorySettingListener, buffer);
+        } else if (buffer[6] == TYPE.GET_GPI_OUTPUT_STATUS_H.getType()) {
+            LogUtil.Companion.getInstance().d("读取GPI输入命令");
+            mUnlockPackage.getGPIOutputStatusH(mFactorySettingListener, buffer);
+        } else if (buffer[6] == TYPE.SET_BUZZER_STATUS_SETTING_H.getType()) {
+            LogUtil.Companion.getInstance().d("蜂鸣器状态设置");
+            mUnlockPackage.setBuzzerStatusH(mFactorySettingListener, buffer);
+        } else if (buffer[6] == TYPE.GET_BUZZER_STATUS_SETTING_H.getType()) {
+            LogUtil.Companion.getInstance().d("读写器蜂鸣器状态获取命令");
+            mUnlockPackage.getBuzzerStatusH(mFactorySettingListener, buffer);
+        } else if (buffer[6] == TYPE.TIME_SYNCHRONIZATION_H.getType()) {
+            LogUtil.Companion.getInstance().d("时间同步");
+            mUnlockPackage.timeSynchronizationH(mFactorySettingListener, buffer);
+        } else if (buffer[6] == TYPE.DEVICE_RESTART_H.getType()) {
+            LogUtil.Companion.getInstance().d("设备重启");
+            mUnlockPackage.deviceRestartH(mFactorySettingListener, buffer);
         }
     }
 }

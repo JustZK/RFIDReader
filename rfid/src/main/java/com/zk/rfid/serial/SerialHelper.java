@@ -170,13 +170,6 @@ public abstract class SerialHelper {
      * @param sendDate
      */
     public void addSendTask(byte[] sendDate) {
-//        StringBuilder buffers = new StringBuilder();
-//        for (int i = 0; i < sendDate.length; i++) {
-//            buffers.append(Integer.toHexString((sendDate[i] & 0xff)));
-//            buffers.append(" ");
-//        }
-//        LogUtil.d("SerialHelper", "test Send" + buffers);
-
         sendList.add(sendDate);
         if (sendList.size() >= 1)
             synchronized (addSendSyncLock) {

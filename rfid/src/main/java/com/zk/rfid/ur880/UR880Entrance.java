@@ -42,6 +42,15 @@ public class UR880Entrance {
         return true;
     }
 
+    public void connect(){
+        if (mConnectionType == null) return;
+        if (mConnectionType == CONNECTION_TCP_IP){
+            UR880ServerParsingLibrary.getInstance().connect();
+        } else if (mConnectionType == CONNECTION_SERIAL){
+            UR880SerialOperationFactory.getInstance().connect();
+        }
+    }
+
     public void disConnect(){
         if (mConnectionType == null) return;
         if (mConnectionType == CONNECTION_TCP_IP){
