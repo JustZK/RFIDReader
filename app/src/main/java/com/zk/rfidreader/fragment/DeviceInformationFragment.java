@@ -44,6 +44,7 @@ public class DeviceInformationFragment extends Fragment implements View.OnClickL
     private List<DeviceInformation> mDeviceInformationList = new ArrayList<>();
     private DeviceInformation mDeviceInformation;
     private ProgressDialog mGetVersionProgressDialog;
+    private boolean mFirstRegister = true;
 
     private DeviceInformationFragmentHandler mHandler;
 
@@ -56,6 +57,11 @@ public class DeviceInformationFragment extends Fragment implements View.OnClickL
                     mBinding.deviceInfoDeviceTv.setText("可用设备列表");
                     mDeviceInformationList.add(deviceInformation);
                     mDeviceAdapter.notifyDataSetChanged();
+                    if (mFirstRegister){
+                        mFirstRegister = false;
+                        ((HomeActivity) getActivity()).setDeviceID(deviceInformation.getDeviceID());
+                        deviceShow(deviceInformation);
+                    }
                 }
                 break;
             case VERSION:
