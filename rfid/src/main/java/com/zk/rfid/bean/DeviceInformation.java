@@ -3,11 +3,11 @@ package com.zk.rfid.bean;
 import androidx.annotation.Nullable;
 
 public class DeviceInformation {
-    private String mDeviceID;
-    private String mDeviceVersionNumber;
-    private String mDeviceRemoteAddress;
-    private String mDeviceSerialPath; //Serial地址
-    private String mDeviceSerialBaudRate; //Serial波特率
+    private String mDeviceID;              //设备ID
+    private String mDeviceVersionNumber;   //设备软件版本号
+    private String mDeviceRemoteAddress;   //设备IP地址
+    private String mDeviceSerialPath;      //Serial地址
+    private String mDeviceSerialBaudRate;  //Serial波特率
     private String mHardwareVersionNumber; //硬件版本号
     private String mSoftwareVersionNumber; //软件版本号
     private String mFirmwareVersionNumber; //固件版本号
