@@ -369,6 +369,12 @@ public class UR880SerialOperation extends SerialHelper {
         } else if (buffer[6] == TYPE.DEVICE_RESTART_H.getType()) {
             LogUtil.Companion.getInstance().d("设备重启");
             mUnlockPackage.deviceRestartH(mFactorySettingListener, buffer);
+        } else if (buffer[6] == TYPE.UNLOCK_H.getType()){
+            LogUtil.Companion.getInstance().d("开锁指令");
+        } else if (buffer[6] == TYPE.TURN_ON_LIGHT_H.getType()){
+            LogUtil.Companion.getInstance().d("亮灯指令");
+        } else if (buffer[6] == TYPE.GE_INFRARED_OR_LOCK_STATE_H.getType()){
+            LogUtil.Companion.getInstance().d("获取红外状态、锁状态");
         }
     }
 }

@@ -3,6 +3,7 @@ package com.zk.rfid.ur880.util;
 import com.zk.common.utils.LogUtil;
 import com.zk.rfid.bean.DeviceInformation;
 import com.zk.rfid.bean.LabelInfo;
+import com.zk.rfid.callback.CabinetInfoListener;
 import com.zk.rfid.callback.DeviceInformationListener;
 import com.zk.rfid.callback.FactorySettingListener;
 import com.zk.rfid.callback.InventoryListener;
@@ -237,6 +238,27 @@ public class UnlockPackage {
         int errorNumber = buffer[10];
         for (FactorySettingListener factorySettingListener : factorySettingListeners) {
             factorySettingListener.deviceRestartResult(errorNumber);
+        }
+    }
+
+    public void unlockH(List<CabinetInfoListener> cabinetInfoListeners, byte[] buffer) {
+        int errorNumber = buffer[10];
+        for (CabinetInfoListener cabinetInfoListener : cabinetInfoListeners) {
+            cabinetInfoListener.unlockResult(errorNumber);
+        }
+    }
+
+    public void turnOnLightH(List<CabinetInfoListener> cabinetInfoListeners, byte[] buffer) {
+        int errorNumber = buffer[10];
+        for (CabinetInfoListener cabinetInfoListener : cabinetInfoListeners) {
+            cabinetInfoListener.turnOnLightResult(errorNumber);
+        }
+    }
+
+    public void getInfraredOrLockH(List<CabinetInfoListener> cabinetInfoListeners, byte[] buffer) {
+        int errorNumber = buffer[10];
+        for (CabinetInfoListener cabinetInfoListener : cabinetInfoListeners) {
+            cabinetInfoListener.turnOnLightResult(errorNumber);
         }
     }
 }

@@ -90,7 +90,16 @@ public class Utils {
         TIME_SYNCHRONIZATION_H((byte) 0xA5),
 
         DEVICE_RESTART_R((byte) 0xA6), //2.43	设备重启 Device restart
-        DEVICE_RESTART_H((byte) 0xA7);
+        DEVICE_RESTART_H((byte) 0xA7),
+
+        UNLOCK_R((byte) 0xB1), //2.45	开锁指令
+        UNLOCK_H((byte) 0xB2),
+
+        TURN_ON_LIGHT_R((byte) 0xB3), //2.47	亮灯指令
+        TURN_ON_LIGHT_H((byte) 0xB4),
+
+        GE_INFRARED_OR_LOCK_STATE_R((byte) 0xB5), //2.49	获取红外状态、锁状态
+        GE_INFRARED_OR_LOCK_STATE_H((byte) 0xB6);
 
         byte type;
 
