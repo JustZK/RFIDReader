@@ -3,6 +3,7 @@ package com.zk.rfid.bean;
 import com.zk.rfid.ur880.util.Utils.TYPE;
 
 import java.lang.reflect.Parameter;
+import java.util.ArrayList;
 
 public class UR880SendInfo {
     private TYPE communicationType; //通信类型
@@ -57,7 +58,11 @@ public class UR880SendInfo {
     private int portNumber;
     private int electricityLevel;
 
-    private int buzzerStatus;//	蜂鸣器状态
+    private int buzzerStatus; //蜂鸣器状态
+
+    private int lockNumber; //锁号
+    private int lightLayerNumber; //灯层号
+    private ArrayList<Integer> lightNumbers; //灯号
 
     public static class Builder {
         UR880SendInfo mUR880SendInfo;
@@ -293,6 +298,30 @@ public class UR880SendInfo {
         //2.43	设备重启 Device restart
         public Builder deviceRestart(String ID) {
             mUR880SendInfo.setCommunicationType(TYPE.DEVICE_RESTART_R);
+            mUR880SendInfo.setID(ID);
+            return this;
+        }
+
+        //2.45	开锁指令
+        public Builder openDoor(String ID, int lockNumber) {
+            mUR880SendInfo.setCommunicationType(TYPE.UNLOCK_R);
+            mUR880SendInfo.setID(ID);
+            mUR880SendInfo.setLockNumber(lockNumber);
+            return this;
+        }
+
+        //2.47	亮灯指令
+        public Builder turnOnLight(String ID, int lightLayerNumber, ArrayList<Integer> lightNumbers) {
+            mUR880SendInfo.setCommunicationType(TYPE.TURN_ON_LIGHT_R);
+            mUR880SendInfo.setID(ID);
+            mUR880SendInfo.setLightLayerNumber(lightLayerNumber);
+            mUR880SendInfo.setLightNumbers(lightNumbers);
+            return this;
+        }
+
+        //2.49	获取红外状态、锁状态
+        public Builder getInfraredOrLockState(String ID) {
+            mUR880SendInfo.setCommunicationType(TYPE.GE_INFRARED_OR_LOCK_STATE_R);
             mUR880SendInfo.setID(ID);
             return this;
         }
@@ -660,5 +689,29 @@ public class UR880SendInfo {
 
     public void setBuzzerStatus(int buzzerStatus) {
         this.buzzerStatus = buzzerStatus;
+    }
+
+    public int getLockNumber() {
+        return lockNumber;
+    }
+
+    public void setLockNumber(int lockNumber) {
+        this.lockNumber = lockNumber;
+    }
+
+    public int getLightLayerNumber() {
+        return lightLayerNumber;
+    }
+
+    public void setLightLayerNumber(int lightLayerNumber) {
+        this.lightLayerNumber = lightLayerNumber;
+    }
+
+    public ArrayList<Integer> getLightNumbers() {
+        return lightNumbers;
+    }
+
+    public void setLightNumbers(ArrayList<Integer> lightNumbers) {
+        this.lightNumbers = lightNumbers;
     }
 }

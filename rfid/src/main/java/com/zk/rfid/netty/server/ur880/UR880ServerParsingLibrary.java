@@ -3,6 +3,7 @@ package com.zk.rfid.netty.server.ur880;
 import com.zk.common.utils.LogUtil;
 import com.zk.rfid.bean.DeviceInformation;
 import com.zk.rfid.bean.UR880SendInfo;
+import com.zk.rfid.callback.CabinetInfoListener;
 import com.zk.rfid.callback.InventoryListener;
 import com.zk.rfid.callback.DeviceInformationListener;
 import com.zk.rfid.callback.FactorySettingListener;
@@ -121,6 +122,18 @@ public class UR880ServerParsingLibrary {
         processor.removeAllLabelOperationListener();
     }
 
+    public void addOnCabinetInfoListener(CabinetInfoListener cabinetInfoListener) {
+        processor.addOnCabinetInfoListener(cabinetInfoListener);
+    }
+
+    public void removeCabinetInfoListener(CabinetInfoListener cabinetInfoListener) {
+        processor.removeCabinetInfoListener(cabinetInfoListener);
+    }
+
+    public void removeAllCabinetInfoListener() {
+        processor.removeAllCabinetInfoListener();
+    }
+
     public boolean isOnline(int readerIp) {
         return processor.isOnline(readerIp);
     }
@@ -149,6 +162,8 @@ public class UR880ServerParsingLibrary {
                 Collections.synchronizedList(new ArrayList<FactorySettingListener>());
         private List<LabelOperationListener> mLabelOperationListener =
                 Collections.synchronizedList(new ArrayList<LabelOperationListener>());
+        private List<CabinetInfoListener> mCabinetInfoListener =
+                Collections.synchronizedList(new ArrayList<CabinetInfoListener>());
 
         void addOnAccessingListener(InventoryListener inventoryListener) {
             mInventoryListener.add(inventoryListener);
@@ -196,6 +211,18 @@ public class UR880ServerParsingLibrary {
 
         void removeAllLabelOperationListener() {
             mLabelOperationListener.clear();
+        }
+
+        void addOnCabinetInfoListener(CabinetInfoListener cabinetInfoListener) {
+            mCabinetInfoListener.add(cabinetInfoListener);
+        }
+
+        void removeCabinetInfoListener(CabinetInfoListener cabinetInfoListener) {
+            mCabinetInfoListener.remove(cabinetInfoListener);
+        }
+
+        void removeAllCabinetInfoListener() {
+            mCabinetInfoListener.clear();
         }
 
         boolean isOnline(int boxID) {
@@ -251,6 +278,15 @@ public class UR880ServerParsingLibrary {
                     break;
                 case DEVICE_RESTART_R:
                     channel.writeAndFlush(mGroupPackage.deviceRestartR(0));
+                    break;
+                case UNLOCK_R:
+                    channel.writeAndFlush(mGroupPackage.openDoorR(0, ur880SendInfo.getLockNumber()));
+                    break;
+                case TURN_ON_LIGHT_R:
+                    channel.writeAndFlush(mGroupPackage.turnOnLightR(0, ur880SendInfo.getLightLayerNumber(), ur880SendInfo.getLightNumbers()));
+                    break;
+                case GE_INFRARED_OR_LOCK_STATE_R:
+                    channel.writeAndFlush(mGroupPackage.getInfraredOrLockStateR(0));
                     break;
             }
             return true;
@@ -550,10 +586,13 @@ public class UR880ServerParsingLibrary {
                 mUnlockPackage.deviceRestartH(mFactorySettingListener, buffer);
             } else if (buffer[6] == TYPE.UNLOCK_H.getType()){
                 LogUtil.Companion.getInstance().d("开锁指令");
+                mUnlockPackage.unlockH(mCabinetInfoListener, buffer);
             } else if (buffer[6] == TYPE.TURN_ON_LIGHT_H.getType()){
                 LogUtil.Companion.getInstance().d("亮灯指令");
+                mUnlockPackage.turnOnLightH(mCabinetInfoListener, buffer);
             } else if (buffer[6] == TYPE.GE_INFRARED_OR_LOCK_STATE_H.getType()){
                 LogUtil.Companion.getInstance().d("获取红外状态、锁状态");
+                mUnlockPackage.getInfraredOrLockH(mCabinetInfoListener, buffer);
             }
         }
     }

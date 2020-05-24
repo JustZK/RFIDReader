@@ -3,6 +3,7 @@ package com.zk.rfid.ur880.util;
 import com.zk.rfid.ur880.util.Utils.TYPE;
 import com.zk.common.utils.LogUtil;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class GroupPackage {
@@ -354,7 +355,121 @@ public class GroupPackage {
         data[6] = TYPE.DEVICE_RESTART_R.type;
         data[7] = Utils.calcCheckBit(data);
 
-        LogUtil.Companion.getInstance().d("Send 2.43 设备重启 转译前 heartbeatH：", data, data.length);
+        LogUtil.Companion.getInstance().d("Send 2.43 设备重启 转译前：", data, data.length);
+        int T = Utils.ifTranslation(data);
+        if (T > 0)
+            return (Utils.translationForPack(data, data.length, T));
+        else
+            return data;
+    }
+
+    public byte[] openDoorR(int frameNumber, int lockNumber) {
+        byte[] data;
+        data = new byte[15];
+        Utils.initMessage(data, frameNumber);
+        data[6] = TYPE.UNLOCK_R.type;
+
+        LogUtil.Companion.getInstance().d("开门："+lockNumber);
+        int lockNumberTemp = lockNumber % 8;
+        if (lockNumberTemp == 0) lockNumberTemp =8;
+        String temp = "1";
+        for (int i = 1 ; i < lockNumberTemp; i++){
+            temp += "0";
+        }
+        if (lockNumber <= 8){
+            data[7] = 0x00;
+            data[8] = 0x00;
+            data[9] = 0x00;
+            data[10] = (byte) Integer.parseInt(temp,2);
+        } else if (lockNumber > 8 && lockNumber <= 16){
+            data[7] = 0x00;
+            data[8] = 0x00;
+            data[10] = 0x00;
+            data[9] = (byte) Integer.parseInt(temp,2);
+        } else if (lockNumber > 16 && lockNumber <= 24){
+            data[7] = 0x00;
+            data[9] = 0x00;
+            data[10] = 0x00;
+            data[8] = (byte) Integer.parseInt(temp,2);
+        } else if (lockNumber > 24 && lockNumber <= 32){
+            data[8] = 0x00;
+            data[9] = 0x00;
+            data[10] = 0x00;
+            data[7] = (byte) Integer.parseInt(temp,2);
+        }
+        data[11] = Utils.calcCheckBit(data);
+        LogUtil.Companion.getInstance().d("Send 2.45 开锁指令 转译前：", data, data.length);
+        int T = Utils.ifTranslation(data);
+        if (T > 0)
+            return (Utils.translationForPack(data, data.length, T));
+        else
+            return data;
+    }
+
+    public byte[] turnOnLightR(int frameNumber, int lightLayerNumber, ArrayList<Integer> lightNumber) {
+        byte[] data;
+        data = new byte[15];
+        Utils.initMessage(data, frameNumber);
+        data[6] = TYPE.TURN_ON_LIGHT_R.type;
+        data[7] = (byte) lightLayerNumber;
+
+        String[] lightNumbers = new String[32];
+        for (int i = 0; i < 64; i++) {
+            lightNumbers[i] = "0";
+        }
+        for (int a : lightNumber) {
+            int lockNumberTemp = a % 8;
+            if (lockNumberTemp == 0) lockNumberTemp = 8;
+
+            if (a <= 8) {
+                lightNumbers[lockNumberTemp - 1] = "1";
+            } else if (a > 8 && a <= 16) {
+                lightNumbers[8 + lockNumberTemp - 1] = "1";
+            } else if (a > 16 && a <= 24) {
+                lightNumbers[16 + lockNumberTemp - 1] = "1";
+            } else if (a > 24 && a <= 32) {
+                lightNumbers[24 + lockNumberTemp - 1] = "1";
+            }
+        }
+        String temp = "";
+        for (int i = 7; i >= 0; i--) {
+            temp += lightNumbers[i];
+        }
+        data[11] = (byte) Integer.parseInt(temp, 2);
+        temp = "";
+        for (int i = 15; i >= 8; i--) {
+            temp += lightNumbers[i];
+        }
+        data[10] = (byte) Integer.parseInt(temp, 2);
+        temp = "";
+        for (int i = 23; i >= 16; i--) {
+            temp += lightNumbers[i];
+        }
+        data[9] = (byte) Integer.parseInt(temp, 2);
+        temp = "";
+        for (int i = 31; i >= 24; i--) {
+            temp += lightNumbers[i];
+        }
+        data[8] = (byte) Integer.parseInt(temp, 2);
+
+        data[12] = Utils.calcCheckBit(data);
+        LogUtil.Companion.getInstance().d("Send 2.47 亮灯指令 转译前：", data, data.length);
+        int T = Utils.ifTranslation(data);
+        if (T > 0)
+            return (Utils.translationForPack(data, data.length, T));
+        else
+            return data;
+    }
+
+    public byte[] getInfraredOrLockStateR(int frameNumber) {
+        byte[] data;
+        data = new byte[10];
+        Utils.initMessage(data, frameNumber);
+
+        data[6] = TYPE.GE_INFRARED_OR_LOCK_STATE_R.type;
+        data[7] = Utils.calcCheckBit(data);
+
+        LogUtil.Companion.getInstance().d("Send 2.50 获取红外状态、锁状态应答 转译前：", data, data.length);
         int T = Utils.ifTranslation(data);
         if (T > 0)
             return (Utils.translationForPack(data, data.length, T));

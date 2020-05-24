@@ -3,6 +3,7 @@ package com.zk.rfid.serial.ur880;
 import com.zk.common.utils.LogUtil;
 import com.zk.rfid.bean.DeviceInformation;
 import com.zk.rfid.bean.UR880SendInfo;
+import com.zk.rfid.callback.CabinetInfoListener;
 import com.zk.rfid.callback.InventoryListener;
 import com.zk.rfid.callback.DeviceInformationListener;
 import com.zk.rfid.callback.FactorySettingListener;
@@ -35,6 +36,8 @@ public class UR880SerialOperation extends SerialHelper {
             Collections.synchronizedList(new ArrayList<FactorySettingListener>());
     private List<LabelOperationListener> mLabelOperationListener =
             Collections.synchronizedList(new ArrayList<LabelOperationListener>());
+    private List<CabinetInfoListener> mCabinetInfoListener =
+            Collections.synchronizedList(new ArrayList<CabinetInfoListener>());
 
     UR880SerialOperation(String idTemp, String deviceSerialPath, String deviceSerialBaudRate){
         this.mIDTemp = idTemp;
@@ -99,6 +102,18 @@ public class UR880SerialOperation extends SerialHelper {
         mLabelOperationListener.clear();
     }
 
+    void addOnCabinetInfoListener(CabinetInfoListener cabinetInfoListener) {
+        mCabinetInfoListener.add(cabinetInfoListener);
+    }
+
+    void removeCabinetInfoListener(CabinetInfoListener cabinetInfoListener) {
+        mCabinetInfoListener.remove(cabinetInfoListener);
+    }
+
+    void removeAllCabinetInfoListener() {
+        mCabinetInfoListener.clear();
+    }
+
 
     void send(UR880SendInfo ur880SendInfo) {
 
@@ -151,6 +166,15 @@ public class UR880SerialOperation extends SerialHelper {
                 break;
             case DEVICE_RESTART_R:
                 addSendTask(mGroupPackage.deviceRestartR(0));
+                break;
+            case UNLOCK_R:
+                addSendTask(mGroupPackage.openDoorR(0, ur880SendInfo.getLockNumber()));
+                break;
+            case TURN_ON_LIGHT_R:
+                addSendTask(mGroupPackage.turnOnLightR(0, ur880SendInfo.getLightLayerNumber(), ur880SendInfo.getLightNumbers()));
+                break;
+            case GE_INFRARED_OR_LOCK_STATE_R:
+                addSendTask(mGroupPackage.getInfraredOrLockStateR(0));
                 break;
         }
     }
@@ -371,10 +395,13 @@ public class UR880SerialOperation extends SerialHelper {
             mUnlockPackage.deviceRestartH(mFactorySettingListener, buffer);
         } else if (buffer[6] == TYPE.UNLOCK_H.getType()){
             LogUtil.Companion.getInstance().d("开锁指令");
+            mUnlockPackage.unlockH(mCabinetInfoListener, buffer);
         } else if (buffer[6] == TYPE.TURN_ON_LIGHT_H.getType()){
             LogUtil.Companion.getInstance().d("亮灯指令");
+            mUnlockPackage.turnOnLightH(mCabinetInfoListener, buffer);
         } else if (buffer[6] == TYPE.GE_INFRARED_OR_LOCK_STATE_H.getType()){
             LogUtil.Companion.getInstance().d("获取红外状态、锁状态");
+            mUnlockPackage.getInfraredOrLockH(mCabinetInfoListener, buffer);
         }
     }
 }
