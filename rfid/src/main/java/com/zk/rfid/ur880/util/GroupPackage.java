@@ -414,7 +414,7 @@ public class GroupPackage {
         data[7] = (byte) lightLayerNumber;
 
         String[] lightNumbers = new String[32];
-        for (int i = 0; i < 64; i++) {
+        for (int i = 0; i < 32; i++) {
             lightNumbers[i] = "0";
         }
         for (int a : lightNumber) {
