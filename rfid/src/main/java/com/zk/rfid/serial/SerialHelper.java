@@ -85,21 +85,14 @@ public abstract class SerialHelper {
 
     /**
      * 写
+     *
      * @param bOutArray
      */
-    private void send(byte[] bOutArray){
-        StringBuilder buffers = new StringBuilder();
-        for (int i = 0; i < bOutArray.length; i++) {
-            buffers.append(Integer.toHexString((bOutArray[i] & 0xff)));
-            buffers.append(" ");
-        }
-        LogUtil.Companion.getInstance().d("SerialHelper", "test 发送" + buffers);
+    private void send(byte[] bOutArray) {
 
-        try
-        {
+        try {
             mOutputStream.write(bOutArray);
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -111,19 +104,17 @@ public abstract class SerialHelper {
         @Override
         public void run() {
             super.run();
-            while(!isInterrupted()) {
-                try
-                {
+            while (!isInterrupted()) {
+                try {
                     if (mInputStream == null) return;
-                    byte[] buffer=new byte[4096];
+                    byte[] buffer = new byte[4096];
                     int size = mInputStream.read(buffer);
-                    if (size > 0){
+                    if (size > 0) {
                         byte[] readBuffer = new byte[size];
                         System.arraycopy(buffer, 0, readBuffer, 0, size);
                         onDataReceived(sPort, readBuffer, size);
                     }
-                } catch (Throwable e)
-                {
+                } catch (Throwable e) {
                     e.printStackTrace();
                     return;
                 }
