@@ -2,6 +2,7 @@ package com.zk.rfid.ur880;
 
 import com.zk.rfid.bean.DeviceInformation;
 import com.zk.rfid.bean.UR880SendInfo;
+import com.zk.rfid.callback.CabinetInfoListener;
 import com.zk.rfid.callback.InventoryListener;
 import com.zk.rfid.callback.DeviceInformationListener;
 import com.zk.rfid.callback.FactorySettingListener;
@@ -166,6 +167,30 @@ public class UR880Entrance {
             UR880ServerParsingLibrary.getInstance().removeAllLabelOperationListener();
         } else if (mConnectionType == CONNECTION_SERIAL){
             UR880SerialOperationFactory.getInstance().removeAllLabelOperationListener();
+        }
+    }
+
+    public void addOnCabinetInfoListener(CabinetInfoListener cabinetInfoListener) {
+        if (mConnectionType == CONNECTION_TCP_IP){
+            UR880ServerParsingLibrary.getInstance().addOnCabinetInfoListener(cabinetInfoListener);
+        } else if (mConnectionType == CONNECTION_SERIAL){
+//            UR880SerialOperationFactory.getInstance().addOnCabinetInfoListener();
+        }
+    }
+
+    public void removeCabinetInfoListener(CabinetInfoListener cabinetInfoListener) {
+        if (mConnectionType == CONNECTION_TCP_IP){
+            UR880ServerParsingLibrary.getInstance().removeCabinetInfoListener(cabinetInfoListener);
+        } else if (mConnectionType == CONNECTION_SERIAL){
+//            UR880SerialOperationFactory.getInstance().removeCabinetInfoListener(cabinetInfoListener);
+        }
+    }
+
+    public void removeAllCabinetInfoListener() {
+        if (mConnectionType == CONNECTION_TCP_IP){
+            UR880ServerParsingLibrary.getInstance().removeAllCabinetInfoListener();
+        } else if (mConnectionType == CONNECTION_SERIAL){
+//            UR880SerialOperationFactory.getInstance().removeAllCabinetInfoListener();
         }
     }
 }

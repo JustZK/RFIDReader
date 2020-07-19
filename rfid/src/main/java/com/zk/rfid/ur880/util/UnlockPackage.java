@@ -8,6 +8,7 @@ import com.zk.rfid.callback.DeviceInformationListener;
 import com.zk.rfid.callback.FactorySettingListener;
 import com.zk.rfid.callback.InventoryListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -256,9 +257,35 @@ public class UnlockPackage {
     }
 
     public void getInfraredOrLockH(List<CabinetInfoListener> cabinetInfoListeners, byte[] buffer) {
-        int errorNumber = buffer[10];
+        ArrayList<Integer> boxStateList = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            if ((buffer[7] >> i & 0x1) == 1) {
+                boxStateList.add(8 + i + 1);
+                LogUtil.Companion.getInstance().d("门开启：" + (8 + i + 1));
+            }
+        }
+        for (int i = 0; i < 8; i++) {
+            if ((buffer[8] >> i & 0x1) == 1) {
+                boxStateList.add(i + 1);
+                LogUtil.Companion.getInstance().d("门开启：" + (i + 1));
+            }
+        }
+        ArrayList<Integer> infraredStateList = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            if ((buffer[9] >> i & 0x1) == 1) {
+                infraredStateList.add(8 + i + 1);
+                LogUtil.Companion.getInstance().d("红外开启：" + (8 + i + 1));
+            }
+        }
+        for (int i = 0; i < 8; i++) {
+            if ((buffer[10] >> i & 0x1) == 1) {
+                infraredStateList.add(i + 1);
+                LogUtil.Companion.getInstance().d("红外开启：" + (i + 1));
+            }
+        }
+
         for (CabinetInfoListener cabinetInfoListener : cabinetInfoListeners) {
-            cabinetInfoListener.turnOnLightResult(errorNumber);
+            cabinetInfoListener.getInfraredOrLockState(boxStateList, infraredStateList);
         }
     }
 }
