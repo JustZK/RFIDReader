@@ -315,7 +315,7 @@ public class UR880ServerParsingLibrary {
 
         @Override
         protected void onMessageReceived(ChannelHandlerContext ctx, byte[] buffer) {
-            LogUtil.Companion.getInstance().d(TAG, buffer, buffer.length);
+            LogUtil.Companion.getInstance().d(TAG, buffer, buffer.length, true);
             byte[] remainBuffer = remainBufferMap.get(ctx.channel());
             byte[] tempBytes;
             //如果上次解析有剩余，则将其加上
@@ -488,28 +488,26 @@ public class UR880ServerParsingLibrary {
 
             if (buffer[0] == Utils.HEAD_HIGH && buffer[1] == Utils.HEAD_LOW
                     && buffer[size - 2] == Utils.TAIL_HIGH && buffer[size - 1] == Utils.TAIL_LOW) {
-                int T = Utils.containCheck(buffer, size);
-                if (T >= 0) {
+                //和校验
+                if (Utils.andCheck(buffer, size)) {
+                    //转译
+                    int T = Utils.containCheck(buffer, size);
                     byte[] tBuffer;
                     if (T > 0)
                         tBuffer = Utils.translationForUnlock(buffer, size, T);
                     else
                         tBuffer = buffer;
-                    //和校验
-                    if (Utils.andCheck(tBuffer, size - T)) {
-                        //帧长度校验
-                        if ((size - Utils.HEAD_TAIL_NUMBER - T) == (tBuffer[2] & 0xff)) {
-                            parser(channel, tBuffer, size - T);
-                        } else {
-                            LogUtil.Companion.getInstance().d("异常：帧长度校验");
-                        }
-
+                    //帧长度校验
+                    if ((size - Utils.HEAD_TAIL_NUMBER - T) == (tBuffer[2] & 0xff)) {
+                        parser(channel, tBuffer, size - T);
                     } else {
-                        LogUtil.Companion.getInstance().d("异常：和校验");
+                        LogUtil.Companion.getInstance().d(TAG, "异常：帧长度校验", true);
                     }
+                } else {
+                    LogUtil.Companion.getInstance().d(TAG, "异常：和校验", true);
                 }
             } else {
-                LogUtil.Companion.getInstance().d("异常：针头针尾");
+                LogUtil.Companion.getInstance().d(TAG, "异常：针头针尾", true);
             }
         }
 

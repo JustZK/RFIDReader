@@ -14,14 +14,13 @@ public class GroupPackage {
         Utils.initMessage(data, frameNumber);
 
         data[6] = TYPE.REGISTERED_R.type;
-        data[7] = Utils.calcCheckBit(data);
 
-        LogUtil.Companion.getInstance().d("Send 注册 转译前 registeredH：", data, data.length);
         int T = Utils.ifTranslation(data);
-        if (T > 0)
-            return (Utils.translationForPack(data, data.length, T));
-        else
-            return data;
+        if (T > 0) data = Utils.translationForPack(data, data.length, T);
+        data[data.length - 3] = Utils.calcCheckBit(data);
+
+        LogUtil.Companion.getInstance().d("Send 注册 registeredH：", data, data.length);
+        return data;
     }
 
     public byte[] registeredH(int frameNumber) {
@@ -34,14 +33,13 @@ public class GroupPackage {
         data[8] = (byte) 0;
         data[9] = (byte) 0;
         data[10] = (byte) 0;
-        data[11] = Utils.calcCheckBit(data);
 
-        LogUtil.Companion.getInstance().d("Send 注册 转译前 registeredH：", data, data.length);
         int T = Utils.ifTranslation(data);
-        if (T > 0)
-            return (Utils.translationForPack(data, data.length, T));
-        else
-            return data;
+        if (T > 0) data = Utils.translationForPack(data, data.length, T);
+        data[data.length - 3] = Utils.calcCheckBit(data);
+
+        LogUtil.Companion.getInstance().d("Send 注册 registeredH：", data, data.length);
+        return data;
     }
 
     public byte[] heartbeatR(int frameNumber) {
@@ -50,14 +48,13 @@ public class GroupPackage {
         Utils.initMessage(data, frameNumber);
 
         data[6] = TYPE.HEART_BEAT_R.type;
-        data[7] = Utils.calcCheckBit(data);
 
-        LogUtil.Companion.getInstance().d("Send 心跳 转译前 heartbeatH：", data, data.length);
         int T = Utils.ifTranslation(data);
-        if (T > 0)
-            return (Utils.translationForPack(data, data.length, T));
-        else
-            return data;
+        if (T > 0) data = Utils.translationForPack(data, data.length, T);
+        data[data.length - 3] = Utils.calcCheckBit(data);
+
+        LogUtil.Companion.getInstance().d("Send 心跳  heartbeatH：", data, data.length);
+        return data;
     }
 
     public byte[] getVersionInfoR(int frameNumber) {
@@ -66,14 +63,13 @@ public class GroupPackage {
         Utils.initMessage(data, frameNumber);
 
         data[6] = TYPE.GET_VERSION_INFO_R.type;
-        data[7] = Utils.calcCheckBit(data);
 
-        LogUtil.Companion.getInstance().d("Send 获取版本号 转译前 heartbeatH：", data, data.length);
         int T = Utils.ifTranslation(data);
-        if (T > 0)
-            return (Utils.translationForPack(data, data.length, T));
-        else
-            return data;
+        if (T > 0) data = Utils.translationForPack(data, data.length, T);
+        data[data.length - 3] = Utils.calcCheckBit(data);
+
+        LogUtil.Companion.getInstance().d("Send 获取版本号 heartbeatH：", data, data.length);
+        return data;
     }
 
     public byte[] inventoryR(int frameNumber, int fastID, int antennaNumber, int inventoryType) {
@@ -90,14 +86,13 @@ public class GroupPackage {
         data[12] = (byte) fastID;
         data[13] = (byte) antennaNumber;
         data[14] = (byte) inventoryType;
-        data[15] = Utils.calcCheckBit(data);
 
-        LogUtil.Companion.getInstance().d("Send 盘点 转译前 heartbeatH：", data, data.length);
         int T = Utils.ifTranslation(data);
-        if (T > 0)
-            return (Utils.translationForPack(data, data.length, T));
-        else
-            return data;
+        if (T > 0) data = Utils.translationForPack(data, data.length, T);
+        data[data.length - 3] = Utils.calcCheckBit(data);
+
+        LogUtil.Companion.getInstance().d("Send 盘点 heartbeatH：", data, data.length);
+        return data;
     }
 
     public byte[] cancelR(int frameNumber) {
@@ -106,14 +101,13 @@ public class GroupPackage {
         Utils.initMessage(data, frameNumber);
 
         data[6] = TYPE.CANCEL_R.type;
-        data[7] = Utils.calcCheckBit(data);
 
-        LogUtil.Companion.getInstance().d("Send 转译前 heartbeatH：", data, data.length);
         int T = Utils.ifTranslation(data);
-        if (T > 0)
-            return (Utils.translationForPack(data, data.length, T));
-        else
-            return data;
+        if (T > 0) data = Utils.translationForPack(data, data.length, T);
+        data[data.length - 3] = Utils.calcCheckBit(data);
+
+        LogUtil.Companion.getInstance().d("Send heartbeatH：", data, data.length);
+        return data;
     }
 
     public byte[] setAntennaConfigurationR(int frameNumber,
@@ -195,14 +189,12 @@ public class GroupPackage {
         data[57] = calendarCycleThreeByte[2];
         data[58] = calendarCycleThreeByte[3];
 
-        data[59] = Utils.calcCheckBit(data);
-
-        LogUtil.Companion.getInstance().d("Send 2.15 天线配置 转译前 heartbeatH：", data, data.length);
         int T = Utils.ifTranslation(data);
-        if (T > 0)
-            return (Utils.translationForPack(data, data.length, T));
-        else
-            return data;
+        if (T > 0) data = Utils.translationForPack(data, data.length, T);
+        data[data.length - 3] = Utils.calcCheckBit(data);
+
+        LogUtil.Companion.getInstance().d("Send 2.15 天线配置  heartbeatH：", data, data.length);
+        return data;
     }
 
     public byte[] getAntennaConfigurationR(int frameNumber) {
@@ -217,14 +209,12 @@ public class GroupPackage {
         data[9] = 0x00;
         data[10] = 0x00;
 
-        data[11] = Utils.calcCheckBit(data);
-
-        LogUtil.Companion.getInstance().d("Send 2.17 天线配置查询命令 转译前 heartbeatH：", data, data.length);
         int T = Utils.ifTranslation(data);
-        if (T > 0)
-            return (Utils.translationForPack(data, data.length, T));
-        else
-            return data;
+        if (T > 0) data = Utils.translationForPack(data, data.length, T);
+        data[data.length - 3] = Utils.calcCheckBit(data);
+
+        LogUtil.Companion.getInstance().d("Send 2.17 天线配置查询命令 heartbeatH：", data, data.length);
+        return data;
     }
 
     public byte[] getAntennaStandingWaveRatioR(int frameNumber) {
@@ -234,14 +224,12 @@ public class GroupPackage {
 
         data[6] = TYPE.GET_ANTENNA_STANDING_WAVE_RADIO_R.type;
 
-        data[7] = Utils.calcCheckBit(data);
-
-        LogUtil.Companion.getInstance().d("Send 2.27 获取天线驻波比 转译前 heartbeatH：", data, data.length);
         int T = Utils.ifTranslation(data);
-        if (T > 0)
-            return (Utils.translationForPack(data, data.length, T));
-        else
-            return data;
+        if (T > 0) data = Utils.translationForPack(data, data.length, T);
+        data[data.length - 3] = Utils.calcCheckBit(data);
+
+        LogUtil.Companion.getInstance().d("Send 2.27 获取天线驻波比 heartbeatH：", data, data.length);
+        return data;
     }
 
     public byte[] setGPOOutputStatusR(int frameNumber, int portNumber, int electricityLevel) {
@@ -256,14 +244,12 @@ public class GroupPackage {
         data[9] = 0x00;
         data[10] = 0x00;
 
-        data[11] = Utils.calcCheckBit(data);
-
-        LogUtil.Companion.getInstance().d("Send 2.29 设置GPO输出状态 转译前 heartbeatH：", data, data.length);
         int T = Utils.ifTranslation(data);
-        if (T > 0)
-            return (Utils.translationForPack(data, data.length, T));
-        else
-            return data;
+        if (T > 0) data = Utils.translationForPack(data, data.length, T);
+        data[data.length - 3] = Utils.calcCheckBit(data);
+
+        LogUtil.Companion.getInstance().d("Send 2.29 设置GPO输出状态 heartbeatH：", data, data.length);
+        return data;
     }
 
     public byte[] getGPIOutputStatusR(int frameNumber) {
@@ -278,14 +264,12 @@ public class GroupPackage {
         data[9] = 0x00;
         data[10] = 0x00;
 
-        data[11] = Utils.calcCheckBit(data);
-
-        LogUtil.Companion.getInstance().d("Send 2.31 读取GPI输入命令 转译前 heartbeatH：", data, data.length);
         int T = Utils.ifTranslation(data);
-        if (T > 0)
-            return (Utils.translationForPack(data, data.length, T));
-        else
-            return data;
+        if (T > 0) data = Utils.translationForPack(data, data.length, T);
+        data[data.length - 3] = Utils.calcCheckBit(data);
+
+        LogUtil.Companion.getInstance().d("Send 2.31 读取GPI输入命令 heartbeatH：", data, data.length);
+        return data;
     }
 
     public byte[] setBuzzerStatusSettingR(int frameNumber, int buzzerStatus) {
@@ -297,14 +281,12 @@ public class GroupPackage {
 
         data[7] = (byte) buzzerStatus;
 
-        data[8] = Utils.calcCheckBit(data);
-
-        LogUtil.Companion.getInstance().d("Send 2.37 蜂鸣器状态设置 转译前 heartbeatH：", data, data.length);
         int T = Utils.ifTranslation(data);
-        if (T > 0)
-            return (Utils.translationForPack(data, data.length, T));
-        else
-            return data;
+        if (T > 0) data = Utils.translationForPack(data, data.length, T);
+        data[data.length - 3] = Utils.calcCheckBit(data);
+
+        LogUtil.Companion.getInstance().d("Send 2.37 蜂鸣器状态设置 heartbeatH：", data, data.length);
+        return data;
     }
 
     public byte[] getBuzzerStatusSettingR(int frameNumber) {
@@ -314,14 +296,12 @@ public class GroupPackage {
 
         data[6] = TYPE.GET_BUZZER_STATUS_SETTING_R.type;
 
-        data[7] = Utils.calcCheckBit(data);
-
-        LogUtil.Companion.getInstance().d("Send 2.39 读写器蜂鸣器状态获取命令 转译前 heartbeatH：", data, data.length);
         int T = Utils.ifTranslation(data);
-        if (T > 0)
-            return (Utils.translationForPack(data, data.length, T));
-        else
-            return data;
+        if (T > 0) data = Utils.translationForPack(data, data.length, T);
+        data[data.length - 3] = Utils.calcCheckBit(data);
+
+        LogUtil.Companion.getInstance().d("Send 2.39 读写器蜂鸣器状态获取命令 heartbeatH：", data, data.length);
+        return data;
     }
 
     public byte[] timeSynchronizationR(int frameNumber) {
@@ -337,14 +317,13 @@ public class GroupPackage {
         data[10] = (byte) calendar.get(Calendar.HOUR_OF_DAY);
         data[11] = (byte) calendar.get(Calendar.MINUTE);
         data[12] = (byte) calendar.get(Calendar.SECOND);
-        data[13] = Utils.calcCheckBit(data);
 
-        LogUtil.Companion.getInstance().d("Send 2.41 时间同步 转译前 heartbeatH：", data, data.length);
         int T = Utils.ifTranslation(data);
-        if (T > 0)
-            return (Utils.translationForPack(data, data.length, T));
-        else
-            return data;
+        if (T > 0) data = Utils.translationForPack(data, data.length, T);
+        data[data.length - 3] = Utils.calcCheckBit(data);
+
+        LogUtil.Companion.getInstance().d("Send 2.41 时间同步 heartbeatH：", data, data.length);
+        return data;
     }
 
     public byte[] deviceRestartR(int frameNumber) {
@@ -353,14 +332,13 @@ public class GroupPackage {
         Utils.initMessage(data, frameNumber);
 
         data[6] = TYPE.DEVICE_RESTART_R.type;
-        data[7] = Utils.calcCheckBit(data);
 
-        LogUtil.Companion.getInstance().d("Send 2.43 设备重启 转译前：", data, data.length);
         int T = Utils.ifTranslation(data);
-        if (T > 0)
-            return (Utils.translationForPack(data, data.length, T));
-        else
-            return data;
+        if (T > 0) data = Utils.translationForPack(data, data.length, T);
+        data[data.length - 3] = Utils.calcCheckBit(data);
+
+        LogUtil.Companion.getInstance().d("Send 2.43 设备重启：", data, data.length);
+        return data;
     }
 
     public byte[] openDoorR(int frameNumber, int lockNumber) {
@@ -397,13 +375,13 @@ public class GroupPackage {
             data[10] = 0x00;
             data[7] = (byte) Integer.parseInt(temp,2);
         }
-        data[11] = Utils.calcCheckBit(data);
-        LogUtil.Companion.getInstance().d("Send 2.45 开锁指令 转译前：", data, data.length);
+
         int T = Utils.ifTranslation(data);
-        if (T > 0)
-            return (Utils.translationForPack(data, data.length, T));
-        else
-            return data;
+        if (T > 0) data = Utils.translationForPack(data, data.length, T);
+        data[data.length - 3] = Utils.calcCheckBit(data);
+
+        LogUtil.Companion.getInstance().d("Send 2.45 开锁指令：", data, data.length);
+        return data;
     }
 
     public byte[] turnOnLightR(int frameNumber, int lightLayerNumber, ArrayList<Integer> lightNumber) {
@@ -452,13 +430,12 @@ public class GroupPackage {
         }
         data[8] = (byte) Integer.parseInt(temp, 2);
 
-        data[12] = Utils.calcCheckBit(data);
-        LogUtil.Companion.getInstance().d("Send 2.47 亮灯指令 转译前：", data, data.length);
         int T = Utils.ifTranslation(data);
-        if (T > 0)
-            return (Utils.translationForPack(data, data.length, T));
-        else
-            return data;
+        if (T > 0) data = Utils.translationForPack(data, data.length, T);
+        data[data.length - 3] = Utils.calcCheckBit(data);
+
+        LogUtil.Companion.getInstance().d("Send 2.47 亮灯指令：", data, data.length);
+        return data;
     }
 
     public byte[] getInfraredOrLockStateR(int frameNumber) {
@@ -467,14 +444,13 @@ public class GroupPackage {
         Utils.initMessage(data, frameNumber);
 
         data[6] = TYPE.GE_INFRARED_OR_LOCK_STATE_R.type;
-        data[7] = Utils.calcCheckBit(data);
 
-        LogUtil.Companion.getInstance().d("Send 2.50 获取红外状态、锁状态应答 转译前：", data, data.length);
         int T = Utils.ifTranslation(data);
-        if (T > 0)
-            return (Utils.translationForPack(data, data.length, T));
-        else
-            return data;
+        if (T > 0) data = Utils.translationForPack(data, data.length, T);
+        data[data.length - 3] = Utils.calcCheckBit(data);
+
+        LogUtil.Companion.getInstance().d("Send 2.50 获取红外状态、锁状态应答：", data, data.length);
+        return data;
     }
 
 }

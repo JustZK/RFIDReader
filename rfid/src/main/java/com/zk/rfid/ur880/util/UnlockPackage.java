@@ -97,7 +97,7 @@ public class UnlockPackage {
                 epcTempStr = "0" + epcTempStr;
             epcStr.append(epcTempStr);
         }
-        LogUtil.Companion.getInstance().d("EPC:" + epcStr.toString());
+        LogUtil.Companion.getInstance().d("EPC" , "EPC:" + epcStr.toString(), true);
         labelInfo.setEPC(epcStr.toString());
         if (buffer.length >= (31 + epcLength + 12 + 3)) {
             String tidTempStr;

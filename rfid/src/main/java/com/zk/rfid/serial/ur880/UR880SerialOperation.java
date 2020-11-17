@@ -305,28 +305,26 @@ public class UR880SerialOperation extends SerialHelper {
 
         if (buffer[0] == Utils.HEAD_HIGH && buffer[1] == Utils.HEAD_LOW
                 && buffer[size - 2] == Utils.TAIL_HIGH && buffer[size - 1] == Utils.TAIL_LOW) {
-            int T = Utils.containCheck(buffer, size);
-            if (T >= 0) {
+            //和校验
+            if (Utils.andCheck(buffer, size)) {
+                //转译
+                int T = Utils.containCheck(buffer, size);
                 byte[] tBuffer;
                 if (T > 0)
                     tBuffer = Utils.translationForUnlock(buffer, size, T);
                 else
                     tBuffer = buffer;
-                //和校验
-                if (Utils.andCheck(tBuffer, size - T)) {
-                    //帧长度校验
-                    if ((size - Utils.HEAD_TAIL_NUMBER - T) == (tBuffer[2] & 0xff)) {
-                        parser(tBuffer, size - T);
-                    } else {
-                        LogUtil.Companion.getInstance().d("异常：帧长度校验");
-                    }
-
+                //帧长度校验
+                if ((size - Utils.HEAD_TAIL_NUMBER - T) == (tBuffer[2] & 0xff)) {
+                    parser(tBuffer, size - T);
                 } else {
-                    LogUtil.Companion.getInstance().d("异常：和校验");
+                    LogUtil.Companion.getInstance().d(TAG, "异常：帧长度校验", true);
                 }
+            } else {
+                LogUtil.Companion.getInstance().d(TAG, "异常：和校验", true);
             }
         } else {
-            LogUtil.Companion.getInstance().d("异常：针头针尾");
+            LogUtil.Companion.getInstance().d(TAG, "异常：针头针尾", true);
         }
     }
 

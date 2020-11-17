@@ -16,14 +16,14 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<Object> {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         Channel channel = ctx.channel();
-        LogUtil.Companion.getInstance().d(TAG, "Client ：" + channel.remoteAddress() + "  在线，开始通信");
+        LogUtil.Companion.getInstance().d(TAG, "Client ：" + channel.remoteAddress() + "  在线，开始通信(channelActive)", true);
         if (nettyServerEventProcessor != null) nettyServerEventProcessor.onChannelActive(ctx);
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         Channel channel = ctx.channel();
-        LogUtil.Companion.getInstance().d(TAG, "Client ：" + channel.remoteAddress() + "  离线");
+        LogUtil.Companion.getInstance().d(TAG, "Client ：" + channel.remoteAddress() + "  离线(channelInactive)", true);
         if (nettyServerEventProcessor != null) nettyServerEventProcessor.onChannelInactive(ctx);
     }
 
@@ -39,18 +39,19 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<Object> {
 
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-        LogUtil.Companion.getInstance().d(TAG, "handlerAdded 信道添加");
+        LogUtil.Companion.getInstance().d(TAG, "Client ：" + ctx.channel().remoteAddress() +"handlerAdded 信道添加(handlerAdded)", true);
         if (nettyServerEventProcessor != null) nettyServerEventProcessor.onHandlerAdded(ctx);
     }
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-        LogUtil.Companion.getInstance().d(TAG, "handlerRemoved 离开");
+        LogUtil.Companion.getInstance().d(TAG, "Client ：" + ctx.channel().remoteAddress() + "handlerRemoved 离开(handlerRemoved)", true);
         if (nettyServerEventProcessor != null) nettyServerEventProcessor.onHandlerRemoved(ctx);
     }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        LogUtil.Companion.getInstance().d(TAG, "Client ：" + ctx.channel().remoteAddress() + "ChannelHandlerContext", true);
         ByteBuf byteBuf = (ByteBuf) msg;
         byte[] b = new byte[byteBuf.readableBytes()];
         byteBuf.readBytes(b);
@@ -60,7 +61,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<Object> {
 
     @Override
     protected void messageReceived(ChannelHandlerContext ctx, Object msg) throws Exception {
-        LogUtil.Companion.getInstance().d(TAG, "messageReceived");
+        LogUtil.Companion.getInstance().d(TAG, "Client ：" + ctx.channel().remoteAddress() + "messageReceived", true);
     }
 
     @Override
@@ -70,16 +71,19 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<Object> {
             IdleStateEvent e = (IdleStateEvent) evt;
             switch (e.state()) {
                 case WRITER_IDLE:
-                    LogUtil.Companion.getInstance().d(TAG, "WRITER_IDLE", false);
+                    LogUtil.Companion.getInstance().d(TAG, "Client ：" + ctx.channel().remoteAddress() + "WRITER_IDLE", true);
                     nettyServerEventProcessor.onWriteIdle(ctx);
                     break;
                 case READER_IDLE:
+                    LogUtil.Companion.getInstance().d(TAG, "Client ：" + ctx.channel().remoteAddress() + "READER_IDLE", true);
                     nettyServerEventProcessor.onReadIdle(ctx);
                     break;
                 case ALL_IDLE:
+                    LogUtil.Companion.getInstance().d(TAG, "Client ：" + ctx.channel().remoteAddress() + "ALL_IDLE", true);
                     nettyServerEventProcessor.onAllIdle(ctx);
                     break;
                 default:
+                    LogUtil.Companion.getInstance().d(TAG, "Client ：" + ctx.channel().remoteAddress() + "userEventTriggered" + e.state(), true);
                     break;
             }
         }
